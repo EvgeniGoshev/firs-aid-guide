@@ -74,8 +74,8 @@ create policy "Lesson progress readable by owner" on public.lesson_progress
 create policy "Lesson progress insertable by owner" on public.lesson_progress
   for insert with check (auth.uid() = user_id);
 
-create policy "Quiz questions are public read" on public.quiz_questions
-  for select using (active = true);
+create policy "Quiz questions are available to authenticated users" on public.quiz_questions
+  for select to authenticated using (active = true);
 
 create policy "Quiz attempts readable by owner" on public.quiz_attempts
   for select using (auth.uid() = user_id);
