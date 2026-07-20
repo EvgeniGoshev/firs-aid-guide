@@ -369,23 +369,41 @@
       <div class="auth-gate-intro">
         <span class="auth-lock-icon" aria-hidden="true"><i data-lucide="shield-check"></i></span>
         <div>
-          <h2>Sign in to start training</h2>
-          <p>An account is required to access lessons, scenarios, quizzes, and progress.</p>
+          <h2 id="auth-heading">Sign in to start training</h2>
+          <p id="auth-description">An account is required to access lessons, scenarios, quizzes, and progress.</p>
         </div>
       </div>
-      <div class="auth-tabs" role="tablist" aria-label="Account mode">
+      <div class="auth-tabs" id="auth-tabs" role="tablist" aria-label="Account mode">
         <button class="auth-tab active" type="button" data-auth-mode="login">Login</button>
         <button class="auth-tab" type="button" data-auth-mode="register">Register</button>
       </div>
+      <div class="email-confirmation-notice register-only hidden" role="note">
+        <span aria-hidden="true"><i data-lucide="mail-warning"></i></span>
+        <div>
+          <strong>Email confirmation is required</strong>
+          <p>After registration we will send you a confirmation email. Open it and click the confirmation link before trying to log in. Check your Spam folder too.</p>
+        </div>
+      </div>
+      <div class="password-recovery-notice recovery-only hidden" role="note">
+        <span aria-hidden="true"><i data-lucide="key-round"></i></span>
+        <div>
+          <strong>Create a new password</strong>
+          <p>Use at least 8 characters. After saving it, you will stay signed in.</p>
+        </div>
+      </div>
       <p class="auth-status" id="auth-status">Connect Supabase to enable secure accounts.</p>
-      <label>
+      <label id="auth-email-field">
         <span>Email</span>
         <input id="account-email" type="email" autocomplete="email" placeholder="you@example.com">
       </label>
       <label>
         <span>Password</span>
-        <input id="account-password" type="password" autocomplete="current-password" minlength="8" placeholder="Minimum 8 characters">
+        <span class="password-field">
+          <input id="account-password" type="password" autocomplete="current-password" minlength="8" placeholder="Minimum 8 characters">
+          <button class="password-visibility-button" id="password-visibility-button" type="button" aria-label="Show password" aria-pressed="false"><i data-lucide="eye"></i></button>
+        </span>
       </label>
+      <button class="auth-text-button login-only" id="forgot-password-button" type="button">Forgot your password?</button>
       <label class="register-only">
         <span>Name</span>
         <input id="account-name" type="text" maxlength="32" placeholder="Your name">
@@ -417,7 +435,7 @@
         <input id="account-initials" type="text" maxlength="3" placeholder="FA">
       </label>
       <button class="primary-button" type="submit"><i data-lucide="log-in"></i><span id="account-submit-text">Login</span></button>
-      <button class="secondary-button" id="magic-link-button" type="button"><i data-lucide="mail-check"></i><span>Email me a Magic Link</span></button>
+      <button class="secondary-button login-only" id="magic-link-button" type="button"><i data-lucide="mail-check"></i><span>Email me a Magic Link</span></button>
       <button class="secondary-button hidden" id="logout-button" type="button"><i data-lucide="log-out"></i><span>Logout</span></button>
     </form>
   </div>

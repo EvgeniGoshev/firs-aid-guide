@@ -522,6 +522,31 @@ function showAuthMessage(message) {
   showStreakToast(message);
 }
 
+function defaultAuthMessage() {
+  if (!supabaseClient) return "Secure sign-in is unavailable until Supabase is connected.";
+  if (authMode === "register") return "Create your account, then confirm the email we send you before logging in.";
+  if (authMode === "recovery") return "Enter and save your new password.";
+  if (currentUser) return `Signed in as ${currentUser.email}`;
+  return "Enter your email and password, or request a password reset below.";
+}
+
+function friendlyAuthError(error) {
+  const message = String(error?.message || "Authentication failed.");
+  if (/invalid login credentials/i.test(message)) {
+    return "The email or password is incorrect. If you just registered, confirm your email before logging in.";
+  }
+  if (/email not confirmed/i.test(message)) {
+    return "Your email is not confirmed yet. Open the confirmation email and click its link before logging in.";
+  }
+  if (/user already registered/i.test(message)) {
+    return "An account with this email already exists. Log in or use ‘Forgot your password?’.";
+  }
+  if (/rate limit/i.test(message)) {
+    return "Too many email requests. Wait a few minutes, then try again.";
+  }
+  return message;
+}
+
 function choose(items) {
   return items[Math.floor(Math.random() * items.length)];
 }
@@ -881,9 +906,7 @@ function renderAccount() {
     : "Complete one quiz or scenario today to earn +1 streak.";
 
   document.getElementById("account-button-text").textContent = currentUser ? "Profile" : "Login";
-  document.getElementById("auth-status").textContent = authMessage || (supabaseClient
-    ? (currentUser ? `Signed in as ${currentUser.email}` : "Use email and password. New users should register first.")
-    : "Secure sign-in is unavailable until Supabase is connected.");
+  document.getElementById("auth-status").textContent = authMessage || defaultAuthMessage();
   document.getElementById("logout-button").classList.toggle("hidden", !currentUser);
   document.getElementById("account-name").value = progress.profileName;
   document.getElementById("account-email").value = progress.email || currentUser?.email || "";
@@ -894,13 +917,30 @@ function renderAccount() {
 }
 
 function renderAuthMode() {
+  const isRegister = authMode === "register";
+  const isRecovery = authMode === "recovery";
   document.querySelectorAll("[data-auth-mode]").forEach((button) => {
     button.classList.toggle("active", button.dataset.authMode === authMode);
   });
   document.querySelectorAll(".register-only").forEach((field) => {
-    field.classList.toggle("hidden", authMode !== "register");
+    field.classList.toggle("hidden", !isRegister);
   });
-  document.getElementById("account-submit-text").textContent = authMode === "register" ? "Create secure account" : "Login";
+  document.querySelectorAll(".login-only").forEach((element) => {
+    element.classList.toggle("hidden", authMode !== "login");
+  });
+  document.querySelectorAll(".recovery-only").forEach((element) => {
+    element.classList.toggle("hidden", !isRecovery);
+  });
+  document.getElementById("auth-tabs").classList.toggle("hidden", isRecovery);
+  document.getElementById("auth-email-field").classList.toggle("hidden", isRecovery);
+  document.getElementById("auth-heading").textContent = isRecovery ? "Reset your password" : "Sign in to start training";
+  document.getElementById("auth-description").textContent = isRecovery
+    ? "The recovery link is verified. Choose a new password for your account."
+    : "An account is required to access lessons, scenarios, quizzes, and progress.";
+  document.getElementById("account-password").setAttribute("autocomplete", isRecovery || isRegister ? "new-password" : "current-password");
+  document.getElementById("account-submit-text").textContent = isRecovery
+    ? "Save new password"
+    : (isRegister ? "Create account and send confirmation email" : "Login");
 }
 
 function renderRecommendations() {
@@ -1477,9 +1517,7 @@ document.querySelectorAll("[data-auth-mode]").forEach((button) => {
     authMode = button.dataset.authMode;
     authMessage = "";
     renderAuthMode();
-    document.getElementById("auth-status").textContent = supabaseClient
-      ? "Use email and password. New users should register first."
-      : "Secure sign-in is unavailable until Supabase is connected.";
+    document.getElementById("auth-status").textContent = defaultAuthMessage();
   });
 });
 document.getElementById("account-button").addEventListener("click", () => {
@@ -1511,6 +1549,25 @@ document.getElementById("account-form").addEventListener("submit", async (event)
     return;
   }
 
+  if (authMode === "recovery") {
+    if (password.length < 8) {
+      showAuthMessage("Your new password must contain at least 8 characters.");
+      return;
+    }
+    const { error } = await supabaseClient.auth.updateUser({ password });
+    if (error) {
+      showAuthMessage(friendlyAuthError(error));
+      return;
+    }
+    authMode = "login";
+    document.getElementById("account-password").value = "";
+    authMessage = "Password updated successfully. You are now signed in.";
+    renderAll();
+    updateAuthGate();
+    showStreakToast(authMessage);
+    return;
+  }
+
   if (!email || password.length < 8) {
     showAuthMessage("Use a valid email and a password with at least 8 characters.");
     return;
@@ -1519,7 +1576,7 @@ document.getElementById("account-form").addEventListener("submit", async (event)
   if (authMode === "login") {
     const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
     if (error) {
-      showAuthMessage(error.message);
+      showAuthMessage(friendlyAuthError(error));
       return;
     }
     currentUser = data.session?.user || data.user;
@@ -1553,7 +1610,7 @@ document.getElementById("account-form").addEventListener("submit", async (event)
   });
 
   if (error) {
-    showAuthMessage(error.message);
+    showAuthMessage(friendlyAuthError(error));
     return;
   }
 
@@ -1562,7 +1619,7 @@ document.getElementById("account-form").addEventListener("submit", async (event)
     authMode = "login";
     renderAuthMode();
     document.getElementById("account-password").value = "";
-    showAuthMessage("Account created. Confirm your email, then return here and log in.");
+    showAuthMessage("Registration successful — we sent a confirmation email. Open it, click the confirmation link, then return here and log in. Check your Spam folder if you cannot see it.");
     updateAuthGate();
     return;
   }
@@ -1612,10 +1669,39 @@ document.getElementById("magic-link-button").addEventListener("click", async () 
     options: { shouldCreateUser: false, emailRedirectTo: redirectTo }
   });
   if (error) {
-    showAuthMessage(error.message);
+    showAuthMessage(friendlyAuthError(error));
     return;
   }
   showAuthMessage("Magic Link sent. Open your email to sign in securely.");
+});
+document.getElementById("password-visibility-button").addEventListener("click", () => {
+  const passwordInput = document.getElementById("account-password");
+  const button = document.getElementById("password-visibility-button");
+  const showing = passwordInput.type === "text";
+  passwordInput.type = showing ? "password" : "text";
+  button.setAttribute("aria-pressed", String(!showing));
+  button.setAttribute("aria-label", showing ? "Show password" : "Hide password");
+  button.innerHTML = `<i data-lucide="${showing ? "eye" : "eye-off"}"></i>`;
+  hydrateIcons();
+});
+document.getElementById("forgot-password-button").addEventListener("click", async () => {
+  const email = document.getElementById("account-email").value.trim();
+  if (!supabaseClient) {
+    showAuthMessage("Password recovery is currently unavailable.");
+    return;
+  }
+  if (!email) {
+    showAuthMessage("Enter your email address first, then select ‘Forgot your password?’ again.");
+    document.getElementById("account-email").focus();
+    return;
+  }
+  const redirectTo = `${window.location.origin}${window.location.pathname}`;
+  const { error } = await supabaseClient.auth.resetPasswordForEmail(email, { redirectTo });
+  if (error) {
+    showAuthMessage(friendlyAuthError(error));
+    return;
+  }
+  showAuthMessage("Password reset email sent. Open it and click the recovery link to choose a new password. Check your Spam folder too.");
 });
 
 document.getElementById("join-room").addEventListener("click", joinTrainingRoom);
@@ -1794,8 +1880,18 @@ async function initApp() {
       authMessage = "Login or create an account to unlock the training platform.";
     }
 
-    supabaseClient.auth.onAuthStateChange(async (_event, session) => {
+    supabaseClient.auth.onAuthStateChange(async (event, session) => {
       currentUser = session?.user || null;
+      if (event === "PASSWORD_RECOVERY" && currentUser) {
+        authMode = "recovery";
+        authMessage = "Recovery link accepted. Enter a new password below.";
+        renderAll();
+        updateAuthGate();
+        document.getElementById("account-modal").classList.remove("hidden");
+        document.getElementById("account-password").value = "";
+        document.getElementById("account-password").focus();
+        return;
+      }
       if (currentUser) {
         await loadRemoteProgress();
         await loadRotatingQuizQuestions();

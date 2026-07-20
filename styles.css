@@ -810,6 +810,94 @@ p {
   font-size: 0.92rem;
 }
 
+.email-confirmation-notice,
+.password-recovery-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 13px;
+  border: 1px solid #f2c46d;
+  border-radius: 12px;
+  background: #fff8e8;
+  color: #563c0d;
+}
+
+.password-recovery-notice {
+  border-color: #92d1bd;
+  background: #eefaf6;
+  color: #194f3e;
+}
+
+.email-confirmation-notice svg,
+.password-recovery-notice svg {
+  width: 21px;
+  height: 21px;
+  flex: 0 0 auto;
+}
+
+.email-confirmation-notice p,
+.password-recovery-notice p {
+  margin: 3px 0 0;
+  font-size: .86rem;
+  line-height: 1.45;
+}
+
+.password-field {
+  position: relative;
+  display: block;
+}
+
+.account-card .password-field input {
+  width: 100%;
+  padding-right: 48px;
+}
+
+.password-visibility-button {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.password-visibility-button:hover,
+.password-visibility-button:focus-visible {
+  background: var(--soft);
+  color: var(--ink);
+}
+
+.password-visibility-button svg {
+  width: 19px;
+  height: 19px;
+}
+
+.auth-text-button {
+  width: max-content;
+  margin: -7px 0 0 auto;
+  padding: 2px 0;
+  border: 0;
+  background: transparent;
+  color: var(--red-dark);
+  font: inherit;
+  font-size: .9rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.auth-text-button:hover,
+.auth-text-button:focus-visible {
+  text-decoration: underline;
+}
+
 .icon-button {
   width: 36px;
   height: 36px;
