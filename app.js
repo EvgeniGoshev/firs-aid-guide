@@ -463,6 +463,64 @@ let quizCorrect = 0;
 let quizAnswered = false;
 let currentUser = null;
 let authMode = "login";
+let authMessage = "";
+let currentAppRole = "learner";
+let activeRoomRecord = null;
+let activeRoomParticipantCount = 0;
+let roomRealtimeChannel = null;
+let academyData = {
+  leaderboard: [],
+  achievementCatalog: [],
+  earnedAchievementIds: [],
+  certificates: [],
+  resources: [],
+  content: [],
+  notifications: []
+};
+
+function isStaffMember() {
+  return currentAppRole === "admin" || currentAppRole === "instructor";
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function updateAuthGate() {
+  const locked = !currentUser;
+  const appShell = document.getElementById("app-shell");
+  const accountModal = document.getElementById("account-modal");
+
+  document.body.classList.toggle("auth-locked", locked);
+  document.body.classList.remove("auth-pending");
+  appShell.setAttribute("aria-hidden", locked ? "true" : "false");
+
+  if (locked) {
+    accountModal.classList.remove("hidden");
+  }
+}
+
+function requireAuthentication() {
+  if (currentUser) return true;
+  authMessage = supabaseClient
+    ? "Login or create an account to unlock the training platform."
+    : "Secure login is currently unavailable. Check the Supabase configuration.";
+  renderAccount();
+  updateAuthGate();
+  document.getElementById("account-email").focus();
+  return false;
+}
+
+function showAuthMessage(message) {
+  authMessage = message;
+  document.getElementById("auth-status").textContent = message;
+  showStreakToast(message);
+}
 
 function choose(items) {
   return items[Math.floor(Math.random() * items.length)];
@@ -641,11 +699,34 @@ async function syncLessonLearned(lessonId) {
 async function loadRemoteProgress() {
   if (!supabaseClient || !currentUser) return;
 
-  const [{ data: profile }, { data: remoteProgress }, { data: learnedLessons }] = await Promise.all([
+  const [{ data: existingProfile }, { data: remoteProgress }, { data: learnedLessons }] = await Promise.all([
     supabaseClient.from("profiles").select("*").eq("id", currentUser.id).maybeSingle(),
     supabaseClient.from("user_progress").select("*").eq("user_id", currentUser.id).maybeSingle(),
     supabaseClient.from("lesson_progress").select("lesson_id").eq("user_id", currentUser.id)
   ]);
+
+  let profile = existingProfile;
+  if (!profile) {
+    const metadata = currentUser.user_metadata || {};
+    const fallbackName = metadata.display_name || currentUser.email?.split("@")[0] || "First aid learner";
+    const profileValues = {
+      id: currentUser.id,
+      display_name: fallbackName,
+      team_name: "First aid learner",
+      initials: (metadata.initials || fallbackName.slice(0, 2) || "FA").toUpperCase(),
+      role: metadata.role || "Competitor",
+      heard_from: metadata.heard_from || "Other",
+      updated_at: new Date().toISOString()
+    };
+    const { data: createdProfile } = await supabaseClient
+      .from("profiles")
+      .upsert(profileValues)
+      .select()
+      .maybeSingle();
+    profile = createdProfile || profileValues;
+  }
+
+  currentAppRole = profile?.app_role || "learner";
 
   progress = {
     ...defaultProgress,
@@ -692,7 +773,7 @@ function currentQuizRotationGroup() {
 async function loadRotatingQuizQuestions() {
   activeQuizRotationGroup = currentQuizRotationGroup();
 
-  if (!supabaseClient) {
+  if (!supabaseClient || !currentUser) {
     quizQuestions = fallbackQuizQuestions.slice(0, 5);
     return;
   }
@@ -755,6 +836,11 @@ function showStreakToast(message) {
 }
 
 function setView(viewId) {
+  if (!requireAuthentication()) return;
+  if (viewId === "studio" && !isStaffMember()) {
+    showStreakToast("Instructor or admin access is required for Academy Studio.");
+    return;
+  }
   document.querySelectorAll(".view").forEach((view) => view.classList.toggle("active-view", view.id === viewId));
   document.querySelectorAll(".nav-tab").forEach((tab) => tab.classList.toggle("active", tab.dataset.view === viewId));
   document.getElementById("page-title").textContent = {
@@ -762,8 +848,14 @@ function setView(viewId) {
     lessons: "Lessons",
     scenario: "Scenario Practice",
     quiz: "Knowledge Quiz",
-    progress: "Progress"
+    progress: "Progress",
+    community: "Responder Academy",
+    studio: "Academy Studio"
   }[viewId];
+
+  if (viewId === "community" || viewId === "studio") {
+    loadAcademyData();
+  }
 }
 
 function renderStats() {
@@ -774,7 +866,7 @@ function renderStats() {
 
 function renderAccount() {
   const displayName = progress.profileName || "Create your account";
-  const backendLabel = currentUser ? "Secure backend account" : (supabaseClient ? "Not signed in" : "Demo mode - Supabase not connected");
+  const backendLabel = currentUser ? "Secure backend account" : (supabaseClient ? "Not signed in" : "Authentication unavailable");
   const teamName = `${progress.role || "Competitor"} · ${backendLabel}`;
   const initials = (progress.initials || progress.profileName.slice(0, 2) || "FA").toUpperCase();
   const earnedToday = progress.lastStreakDate === todayKey();
@@ -789,9 +881,9 @@ function renderAccount() {
     : "Complete one quiz or scenario today to earn +1 streak.";
 
   document.getElementById("account-button-text").textContent = currentUser ? "Profile" : "Login";
-  document.getElementById("auth-status").textContent = supabaseClient
+  document.getElementById("auth-status").textContent = authMessage || (supabaseClient
     ? (currentUser ? `Signed in as ${currentUser.email}` : "Use email and password. New users should register first.")
-    : "Supabase is not connected yet. Fill supabase-config.js to enable secure backend accounts.";
+    : "Secure sign-in is unavailable until Supabase is connected.");
   document.getElementById("logout-button").classList.toggle("hidden", !currentUser);
   document.getElementById("account-name").value = progress.profileName;
   document.getElementById("account-email").value = progress.email || currentUser?.email || "";
@@ -1040,6 +1132,267 @@ function renderProgress() {
   hydrateIcons();
 }
 
+async function loadAcademyData() {
+  if (!supabaseClient || !currentUser) return;
+
+  await supabaseClient.rpc("refresh_my_achievements");
+
+  const [leaderboardResult, catalogResult, earnedResult, certificatesResult, resourcesResult, contentResult, notificationsResult] = await Promise.all([
+    supabaseClient.rpc("get_leaderboard", { limit_count: 20 }),
+    supabaseClient.from("achievements").select("*").order("sort_order", { ascending: true }),
+    supabaseClient.from("user_achievements").select("achievement_id, earned_at"),
+    supabaseClient.from("certificates").select("*").order("issued_at", { ascending: false }),
+    supabaseClient.from("resources").select("*").eq("active", true).order("created_at", { ascending: false }).limit(20),
+    supabaseClient.from("content_items").select("*").eq("status", "published").order("created_at", { ascending: false }).limit(20),
+    supabaseClient.from("notifications").select("*").order("created_at", { ascending: false }).limit(20)
+  ]);
+
+  academyData = {
+    leaderboard: leaderboardResult.data || [],
+    achievementCatalog: catalogResult.data || [],
+    earnedAchievementIds: (earnedResult.data || []).map((item) => item.achievement_id),
+    certificates: certificatesResult.data || [],
+    resources: resourcesResult.data || [],
+    content: contentResult.data || [],
+    notifications: notificationsResult.data || []
+  };
+
+  renderAcademy();
+  renderStudioAccess();
+}
+
+function renderStudioAccess() {
+  const studioNav = document.getElementById("studio-nav");
+  studioNav.classList.toggle("hidden", !isStaffMember());
+  document.getElementById("academy-role").textContent = currentAppRole === "admin"
+    ? "Administrator"
+    : currentAppRole === "instructor" ? "Instructor" : "Learner";
+}
+
+function renderAcademy() {
+  renderStudioAccess();
+
+  const leaderboard = document.getElementById("leaderboard-list");
+  leaderboard.innerHTML = academyData.leaderboard.length
+    ? academyData.leaderboard.map((entry) => `
+      <div class="leaderboard-row">
+        <span class="leaderboard-rank">#${entry.rank}</span>
+        <span class="mini-avatar">${escapeHtml(entry.initials || "FA")}</span>
+        <div class="leaderboard-person"><strong>${escapeHtml(entry.display_name)}</strong><span>${entry.lessons_completed} lessons · ${entry.streak} day streak</span></div>
+        <span class="leaderboard-xp">${entry.total_xp} XP</span>
+      </div>
+    `).join("")
+    : "<p>No rankings yet. Be the first responder on the board.</p>";
+
+  document.getElementById("achievement-count").textContent = `${academyData.earnedAchievementIds.length}/${academyData.achievementCatalog.length || 7}`;
+  document.getElementById("achievement-list").innerHTML = academyData.achievementCatalog.length
+    ? academyData.achievementCatalog.map((achievement) => {
+      const earned = academyData.earnedAchievementIds.includes(achievement.id);
+      return `
+        <div class="achievement-badge ${earned ? "earned" : ""}">
+          <span class="feature-icon amber"><i data-lucide="${escapeHtml(achievement.icon)}"></i></span>
+          <div><strong>${escapeHtml(achievement.title)}</strong><span>${escapeHtml(achievement.description)}</span></div>
+        </div>`;
+    }).join("")
+    : "<p>Achievements will appear after the platform upgrade is applied.</p>";
+
+  const certificate = academyData.certificates[0];
+  document.getElementById("certificate-status").textContent = certificate
+    ? `Certificate ${certificate.certificate_code} was issued on ${new Date(certificate.issued_at).toLocaleDateString()}.`
+    : "Keep training to unlock your certificate.";
+  document.querySelector("#issue-certificate span").textContent = certificate ? "View certificate" : "Check eligibility";
+
+  document.getElementById("resource-count").textContent = `${academyData.resources.length} file${academyData.resources.length === 1 ? "" : "s"}`;
+  document.getElementById("resource-list").innerHTML = academyData.resources.length
+    ? academyData.resources.map((resource) => `
+      <div class="resource-row">
+        <div><strong>${escapeHtml(resource.title)}</strong><span>${escapeHtml(resource.category)}${resource.description ? ` · ${escapeHtml(resource.description)}` : ""}</span></div>
+        <button class="secondary-button resource-open" type="button" data-resource-id="${resource.id}"><i data-lucide="external-link"></i><span>Open</span></button>
+      </div>
+    `).join("")
+    : "<p>No resources uploaded yet.</p>";
+
+  document.getElementById("academy-feed").innerHTML = academyData.content.length
+    ? academyData.content.map((item) => `
+      <div class="feed-row">
+        <div><strong>${escapeHtml(item.title)}</strong><span>${escapeHtml(item.content_type)} · ${escapeHtml(item.summary)}</span></div>
+        <span class="academy-role">${new Date(item.created_at).toLocaleDateString()}</span>
+      </div>
+    `).join("")
+    : "<p>No announcements yet.</p>";
+
+  const unreadCount = academyData.notifications.filter((item) => !item.read_at).length;
+  const notificationCount = document.getElementById("notification-count");
+  notificationCount.textContent = String(unreadCount);
+  notificationCount.classList.toggle("hidden", unreadCount === 0);
+
+  renderActiveRoom();
+  hydrateIcons();
+}
+
+function renderActiveRoom() {
+  const container = document.getElementById("active-room");
+  const status = document.getElementById("room-status");
+
+  if (!activeRoomRecord) {
+    container.classList.add("hidden");
+    status.textContent = "Offline";
+    status.classList.remove("live");
+    return;
+  }
+
+  const prompt = activeRoomRecord.active_prompt?.text || "Waiting for the instructor to begin the scenario.";
+  status.textContent = activeRoomRecord.status === "live" ? "Live now" : activeRoomRecord.status;
+  status.classList.toggle("live", activeRoomRecord.status === "live");
+  container.classList.remove("hidden");
+  container.innerHTML = `
+    <h3>${escapeHtml(activeRoomRecord.title)}</h3>
+    <p><strong>Room ${escapeHtml(activeRoomRecord.room_code)}</strong> · ${activeRoomParticipantCount} participant${activeRoomParticipantCount === 1 ? "" : "s"}</p>
+    <p>${escapeHtml(prompt)}</p>
+  `;
+}
+
+async function refreshActiveRoom() {
+  if (!activeRoomRecord || !supabaseClient) return;
+  const [{ data: room }, participantResult] = await Promise.all([
+    supabaseClient.from("training_rooms").select("*").eq("id", activeRoomRecord.id).maybeSingle(),
+    supabaseClient.from("room_participants").select("user_id", { count: "exact", head: true }).eq("room_id", activeRoomRecord.id)
+  ]);
+  if (room) activeRoomRecord = room;
+  activeRoomParticipantCount = participantResult.count || 0;
+  renderActiveRoom();
+}
+
+function subscribeToActiveRoom() {
+  if (!supabaseClient || !activeRoomRecord) return;
+  if (roomRealtimeChannel) supabaseClient.removeChannel(roomRealtimeChannel);
+
+  roomRealtimeChannel = supabaseClient
+    .channel(`training-room-${activeRoomRecord.id}`)
+    .on("postgres_changes", { event: "*", schema: "public", table: "training_rooms", filter: `id=eq.${activeRoomRecord.id}` }, refreshActiveRoom)
+    .on("postgres_changes", { event: "*", schema: "public", table: "room_participants", filter: `room_id=eq.${activeRoomRecord.id}` }, refreshActiveRoom)
+    .subscribe();
+}
+
+async function joinTrainingRoom() {
+  const roomCode = document.getElementById("room-code").value.trim().toUpperCase();
+  if (!roomCode) {
+    showStreakToast("Enter a room code first.");
+    return;
+  }
+
+  const { data: room, error } = await supabaseClient
+    .from("training_rooms")
+    .select("*")
+    .eq("room_code", roomCode)
+    .neq("status", "finished")
+    .maybeSingle();
+
+  if (error || !room) {
+    showStreakToast("No active training room was found with that code.");
+    return;
+  }
+
+  const { error: joinError } = await supabaseClient.from("room_participants").insert({
+    room_id: room.id,
+    user_id: currentUser.id
+  });
+  if (joinError && joinError.code !== "23505") {
+    showStreakToast(joinError.message);
+    return;
+  }
+
+  activeRoomRecord = room;
+  subscribeToActiveRoom();
+  await refreshActiveRoom();
+  showStreakToast(`Joined room ${roomCode}.`);
+}
+
+async function runCoachSearch() {
+  const query = document.getElementById("coach-search").value.trim().toLowerCase();
+  const results = document.getElementById("coach-results");
+  if (query.length < 2) {
+    results.innerHTML = "<p>Enter at least two characters.</p>";
+    return;
+  }
+
+  results.innerHTML = "<p>Searching trusted academy content...</p>";
+  const { data: semanticData, error: semanticError } = await supabaseClient.functions.invoke("semantic-search", {
+    body: { query }
+  });
+  if (!semanticError && semanticData?.results?.length) {
+    results.innerHTML = semanticData.results.map((item) => `
+      <div class="coach-result"><div><strong>${escapeHtml(item.title)}</strong><span>${escapeHtml(item.content_type)} · ${escapeHtml(item.summary)} · ${Math.round(item.similarity * 100)}% match</span></div></div>
+    `).join("");
+    return;
+  }
+
+  const lessonMatches = lessons
+    .filter((lesson) => [lesson.title, lesson.summary, lesson.tag, ...(lesson.signs || []), ...(lesson.actions || [])].join(" ").toLowerCase().includes(query))
+    .map((lesson) => ({ title: lesson.title, type: "Lesson", summary: lesson.summary }));
+  const contentMatches = academyData.content
+    .filter((item) => `${item.title} ${item.summary} ${JSON.stringify(item.body)}`.toLowerCase().includes(query))
+    .map((item) => ({ title: item.title, type: item.content_type, summary: item.summary }));
+  const resourceMatches = academyData.resources
+    .filter((item) => `${item.title} ${item.description} ${item.category}`.toLowerCase().includes(query))
+    .map((item) => ({ title: item.title, type: "Resource", summary: item.description || item.category }));
+  const matches = [...lessonMatches, ...contentMatches, ...resourceMatches].slice(0, 8);
+
+  results.innerHTML = matches.length
+    ? matches.map((item) => `<div class="coach-result"><div><strong>${escapeHtml(item.title)}</strong><span>${escapeHtml(item.type)} · ${escapeHtml(item.summary)}</span></div></div>`).join("")
+    : "<p>No matching training content was found.</p>";
+}
+
+async function openAcademyResource(resourceId) {
+  const resource = academyData.resources.find((item) => item.id === resourceId);
+  if (!resource) return;
+
+  if (resource.external_url) {
+    window.open(resource.external_url, "_blank", "noopener,noreferrer");
+    return;
+  }
+
+  const resourceWindow = window.open("", "_blank");
+  const { data, error } = await supabaseClient.storage
+    .from("training-resources")
+    .createSignedUrl(resource.file_path, 3600);
+
+  if (error || !data?.signedUrl) {
+    if (resourceWindow) resourceWindow.close();
+    showStreakToast(error?.message || "The resource could not be opened.");
+    return;
+  }
+
+  if (resourceWindow) resourceWindow.location = data.signedUrl;
+}
+
+function openCertificate(certificate) {
+  document.getElementById("certificate-name").textContent = progress.profileName || currentUser?.email?.split("@")[0] || "First Aid Learner";
+  document.getElementById("certificate-date").textContent = `Issued ${new Date(certificate.issued_at).toLocaleDateString()}`;
+  document.getElementById("certificate-code").textContent = `Certificate ${certificate.certificate_code}`;
+  document.getElementById("certificate-modal").classList.remove("hidden");
+  hydrateIcons();
+}
+
+async function issueOrOpenCertificate() {
+  if (academyData.certificates[0]) {
+    openCertificate(academyData.certificates[0]);
+    return;
+  }
+
+  const { data, error } = await supabaseClient.rpc("issue_my_certificate");
+  if (error) {
+    showStreakToast(error.message);
+    return;
+  }
+  const certificate = Array.isArray(data) ? data[0] : data;
+  if (certificate) {
+    academyData.certificates = [certificate];
+    renderAcademy();
+    openCertificate(certificate);
+  }
+}
+
 function hydrateIcons() {
   if (window.lucide) {
     window.lucide.createIcons();
@@ -1047,6 +1400,12 @@ function hydrateIcons() {
 }
 
 document.addEventListener("click", (event) => {
+  if (!currentUser && event.target.closest(".app-shell")) {
+    event.preventDefault();
+    requireAuthentication();
+    return;
+  }
+
   const nav = event.target.closest("[data-view]");
   if (nav) setView(nav.dataset.view);
 
@@ -1087,9 +1446,18 @@ document.addEventListener("click", (event) => {
 
   const quizOption = event.target.closest("[data-quiz-option]");
   if (quizOption) answerQuiz(Number(quizOption.dataset.quizOption));
+
+  const resourceButton = event.target.closest("[data-resource-id]");
+  if (resourceButton) openAcademyResource(resourceButton.dataset.resourceId);
 });
 
 document.addEventListener("change", (event) => {
+  if (!currentUser && event.target.closest(".app-shell")) {
+    event.preventDefault();
+    requireAuthentication();
+    return;
+  }
+
   if (event.target.id === "scenario-category") {
     selectedCategoryId = event.target.value;
     generateScenario();
@@ -1107,18 +1475,25 @@ document.getElementById("restart-quiz").addEventListener("click", restartQuiz);
 document.querySelectorAll("[data-auth-mode]").forEach((button) => {
   button.addEventListener("click", () => {
     authMode = button.dataset.authMode;
+    authMessage = "";
     renderAuthMode();
+    document.getElementById("auth-status").textContent = supabaseClient
+      ? "Use email and password. New users should register first."
+      : "Secure sign-in is unavailable until Supabase is connected.";
   });
 });
 document.getElementById("account-button").addEventListener("click", () => {
+  authMessage = "";
+  renderAccount();
   document.getElementById("account-modal").classList.remove("hidden");
   document.getElementById("account-email").focus();
 });
 document.getElementById("close-account").addEventListener("click", () => {
+  if (!currentUser) return;
   document.getElementById("account-modal").classList.add("hidden");
 });
 document.getElementById("account-modal").addEventListener("click", (event) => {
-  if (event.target.id === "account-modal") {
+  if (event.target.id === "account-modal" && currentUser) {
     document.getElementById("account-modal").classList.add("hidden");
   }
 });
@@ -1132,38 +1507,35 @@ document.getElementById("account-form").addEventListener("submit", async (event)
   const heardFrom = document.getElementById("account-source").value;
 
   if (!supabaseClient) {
-    progress.profileName = name || email.split("@")[0] || "";
-    progress.email = email;
-    progress.initials = (initials || name.slice(0, 2) || "FA").toUpperCase();
-    progress.role = role;
-    progress.heardFrom = heardFrom;
-    saveProgress();
-    document.getElementById("account-modal").classList.add("hidden");
-    showStreakToast("Demo profile saved. Connect Supabase for secure accounts.");
+    showAuthMessage("Secure login is unavailable. Check the Supabase configuration.");
     return;
   }
 
   if (!email || password.length < 8) {
-    showStreakToast("Use a valid email and a password with at least 8 characters.");
+    showAuthMessage("Use a valid email and a password with at least 8 characters.");
     return;
   }
 
   if (authMode === "login") {
     const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
     if (error) {
-      showStreakToast(error.message);
+      showAuthMessage(error.message);
       return;
     }
-    currentUser = data.user;
+    currentUser = data.session?.user || data.user;
+    authMessage = "";
     await loadRemoteProgress();
+    await loadRotatingQuizQuestions();
+    await loadAcademyData();
     renderAll();
+    updateAuthGate();
     document.getElementById("account-modal").classList.add("hidden");
     showStreakToast("Logged in securely.");
     return;
   }
 
   if (!name) {
-    showStreakToast("Add your name to register.");
+    showAuthMessage("Add your name to register.");
     return;
   }
 
@@ -1173,6 +1545,7 @@ document.getElementById("account-form").addEventListener("submit", async (event)
     options: {
       data: {
         display_name: name,
+        initials: (initials || name.slice(0, 2) || "FA").toUpperCase(),
         role,
         heard_from: heardFrom
       }
@@ -1180,11 +1553,21 @@ document.getElementById("account-form").addEventListener("submit", async (event)
   });
 
   if (error) {
-    showStreakToast(error.message);
+    showAuthMessage(error.message);
     return;
   }
 
-  currentUser = data.user;
+  if (!data.session) {
+    currentUser = null;
+    authMode = "login";
+    renderAuthMode();
+    document.getElementById("account-password").value = "";
+    showAuthMessage("Account created. Confirm your email, then return here and log in.");
+    updateAuthGate();
+    return;
+  }
+
+  currentUser = data.session.user;
   if (currentUser) {
     await supabaseClient.from("profiles").upsert({
       id: currentUser.id,
@@ -1204,32 +1587,186 @@ document.getElementById("account-form").addEventListener("submit", async (event)
       heardFrom
     };
     await syncRemoteProgress();
+    await loadRemoteProgress();
   }
 
   saveProgress();
+  authMessage = "";
+  await loadRotatingQuizQuestions();
+  await loadAcademyData();
   renderAll();
+  updateAuthGate();
   document.getElementById("account-modal").classList.add("hidden");
-  showStreakToast("Account created. Check email confirmation if Supabase requires it.");
+  showStreakToast("Account created and signed in securely.");
 });
+document.getElementById("magic-link-button").addEventListener("click", async () => {
+  const email = document.getElementById("account-email").value.trim();
+  if (!email) {
+    showAuthMessage("Enter your email address first.");
+    return;
+  }
+
+  const redirectTo = `${window.location.origin}${window.location.pathname}`;
+  const { error } = await supabaseClient.auth.signInWithOtp({
+    email,
+    options: { shouldCreateUser: false, emailRedirectTo: redirectTo }
+  });
+  if (error) {
+    showAuthMessage(error.message);
+    return;
+  }
+  showAuthMessage("Magic Link sent. Open your email to sign in securely.");
+});
+
+document.getElementById("join-room").addEventListener("click", joinTrainingRoom);
+document.getElementById("run-coach-search").addEventListener("click", runCoachSearch);
+document.getElementById("coach-search").addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    runCoachSearch();
+  }
+});
+document.getElementById("issue-certificate").addEventListener("click", issueOrOpenCertificate);
+document.getElementById("close-certificate").addEventListener("click", () => {
+  document.getElementById("certificate-modal").classList.add("hidden");
+});
+document.getElementById("print-certificate").addEventListener("click", () => window.print());
+document.getElementById("reindex-search").addEventListener("click", async () => {
+  if (!isStaffMember()) return;
+  showStreakToast("Refreshing the smart-search index...");
+  const { data, error } = await supabaseClient.functions.invoke("semantic-search", { body: { action: "index" } });
+  showStreakToast(error ? "Smart search deployment is not active yet." : `${data.indexed} academy items indexed.`);
+});
+
+document.getElementById("notification-button").addEventListener("click", async () => {
+  if (!academyData.notifications.length) {
+    showStreakToast("You have no new notifications.");
+    return;
+  }
+
+  const unread = academyData.notifications.filter((item) => !item.read_at);
+  const message = unread[0] || academyData.notifications[0];
+  showStreakToast(`${message.title}: ${message.message}`);
+
+  if (unread.length) {
+    await supabaseClient
+      .from("notifications")
+      .update({ read_at: new Date().toISOString() })
+      .in("id", unread.map((item) => item.id));
+    await loadAcademyData();
+  }
+});
+
+document.getElementById("content-form").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  if (!isStaffMember()) return;
+
+  const contentType = document.getElementById("content-type").value;
+  const title = document.getElementById("content-title").value.trim();
+  const summary = document.getElementById("content-summary").value.trim();
+  const { error } = await supabaseClient.from("content_items").insert({
+    content_type: contentType,
+    title,
+    summary,
+    body: { text: summary },
+    status: "published",
+    created_by: currentUser.id
+  });
+
+  if (error) {
+    showStreakToast(error.message);
+    return;
+  }
+  event.currentTarget.reset();
+  await loadAcademyData();
+  showStreakToast("Academy content published.");
+});
+
+document.getElementById("resource-form").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  if (!isStaffMember()) return;
+
+  const title = document.getElementById("resource-title").value.trim();
+  const category = document.getElementById("resource-category").value;
+  const file = document.getElementById("resource-file").files[0];
+  if (!file || file.size > 50 * 1024 * 1024) {
+    showStreakToast("Choose an allowed file smaller than 50 MB.");
+    return;
+  }
+
+  const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "-");
+  const filePath = `${currentUser.id}/${Date.now()}-${safeName}`;
+  const { error: uploadError } = await supabaseClient.storage
+    .from("training-resources")
+    .upload(filePath, file, { upsert: false });
+  if (uploadError) {
+    showStreakToast(uploadError.message);
+    return;
+  }
+
+  const { error: metadataError } = await supabaseClient.from("resources").insert({
+    title,
+    category,
+    file_path: filePath,
+    created_by: currentUser.id
+  });
+  if (metadataError) {
+    await supabaseClient.storage.from("training-resources").remove([filePath]);
+    showStreakToast(metadataError.message);
+    return;
+  }
+
+  event.currentTarget.reset();
+  await loadAcademyData();
+  showStreakToast("Training resource uploaded securely.");
+});
+
+document.getElementById("room-form").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  if (!isStaffMember()) return;
+
+  const title = document.getElementById("room-title").value.trim();
+  const prompt = document.getElementById("room-prompt").value.trim();
+  const roomCode = Math.random().toString(36).slice(2, 8).toUpperCase();
+  const { data: room, error } = await supabaseClient.from("training_rooms").insert({
+    room_code: roomCode,
+    title,
+    host_id: currentUser.id,
+    status: "live",
+    active_prompt: { text: prompt || "The instructor is preparing the opening scenario." }
+  }).select().single();
+
+  if (error) {
+    showStreakToast(error.message);
+    return;
+  }
+
+  await supabaseClient.from("room_participants").insert({ room_id: room.id, user_id: currentUser.id });
+  activeRoomRecord = room;
+  subscribeToActiveRoom();
+  await refreshActiveRoom();
+  document.getElementById("studio-room-result").innerHTML = `<div class="active-room"><strong>Room code: ${escapeHtml(roomCode)}</strong><p>Share this code with your learners.</p></div>`;
+  document.getElementById("room-code").value = roomCode;
+  showStreakToast(`Live room ${roomCode} is ready.`);
+});
+
 document.getElementById("logout-button").addEventListener("click", async () => {
   if (supabaseClient) {
     await supabaseClient.auth.signOut();
   }
   currentUser = null;
+  currentAppRole = "learner";
+  activeRoomRecord = null;
+  academyData = { leaderboard: [], achievementCatalog: [], earnedAchievementIds: [], certificates: [], resources: [], content: [], notifications: [] };
+  authMode = "login";
+  authMessage = "You have been logged out. Sign in to continue training.";
   progress = { ...defaultProgress };
   localStorage.removeItem("firstAidTrainerProgress");
   renderAll();
-  document.getElementById("account-modal").classList.add("hidden");
+  updateAuthGate();
+  document.getElementById("account-modal").classList.remove("hidden");
   showStreakToast("Logged out.");
 });
-document.getElementById("reset-progress").addEventListener("click", () => {
-  progress = { ...defaultProgress };
-  localStorage.removeItem("firstAidTrainerProgress");
-  restartScenario();
-  restartQuiz();
-  renderAll();
-});
-
 function renderAll() {
   buildScenario();
   renderLessonCategories();
@@ -1241,6 +1778,7 @@ function renderAll() {
   renderScenario();
   renderQuiz();
   renderProgress();
+  renderAcademy();
   hydrateIcons();
 }
 
@@ -1250,21 +1788,37 @@ async function initApp() {
     currentUser = data.session?.user || null;
     if (currentUser) {
       await loadRemoteProgress();
+      await loadAcademyData();
+      authMessage = "";
+    } else {
+      authMessage = "Login or create an account to unlock the training platform.";
     }
 
     supabaseClient.auth.onAuthStateChange(async (_event, session) => {
       currentUser = session?.user || null;
       if (currentUser) {
         await loadRemoteProgress();
+        await loadRotatingQuizQuestions();
+        await loadAcademyData();
+        authMessage = "";
+      } else {
+        progress = { ...defaultProgress };
+        currentAppRole = "learner";
+        authMode = "login";
+        authMessage = "Login or create an account to unlock the training platform.";
       }
       renderAll();
+      updateAuthGate();
     });
+  } else {
+    authMessage = "Secure login is unavailable. Check the Supabase configuration.";
   }
 
   await loadRotatingQuizQuestions();
   quizIndex = 0;
   quizCorrect = 0;
   renderAll();
+  updateAuthGate();
 }
 
 initApp();

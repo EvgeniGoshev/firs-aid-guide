@@ -10,8 +10,10 @@
   <script src="supabase-config.js" defer></script>
   <script src="app.js" defer></script>
 </head>
-<body>
-  <div class="app-shell">
+<body class="auth-pending auth-locked">
+  <div class="ambient-shape ambient-shape-one" aria-hidden="true"></div>
+  <div class="ambient-shape ambient-shape-two" aria-hidden="true"></div>
+  <div class="app-shell" id="app-shell" aria-hidden="true">
     <aside class="sidebar">
       <div class="brand">
         <div class="brand-mark" aria-hidden="true">
@@ -22,6 +24,7 @@
           </svg>
         </div>
         <div>
+          <small>First response academy</small>
           <strong>First Aid Trainer</strong>
           <span>Practice for responders</span>
         </div>
@@ -33,11 +36,17 @@
         <button class="nav-tab" data-view="scenario"><i data-lucide="route"></i><span>Scenario</span></button>
         <button class="nav-tab" data-view="quiz"><i data-lucide="list-checks"></i><span>Quiz</span></button>
         <button class="nav-tab" data-view="progress"><i data-lucide="chart-no-axes-column-increasing"></i><span>Progress</span></button>
+        <button class="nav-tab" data-view="community"><i data-lucide="users-round"></i><span>Academy</span></button>
+        <button class="nav-tab hidden" id="studio-nav" data-view="studio"><i data-lucide="panel-top-open"></i><span>Studio</span></button>
       </nav>
 
       <div class="side-note">
-        <strong>Training only</strong>
+        <div class="side-note-title">
+          <span class="live-pulse" aria-hidden="true"></span>
+          <strong>Training mode</strong>
+        </div>
         <p>In a real emergency, call your local emergency number immediately.</p>
+        <div class="emergency-number"><i data-lucide="phone-call"></i><span>Emergency: 112</span></div>
       </div>
     </aside>
 
@@ -48,8 +57,9 @@
           <h1 id="page-title">Dashboard</h1>
         </div>
         <div class="topbar-actions">
+          <div class="training-status"><span class="live-pulse" aria-hidden="true"></span>Ready to respond</div>
+          <button class="ghost-button notification-button" id="notification-button" type="button" aria-label="Notifications"><i data-lucide="bell"></i><span class="notification-count hidden" id="notification-count">0</span></button>
           <button class="ghost-button" id="account-button" type="button"><i data-lucide="user-round"></i><span id="account-button-text">Account</span></button>
-          <button class="ghost-button" id="reset-progress" type="button"><i data-lucide="rotate-ccw"></i><span>Reset</span></button>
         </div>
       </header>
 
@@ -62,6 +72,11 @@
               <h2 id="profile-name">Create your account</h2>
               <p id="profile-team">Student first aid team</p>
             </div>
+          </div>
+          <div class="hero-ecg" aria-hidden="true">
+            <svg viewBox="0 0 240 60" preserveAspectRatio="none">
+              <path d="M0 31h48l9-15 16 33 17-47 18 29h132"></path>
+            </svg>
           </div>
           <div class="streak-card">
             <i data-lucide="flame"></i>
@@ -80,9 +95,12 @@
         </section>
 
         <div class="daily-quest">
-          <div>
+          <div class="daily-quest-copy">
+            <span class="quest-icon" aria-hidden="true"><i data-lucide="heart-pulse"></i></span>
+            <div>
             <h2>Daily Streak Goal</h2>
             <p id="daily-goal-text">Complete one quiz or scenario today to earn +1 streak.</p>
+            </div>
           </div>
           <button class="primary-button" data-goto="scenario" type="button"><i data-lucide="flame"></i><span>Train Today</span></button>
         </div>
@@ -215,6 +233,130 @@
           <div id="progress-list" class="progress-list"></div>
         </div>
       </section>
+
+      <section id="community" class="view">
+        <div class="section-heading academy-heading">
+          <div>
+            <p class="eyebrow">First aid community</p>
+            <h2>Responder Academy</h2>
+            <p>Compete, collect achievements, join live practice, and use trusted learning resources.</p>
+          </div>
+          <span class="academy-role" id="academy-role">Learner</span>
+        </div>
+
+        <div class="academy-grid">
+          <article class="academy-card leaderboard-card">
+            <div class="academy-card-heading">
+              <div><span class="feature-icon red"><i data-lucide="trophy"></i></span><h2>Leaderboard</h2></div>
+              <span class="live-label"><span class="live-pulse"></span>Live</span>
+            </div>
+            <div id="leaderboard-list" class="leaderboard-list"><p>Loading rankings...</p></div>
+          </article>
+
+          <article class="academy-card achievements-card">
+            <div class="academy-card-heading">
+              <div><span class="feature-icon amber"><i data-lucide="medal"></i></span><h2>Achievements</h2></div>
+              <strong id="achievement-count">0/7</strong>
+            </div>
+            <div id="achievement-list" class="achievement-list"><p>Your badges will appear here.</p></div>
+          </article>
+
+          <article class="academy-card certificate-card">
+            <span class="certificate-watermark" aria-hidden="true">+</span>
+            <div class="academy-card-heading">
+              <div><span class="feature-icon green"><i data-lucide="badge-check"></i></span><h2>Certificate</h2></div>
+            </div>
+            <p>Complete 10 lessons and score at least 80% to earn your First Aid Foundations certificate.</p>
+            <div id="certificate-status" class="certificate-status">Keep training to unlock your certificate.</div>
+            <button class="primary-button" id="issue-certificate" type="button"><i data-lucide="award"></i><span>Check eligibility</span></button>
+          </article>
+
+          <article class="academy-card live-room-card">
+            <div class="academy-card-heading">
+              <div><span class="feature-icon blue"><i data-lucide="radio-tower"></i></span><h2>Live Training Room</h2></div>
+              <span id="room-status" class="room-status">Offline</span>
+            </div>
+            <p>Join an instructor-led scenario and see updates in real time.</p>
+            <div class="inline-form">
+              <input id="room-code" type="text" maxlength="8" placeholder="Room code" aria-label="Room code">
+              <button class="primary-button" id="join-room" type="button"><i data-lucide="log-in"></i><span>Join</span></button>
+            </div>
+            <div id="active-room" class="active-room hidden"></div>
+          </article>
+
+          <article class="academy-card resources-card">
+            <div class="academy-card-heading">
+              <div><span class="feature-icon blue"><i data-lucide="library"></i></span><h2>Resource Library</h2></div>
+              <span id="resource-count">0 files</span>
+            </div>
+            <div id="resource-list" class="resource-list"><p>No resources uploaded yet.</p></div>
+          </article>
+
+          <article class="academy-card search-card">
+            <div class="academy-card-heading">
+              <div><span class="feature-icon green"><i data-lucide="sparkles"></i></span><h2>Smart Coach Search</h2></div>
+              <span class="free-ai-label">Smart search</span>
+            </div>
+            <p>Search lessons and academy content by topic, symptom, or action.</p>
+            <div class="inline-form">
+              <input id="coach-search" type="search" placeholder="e.g. severe bleeding" aria-label="Search training content">
+              <button class="primary-button" id="run-coach-search" type="button"><i data-lucide="search"></i><span>Search</span></button>
+            </div>
+            <div id="coach-results" class="coach-results"></div>
+          </article>
+
+          <article class="academy-card academy-feed-card">
+            <div class="academy-card-heading">
+              <div><span class="feature-icon red"><i data-lucide="megaphone"></i></span><h2>Academy Feed</h2></div>
+            </div>
+            <div id="academy-feed" class="academy-feed"><p>No announcements yet.</p></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="studio" class="view">
+        <div class="section-heading academy-heading">
+          <div>
+            <p class="eyebrow">Instructor tools</p>
+            <h2>Academy Studio</h2>
+            <p>Create learning content, upload resources, and start live practice rooms.</p>
+          </div>
+          <span class="academy-role staff">Staff access</span>
+        </div>
+
+        <div class="studio-grid">
+          <form class="studio-card" id="content-form">
+            <div class="academy-card-heading"><div><span class="feature-icon red"><i data-lucide="file-plus-2"></i></span><h2>Publish Content</h2></div></div>
+            <label><span>Type</span><select id="content-type"><option value="announcement">Announcement</option><option value="lesson">Supplemental lesson</option><option value="scenario">Practice scenario</option></select></label>
+            <label><span>Title</span><input id="content-title" type="text" maxlength="100" required></label>
+            <label><span>Summary</span><textarea id="content-summary" rows="4" maxlength="600" required></textarea></label>
+            <button class="primary-button" type="submit"><i data-lucide="send"></i><span>Publish</span></button>
+          </form>
+
+          <form class="studio-card" id="resource-form">
+            <div class="academy-card-heading"><div><span class="feature-icon blue"><i data-lucide="upload-cloud"></i></span><h2>Upload Resource</h2></div></div>
+            <label><span>Title</span><input id="resource-title" type="text" maxlength="100" required></label>
+            <label><span>Category</span><select id="resource-category"><option>Guide</option><option>Video</option><option>Poster</option><option>Checklist</option></select></label>
+            <label class="file-drop"><i data-lucide="paperclip"></i><span>Select PDF, image, or MP4 (max 50 MB)</span><input id="resource-file" type="file" accept="application/pdf,image/jpeg,image/png,image/webp,video/mp4" required></label>
+            <button class="primary-button" type="submit"><i data-lucide="cloud-upload"></i><span>Upload securely</span></button>
+          </form>
+
+          <form class="studio-card" id="room-form">
+            <div class="academy-card-heading"><div><span class="feature-icon green"><i data-lucide="radio"></i></span><h2>Start Live Room</h2></div></div>
+            <label><span>Room title</span><input id="room-title" type="text" maxlength="100" placeholder="Saturday scenario practice" required></label>
+            <label><span>Opening prompt</span><textarea id="room-prompt" rows="4" maxlength="800" placeholder="Describe the opening situation..."></textarea></label>
+            <button class="primary-button" type="submit"><i data-lucide="radio-tower"></i><span>Create live room</span></button>
+            <div id="studio-room-result" class="studio-room-result"></div>
+          </form>
+
+          <article class="studio-card notifications-panel">
+            <div class="academy-card-heading"><div><span class="feature-icon amber"><i data-lucide="bell-ring"></i></span><h2>Automations</h2></div></div>
+            <p>Daily in-app streak reminders are generated automatically at 18:00 UTC with Supabase Cron.</p>
+            <div class="automation-status"><span class="live-pulse"></span><strong>Reminder schedule prepared</strong></div>
+            <button class="secondary-button" id="reindex-search" type="button"><i data-lucide="scan-search"></i><span>Refresh smart-search index</span></button>
+          </article>
+        </div>
+      </section>
     </main>
   </div>
 
@@ -222,7 +364,14 @@
     <form class="account-card" id="account-form">
       <div class="scenario-meta">
         <span id="account-title">Secure Account</span>
-        <button class="icon-button" id="close-account" type="button" aria-label="Close account"><i data-lucide="x"></i></button>
+        <button class="icon-button auth-close-button" id="close-account" type="button" aria-label="Close account"><i data-lucide="x"></i></button>
+      </div>
+      <div class="auth-gate-intro">
+        <span class="auth-lock-icon" aria-hidden="true"><i data-lucide="shield-check"></i></span>
+        <div>
+          <h2>Sign in to start training</h2>
+          <p>An account is required to access lessons, scenarios, quizzes, and progress.</p>
+        </div>
       </div>
       <div class="auth-tabs" role="tablist" aria-label="Account mode">
         <button class="auth-tab active" type="button" data-auth-mode="login">Login</button>
@@ -268,8 +417,24 @@
         <input id="account-initials" type="text" maxlength="3" placeholder="FA">
       </label>
       <button class="primary-button" type="submit"><i data-lucide="log-in"></i><span id="account-submit-text">Login</span></button>
+      <button class="secondary-button" id="magic-link-button" type="button"><i data-lucide="mail-check"></i><span>Email me a Magic Link</span></button>
       <button class="secondary-button hidden" id="logout-button" type="button"><i data-lucide="log-out"></i><span>Logout</span></button>
     </form>
+  </div>
+
+  <div class="certificate-modal hidden" id="certificate-modal" role="dialog" aria-modal="true" aria-labelledby="certificate-title">
+    <div class="certificate-sheet" id="certificate-sheet">
+      <button class="icon-button certificate-close" id="close-certificate" type="button" aria-label="Close certificate"><i data-lucide="x"></i></button>
+      <div class="certificate-emblem"><i data-lucide="shield-plus"></i></div>
+      <p class="eyebrow">First Aid Trainer Academy</p>
+      <h2 id="certificate-title">Certificate of Achievement</h2>
+      <p>This certifies that</p>
+      <strong id="certificate-name">First Aid Learner</strong>
+      <p>has successfully completed the requirements for</p>
+      <h3>First Aid Foundations</h3>
+      <div class="certificate-meta"><span id="certificate-date"></span><span id="certificate-code"></span></div>
+      <button class="primary-button certificate-print" id="print-certificate" type="button"><i data-lucide="printer"></i><span>Print / Save as PDF</span></button>
+    </div>
   </div>
 
   <div class="streak-toast hidden" id="streak-toast">
