@@ -712,6 +712,10 @@ p {
   gap: 12px;
 }
 
+.option-list[data-activity-type="single"] {
+  grid-auto-rows: 1fr;
+}
+
 .option-letter,
 .order-number {
   display: grid;

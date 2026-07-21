@@ -383,10 +383,10 @@ const scenarioCaseLibrary = [
     development: "After help with the casualty's own reliever inhaler, the wheeze is still loud and they look exhausted. Their answers are becoming shorter rather than clearer.",
     focus: ["breathing assessment", "upright position", "reliever inhaler", "early escalation"],
     opening: [
-      ["Reduce the crowd, help them stay sitting upright, assess how severe the breathing problem is, and help with their own reliever inhaler if trained while arranging urgent help for severe symptoms.", true, "This protects breathing, uses the casualty's prescribed reliever appropriately, and treats short speech and exhaustion as warning signs."],
-      ["Ask them to lie flat and wait quietly for ten minutes before looking for an inhaler.", false, "Lying flat can make breathing harder, and severe or worsening breathing difficulty should not be observed without active help."],
-      ["Tell them to walk slowly around the hall so their breathing returns to a normal rhythm.", false, "Exertion can worsen an asthma attack. Keep the casualty at rest in a comfortable upright position."],
-      ["Give them another person's inhaler because all reliever inhalers work in exactly the same way.", false, "Do not substitute someone else's medicine. Help with the casualty's own prescribed medication and follow your training or dispatcher guidance."]
+      ["Keep them upright, reduce crowding, assess severity, help with their own reliever if trained, and call 112 if signs are severe.", true, "This protects breathing, uses the casualty's prescribed reliever appropriately, and treats short speech and exhaustion as warning signs."],
+      ["Move them to a quiet room, lie them flat, and wait ten minutes before deciding whether the inhaler is needed.", false, "Lying flat can make breathing harder, and severe or worsening breathing difficulty should not be observed without active help."],
+      ["Walk them slowly around the hall, then use the reliever only if their breathing does not settle with controlled movement.", false, "Exertion can worsen an asthma attack. Keep the casualty at rest in a comfortable upright position."],
+      ["Keep them seated, offer another student's reliever without checking the prescription, and delay the emergency call until you know whether that medicine works.", false, "Do not substitute someone else's medicine. Help with the casualty's own prescribed medication and follow your training or dispatcher guidance."]
     ],
     cluesPrompt: "Select every sign that should make you seek emergency help immediately.",
     clues: [
@@ -404,9 +404,9 @@ const scenarioCaseLibrary = [
     changePrompt: "What is the safest response to this deterioration?",
     changeOptions: [
       ["Call 112 now, keep them upright, continue support within training, and be ready to act if they become unresponsive.", true, "Correct. Exhaustion and shorter answers show deterioration and need an emergency response."],
-      ["Wait for the wheeze to become quieter because quiet breathing always means improvement.", false, "A suddenly quieter chest with exhaustion can mean very poor air movement, not recovery."],
-      ["Offer food and a large drink to restore their energy.", false, "Do not delay emergency care or give food and drink during severe breathing difficulty."],
-      ["Move them into a crowded changing room so the sports session can continue.", false, "Keep the area calm, accessible, and easy for emergency responders to reach."]
+      ["Keep them upright and wait for the wheeze to become quieter before calling, because less noise usually suggests recovery.", false, "A suddenly quieter chest with exhaustion can mean very poor air movement, not recovery."],
+      ["Keep them upright, offer food and a large drink for energy, then reassess before contacting emergency services.", false, "Do not delay emergency care or give food and drink during severe breathing difficulty."],
+      ["Move them to a quieter changing room and monitor for five minutes before deciding whether the shorter answers mean deterioration.", false, "Keep the area calm, accessible, and easy for emergency responders to reach."]
     ],
     handoverFact: "inhaler use, the time it was used, and whether breathing improved"
   },
@@ -418,11 +418,11 @@ const scenarioCaseLibrary = [
     development: "The movements stop, but the student is not yet responding. They are breathing and there is no obvious major injury.",
     focus: ["remove nearby hazards", "protect the head", "time the seizure", "recovery and breathing"],
     opening: [
-      ["Move nearby objects away, cushion the head, start timing, and let the seizure run without restraining the student.", true, "This reduces injury while preserving breathing and gives an accurate seizure duration."],
-      ["Hold the arms and legs firmly so the movements stop sooner.", false, "Restraint can cause injury and does not stop the seizure."],
-      ["Put a folded cloth between the teeth to protect the tongue.", false, "Never put anything in the mouth during a seizure."],
-      ["Lift the student into a chair before continuing the assessment.", false, "Do not move the casualty unless the current position is dangerous."],
-      ["Give water immediately because seizures are often caused by dehydration.", false, "Nothing should be given by mouth until the person has fully recovered."]
+      ["Move nearby objects, cushion the head, start timing, and allow the seizure to continue without holding the student down.", true, "This reduces injury while preserving breathing and gives an accurate seizure duration."],
+      ["Hold the limbs gently, place a jacket over the body, and stop timing once the strongest movements have passed.", false, "Restraint can cause injury and does not stop the seizure."],
+      ["Place a folded cloth between the teeth, protect the head, and wait for the movements to become less forceful.", false, "Never put anything in the mouth during a seizure."],
+      ["Move the student into a chair, support both arms, and begin checking their medical history while the seizure continues.", false, "Do not move the casualty unless the current position is dangerous."],
+      ["Protect the head, give small sips of water, and ask the friend whether dehydration has caused previous seizures.", false, "Nothing should be given by mouth until the person has fully recovered."]
     ],
     cluesPrompt: "Select every reason to call 112 for this seizure.",
     clues: [
@@ -440,9 +440,9 @@ const scenarioCaseLibrary = [
     changePrompt: "What should happen now that the movements have stopped?",
     changeOptions: [
       ["Check breathing, place them on their side if appropriate, keep monitoring, and stay until recovery or emergency help arrives.", true, "Correct. The airway and breathing become the immediate priorities after the convulsions stop."],
-      ["Sit them upright at once and ask detailed questions before checking breathing.", false, "Check breathing first and allow recovery without forcing them upright."],
-      ["Give food and drink before they become fully alert.", false, "There is a choking risk until the person has fully recovered."],
-      ["Leave to find their friend because normal breathing means no further observation is needed.", false, "Stay with the casualty and continue checking breathing and responsiveness." ]
+      ["Sit them upright, ask detailed questions, and check breathing only if they become drowsy or unable to answer.", false, "Check breathing first and allow recovery without forcing them upright."],
+      ["Keep them lying flat, give small sips of water for recovery, and assess breathing after they can follow instructions.", false, "There is a choking risk until the person has fully recovered."],
+      ["Ask the friend to watch the apparently normal breathing while you leave to find the student's medical information.", false, "Stay with the casualty and continue checking breathing and responsiveness." ]
     ],
     handoverFact: "the exact start and finish time of the seizure and recovery afterwards"
   },
@@ -454,10 +454,10 @@ const scenarioCaseLibrary = [
     development: "The obstruction has not cleared after the first attempts and the casualty is becoming weaker.",
     focus: ["recognise severe choking", "back blows", "abdominal thrusts", "prepare for collapse"],
     opening: [
-      ["Confirm severe choking, call for emergency help, and begin the trained choking sequence immediately.", true, "The casualty cannot speak, cough, or breathe, so this is severe choking and requires immediate action."],
-      ["Offer water to wash the object down.", false, "A person who cannot breathe cannot safely drink."],
-      ["Put fingers into the mouth even though the object cannot be seen.", false, "A blind finger sweep can push the object deeper."],
-      ["Wait for a strong cough to develop before touching the casualty.", false, "They do not have an effective cough; severe choking needs immediate treatment." ]
+      ["Confirm severe choking, call for emergency help, and begin the trained choking sequence without waiting for the condition to change.", true, "The casualty cannot speak, cough, or breathe, so this is severe choking and requires immediate action."],
+      ["Keep the casualty standing, offer small sips of water, and begin back blows only if swallowing does not clear the blockage.", false, "A person who cannot breathe cannot safely drink."],
+      ["Look inside the mouth, sweep deeply with two fingers, and call for help only if the object cannot be reached.", false, "A blind finger sweep can push the object deeper."],
+      ["Encourage another attempt at coughing, observe for a short time, and intervene only if the casualty becomes less responsive.", false, "They do not have an effective cough; severe choking needs immediate treatment." ]
     ],
     cluesPrompt: "Select all observations that identify severe rather than mild choking.",
     clues: [
@@ -475,9 +475,9 @@ const scenarioCaseLibrary = [
     changePrompt: "The casualty now becomes unresponsive. What is the priority?",
     changeOptions: [
       ["Lower them safely, ensure 112 has been called, and begin CPR according to training and dispatcher instructions.", true, "Correct. Unresponsiveness changes the priority to cardiac arrest recognition and resuscitation."],
-      ["Keep them standing and continue abdominal thrusts indefinitely.", false, "An unresponsive casualty should be lowered safely and managed using the unresponsive/CPR pathway."],
-      ["Search the mouth repeatedly with your fingers.", false, "Remove only a clearly visible obstruction; do not perform blind finger sweeps."],
-      ["Leave them alone to look for food packaging.", false, "Immediate resuscitation and emergency help take priority." ]
+      ["Keep them standing, continue abdominal thrusts through another full cycle, and lower them only if breathing does not return.", false, "An unresponsive casualty should be lowered safely and managed using the unresponsive/CPR pathway."],
+      ["Lower them, search the mouth repeatedly with your fingers, and begin CPR only after the object has been found.", false, "Remove only a clearly visible obstruction; do not perform blind finger sweeps."],
+      ["Place them on their side, leave briefly to find the food packaging, and begin CPR when more information is available.", false, "Immediate resuscitation and emergency help take priority." ]
     ],
     handoverFact: "the number of back blows and thrusts, whether an object was seen, and when responsiveness changed"
   },
@@ -489,10 +489,10 @@ const scenarioCaseLibrary = [
     development: "Despite moving into shade, the casualty becomes drowsier and stops following instructions.",
     focus: ["heatstroke warning signs", "rapid cooling", "emergency call", "airway monitoring"],
     opening: [
-      ["Treat this as suspected heatstroke: call 112, move them to a cooler place, begin active cooling, and monitor responsiveness and breathing.", true, "Confusion and collapse in heat are emergency signs. Rapid cooling and emergency help are priorities."],
-      ["Encourage them to finish walking so their muscles do not stiffen.", false, "Exertion adds heat and fall risk. Keep the casualty at rest."],
-      ["Wrap them in blankets because collapse usually means shock from cold.", false, "The scene and hot skin point to dangerous overheating, so cooling is needed."],
-      ["Give a large drink immediately even though they are confused.", false, "A confused casualty may not swallow safely. Do not give oral fluids when alertness is impaired." ]
+      ["Call 112 for suspected heatstroke, move them into a cooler place, start active cooling, and keep checking breathing and responsiveness.", true, "Confusion and collapse in heat are emergency signs. Rapid cooling and emergency help are priorities."],
+      ["Move them into shade, let them walk slowly to prevent stiffness, and call 112 only if confusion remains after resting.", false, "Exertion adds heat and fall risk. Keep the casualty at rest."],
+      ["Lay them down in shade, cover them with a light blanket for shock, and delay active cooling until their pulse settles.", false, "The scene and hot skin point to dangerous overheating, so cooling is needed."],
+      ["Move them into shade, give a full bottle of cold water, and reassess alertness before deciding whether to call 112.", false, "A confused casualty may not swallow safely. Do not give oral fluids when alertness is impaired." ]
     ],
     cluesPrompt: "Select every feature that makes this an emergency heat illness rather than simple heat discomfort.",
     clues: [["Confusion or unusual behaviour.", true], ["Collapse or inability to stand safely.", true], ["Hot conditions with very hot skin.", true], ["Reduced responsiveness.", true], ["Sweaty running clothes by themselves.", false], ["Wanting to sit in the shade while speaking normally.", false]],
@@ -501,7 +501,7 @@ const scenarioCaseLibrary = [
     sequence: ["Call 112 and move the casualty away from the heat.", "Remove unnecessary outer clothing while protecting dignity.", "Begin rapid active cooling with available safe methods.", "Continuously check responsiveness and breathing.", "Be ready to use the unresponsive or CPR pathway if their condition worsens."],
     sequenceFeedback: "Call and cool early. Do not delay cooling while collecting a detailed history.",
     changePrompt: "What should you do as the casualty becomes drowsier?",
-    changeOptions: [["Continue cooling, check airway and breathing repeatedly, and prepare for unresponsive care while 112 is responding.", true, "Correct. Drowsiness is deterioration, so airway and breathing monitoring are essential."], ["Stop cooling because drowsiness means the body temperature has returned to normal.", false, "Drowsiness can indicate worsening heatstroke."], ["Give a sports drink even if swallowing is uncertain.", false, "Do not give oral fluids when the casualty may not swallow safely."], ["Let them sleep without observation.", false, "Reduced responsiveness requires continuous monitoring." ]],
+    changeOptions: [["Continue cooling, check airway and breathing repeatedly, and prepare for unresponsive care while 112 is responding.", true, "Correct. Drowsiness is deterioration, so airway and breathing monitoring are essential."], ["Stop active cooling, cover them lightly, and observe whether the drowsiness improves now that they are resting in shade.", false, "Drowsiness can indicate worsening heatstroke."], ["Reduce the cooling, give a sports drink in small sips, and call back only if they cannot swallow normally.", false, "Do not give oral fluids when the casualty may not swallow safely."], ["Let them sleep in the recovery area, ask someone to check periodically, and continue cooling only when they wake.", false, "Reduced responsiveness requires continuous monitoring." ]],
     handoverFact: "the heat exposure, mental-state changes, cooling method, and cooling start time"
   },
   {
@@ -511,7 +511,7 @@ const scenarioCaseLibrary = [
     scene: "A cyclist has fallen beside a roadworks barrier. A deep lower-leg wound is bleeding heavily through torn clothing, and blood is pooling on the ground. The cyclist is pale and dizzy. Passing bicycles still come close to the scene, and a clean first aid kit is available.",
     development: "The first dressing becomes soaked while firm pressure is being maintained. The casualty is colder, quieter, and increasingly confused.",
     focus: ["scene safety", "firm direct pressure", "shock recognition", "continuous monitoring"],
-    opening: [["Make the approach safe, use a barrier or gloves if available, apply firm direct pressure, and call 112 for the severe bleeding.", true, "This controls the immediate life threat without ignoring traffic or infection risk."], ["Wash the wound thoroughly before applying pressure.", false, "Do not delay pressure for cleaning when bleeding is severe."], ["Remove every dressing whenever blood comes through so the wound can be inspected.", false, "Keep pressure and add material on top rather than repeatedly removing the original dressing."], ["Ask the cyclist to stand so you can see whether the leg supports weight.", false, "Standing can worsen collapse and injury. Keep the casualty still."], ["Concentrate on the damaged bicycle before touching the casualty.", false, "Once the scene is safe, the casualty's life-threatening bleeding is the priority."]],
+    opening: [["Make the approach safe, use gloves or a barrier, apply firm direct pressure, and call 112 for the severe bleeding.", true, "This controls the immediate life threat without ignoring traffic or infection risk."], ["Make the approach safe, rinse away visible dirt, inspect the wound fully, and apply pressure once its depth is clear.", false, "Do not delay pressure for cleaning when bleeding is severe."], ["Apply pressure with one dressing, replace it whenever blood appears, and inspect the wound between each fresh dressing.", false, "Keep pressure and add material on top rather than repeatedly removing the original dressing."], ["Move the cyclist away from the path on foot, test whether the leg bears weight, and apply pressure in a quieter area.", false, "Standing can worsen collapse and injury. Keep the casualty still."], ["Control the path, photograph the bicycle and wound, then call 112 with complete evidence before beginning treatment.", false, "Once the scene is safe, the casualty's life-threatening bleeding is the priority."]],
     cluesPrompt: "Select all signs that suggest significant blood loss and developing shock.",
     clues: [["Pale, cold, or clammy skin.", true], ["Dizziness, weakness, or confusion.", true], ["Heavy bleeding soaking clothing or dressings.", true], ["Fast breathing or increasing quietness.", true], ["A scratched bicycle frame.", false], ["A bystander asking whether the road is open.", false]],
     cluesFeedback: "Heavy ongoing bleeding plus pallor, cold skin, dizziness, fast breathing, or confusion indicate a serious threat to circulation.",
@@ -519,7 +519,7 @@ const scenarioCaseLibrary = [
     sequence: ["Control scene danger and protect yourself from blood where possible.", "Expose enough of the injury to find the bleeding source.", "Apply firm, continuous direct pressure.", "Call 112 and maintain pressure; add dressings on top if needed.", "Keep the casualty warm, still, reassured, and monitored for deterioration."],
     sequenceFeedback: "Safety and immediate pressure come before cleaning or detailed examination. Emergency help and shock care continue alongside bleeding control.",
     changePrompt: "The dressing is soaked and the casualty is deteriorating. What should you do?",
-    changeOptions: [["Keep firm pressure, add more dressing material on top, update 112, keep the casualty warm, and monitor breathing and responsiveness.", true, "Correct. Do not release effective pressure just to replace a soaked dressing."], ["Remove all dressings and leave the wound uncovered while looking for a cleaner pad.", false, "Removing dressings can disrupt clotting and increase blood loss."], ["Give food and drink because the casualty looks weak.", false, "Do not give food or drink to a seriously injured casualty."], ["Ask them to walk to the ambulance access point.", false, "Keep a shocked casualty still and bring emergency responders to them." ]],
+    changeOptions: [["Keep firm pressure, add more dressing material on top, update 112, keep the casualty warm, and monitor breathing and responsiveness.", true, "Correct. Do not release effective pressure just to replace a soaked dressing."], ["Remove the soaked dressings, inspect whether bleeding has slowed, and replace them with a cleaner pad before restoring pressure.", false, "Removing dressings can disrupt clotting and increase blood loss."], ["Maintain light pressure, give a sugary drink for weakness, and use the improvement in alertness to judge further blood loss.", false, "Do not give food or drink to a seriously injured casualty."], ["Keep the dressing in place, help them walk to the ambulance access point, and sit them down if dizziness becomes worse.", false, "Keep a shocked casualty still and bring emergency responders to them." ]],
     handoverFact: "where the bleeding was, how it was controlled, dressing changes, and signs of shock"
   },
   {
@@ -529,7 +529,7 @@ const scenarioCaseLibrary = [
     scene: "A laboratory cleaner has splashed onto a student's forearm and sleeve. The student reports burning pain and the skin is becoming red. The labelled container is on the floor nearby, the sink is working, and no chemical has entered the eyes. Other students are moving closer to look.",
     development: "While the arm is being rinsed, the student reports increasing pain and the affected area appears larger than first seen.",
     focus: ["avoid contamination", "remove contaminated clothing", "prolonged rinsing", "medical assessment"],
-    opening: [["Keep others away, protect yourself, call for urgent medical guidance, remove contaminated clothing if safe, and rinse with plenty of cool or lukewarm running water.", true, "Chemical burns need immediate decontamination and medical help while preventing a second exposure."], ["Rub neutralising cream into the skin before using water.", false, "Do not add creams or other chemicals; they can react or trap the substance."], ["Cover the sleeve tightly so the chemical cannot spread into the air.", false, "Contaminated clothing should be removed carefully when safe, not sealed against the skin."], ["Wait until the exact chemical formula is known before starting first aid.", false, "Begin safe decontamination immediately while keeping the label for professionals." ]],
+    opening: [["Keep others away, protect yourself, seek urgent guidance, remove contaminated clothing if safe, and rinse with plenty of running water.", true, "Chemical burns need immediate decontamination and medical help while preventing a second exposure."], ["Protect yourself, identify the product, apply a neutralising cream from the kit, and rinse only if pain continues.", false, "Do not add creams or other chemicals; they can react or trap the substance."], ["Protect yourself, cover the wet sleeve tightly to contain the chemical, and wait for medical help before exposing the skin.", false, "Contaminated clothing should be removed carefully when safe, not sealed against the skin."], ["Keep others away, read the complete product label, and postpone rinsing until the exact chemical formula and antidote are known.", false, "Begin safe decontamination immediately while keeping the label for professionals." ]],
     cluesPrompt: "Select every action that helps prevent further chemical injury.",
     clues: [["Use gloves or another suitable barrier if available.", true], ["Keep the product label or container information for emergency responders.", true], ["Remove contaminated clothing carefully if it is safe to do so.", true], ["Use lots of running water and continue for the advised duration.", true], ["Apply another household chemical to neutralise it.", false], ["Let bystanders touch the wet clothing to identify the smell.", false]],
     cluesFeedback: "Protect the responder, remove the source, rinse generously, and preserve accurate product information. Do not improvise chemical neutralisers.",
@@ -537,7 +537,7 @@ const scenarioCaseLibrary = [
     sequence: ["Stop others approaching and protect yourself from contamination.", "Call 112 or urgent poison/medical guidance and identify the product if possible.", "Remove contaminated clothing carefully and brush off dry material when appropriate.", "Rinse with plenty of cool or lukewarm running water for the recommended time.", "Continue monitoring and hand the product information to professionals."],
     sequenceFeedback: "Prevent a second casualty, get specialist guidance, remove the chemical source, and irrigate promptly and thoroughly.",
     changePrompt: "Pain and the affected area are increasing during rinsing. What is the safest response?",
-    changeOptions: [["Continue copious rinsing, update emergency services, protect unaffected skin, and monitor the casualty.", true, "Correct. Worsening chemical burns need continued decontamination and urgent professional care."], ["Stop the water and apply a thick cream.", false, "Creams can trap contamination and are not appropriate first aid for a chemical burn."], ["Scrub the painful skin with a brush.", false, "Scrubbing can worsen tissue damage."], ["Send the student back to class once the sleeve is removed.", false, "Chemical burns require medical assessment." ]],
+    changeOptions: [["Continue copious rinsing, update emergency services, protect unaffected skin, and monitor the casualty.", true, "Correct. Worsening chemical burns need continued decontamination and urgent professional care."], ["Stop the water, dry the arm carefully, and apply a thick burn cream before reassessing the painful area.", false, "Creams can trap contamination and are not appropriate first aid for a chemical burn."], ["Pause rinsing, scrub the painful skin gently with a soft brush, and restart the water if redness remains.", false, "Scrubbing can worsen tissue damage."], ["Finish a short rinse, cover the arm securely, and send the student back to class with instructions to report changes.", false, "Chemical burns require medical assessment." ]],
     handoverFact: "the product name, exposure time, affected area, and how long rinsing continued"
   },
   {
@@ -547,7 +547,7 @@ const scenarioCaseLibrary = [
     scene: "In an office reception, an adult suddenly drops a pen from one hand. One side of their face appears lower and their speech is slurred. They are awake but confused. A colleague says they were speaking normally about ten minutes ago and wants to drive them home.",
     development: "While waiting for help, the casualty becomes more drowsy and can no longer lift the affected arm.",
     focus: ["FAST recognition", "time last known well", "immediate emergency call", "airway monitoring"],
-    opening: [["Use FAST, call 112 immediately for suspected stroke, note when they were last known well, and keep monitoring them.", true, "Stroke is time-critical. FAST signs and onset information should trigger an immediate emergency call."], ["Let the colleague drive them home to rest before deciding whether help is needed.", false, "Do not delay emergency assessment for suspected stroke."], ["Give food and water to test whether swallowing is normal.", false, "Swallowing may be unsafe after a stroke."], ["Wait an hour to see whether the weakness passes.", false, "Even temporary stroke-like symptoms need urgent medical assessment." ]],
+    opening: [["Use FAST, call 112 for suspected stroke, note the last-known-well time, and keep monitoring breathing and responsiveness.", true, "Stroke is time-critical. FAST signs and onset information should trigger an immediate emergency call."], ["Use FAST, let the colleague drive them home to rest, and call 112 later if the weakness does not improve.", false, "Do not delay emergency assessment for suspected stroke."], ["Use FAST, give a small drink to test swallowing, and call 112 only if coughing or choking occurs.", false, "Swallowing may be unsafe after a stroke."], ["Use FAST, record the signs, and repeat the assessment after an hour before deciding whether emergency transport is necessary.", false, "Even temporary stroke-like symptoms need urgent medical assessment." ]],
     cluesPrompt: "Select all information that is important to recognise and report now.",
     clues: [["Face droop.", true], ["Arm weakness.", true], ["Speech difficulty.", true], ["The exact time symptoms began or they were last known well.", true], ["The brand of pen they dropped.", false], ["Whether the colleague can finish work today.", false]],
     cluesFeedback: "FAST findings and symptom timing are the key immediate facts. Do not let non-medical details delay the emergency call.",
@@ -555,7 +555,7 @@ const scenarioCaseLibrary = [
     sequence: ["Recognise the sudden FAST signs.", "Call 112 immediately and say that stroke is suspected.", "Note the symptom start time or last-known-well time.", "Keep the casualty safe and comfortable; do not give food, drink, or tablets.", "Monitor breathing and responsiveness and update responders about changes."],
     sequenceFeedback: "Recognition and the emergency call come first because stroke treatment is time-sensitive.",
     changePrompt: "How should you respond to the increasing drowsiness?",
-    changeOptions: [["Update 112, check airway and breathing repeatedly, and be ready to use unresponsive care if needed.", true, "Correct. Reduced responsiveness increases airway risk and must be reported."], ["Give a sugary drink to wake them up.", false, "Do not give anything by mouth when stroke and unsafe swallowing are possible."], ["Ask them to walk around so you can compare both sides.", false, "Walking creates a fall risk and does not replace emergency assessment."], ["Leave them alone in a quiet room until the ambulance arrives.", false, "They need continuous observation." ]],
+    changeOptions: [["Update 112, check airway and breathing repeatedly, and be ready to use unresponsive care if needed.", true, "Correct. Reduced responsiveness increases airway risk and must be reported."], ["Give a sugary drink in small sips, watch whether alertness improves, and update 112 only if swallowing becomes difficult.", false, "Do not give anything by mouth when stroke and unsafe swallowing are possible."], ["Support them while walking a few steps, compare strength on both sides, and then report the result to 112.", false, "Walking creates a fall risk and does not replace emergency assessment."], ["Move them into a quiet room, let them rest without interruption, and check again when the ambulance is close.", false, "They need continuous observation." ]],
     handoverFact: "FAST findings, last-known-well time, and changes in responsiveness"
   },
   {
@@ -565,7 +565,7 @@ const scenarioCaseLibrary = [
     scene: "At an outdoor event, an adult develops widespread hives, swelling around the lips, a hoarse voice, and noisy breathing minutes after a bee sting. They carry a prescribed adrenaline auto-injector and say they have used one before. They are frightened and try to stand.",
     development: "Several minutes after the first auto-injector, breathing remains difficult and the casualty is becoming faint while emergency help is on the way.",
     focus: ["recognise anaphylaxis", "adrenaline auto-injector", "emergency call", "safe positioning"],
-    opening: [["Call 112 for suspected anaphylaxis, help them use their prescribed auto-injector if trained, keep them in a safe position, and monitor breathing.", true, "Airway and breathing symptoms after a sting make this a life-threatening allergic reaction."], ["Wait for the rash to spread further before calling for help.", false, "Breathing and airway symptoms already make this an emergency."], ["Ask them to walk to the first aid post to improve circulation.", false, "Standing or walking can worsen collapse. Keep them still in the safest comfortable position."], ["Offer an antihistamine and observe for half an hour before using adrenaline.", false, "Antihistamines do not replace adrenaline for life-threatening airway or breathing symptoms." ]],
+    opening: [["Call 112 for anaphylaxis, help with their prescribed auto-injector if trained, position them safely, and monitor their breathing.", true, "Airway and breathing symptoms after a sting make this a life-threatening allergic reaction."], ["Keep them still, watch whether the rash spreads, and call 112 only if the swelling reaches the tongue or throat.", false, "Breathing and airway symptoms already make this an emergency."], ["Help them walk to the first aid post, use the auto-injector there, and call 112 if they cannot continue.", false, "Standing or walking can worsen collapse. Keep them still in the safest comfortable position."], ["Keep them seated, give an antihistamine first, and reserve the auto-injector for symptoms that remain after thirty minutes.", false, "Antihistamines do not replace adrenaline for life-threatening airway or breathing symptoms." ]],
     cluesPrompt: "Select all findings that support suspected anaphylaxis.",
     clues: [["Hoarse voice or throat tightness.", true], ["Noisy or difficult breathing.", true], ["Lip, tongue, or facial swelling.", true], ["Faintness, collapse, or confusion after an allergen exposure.", true], ["A small painless bruise from yesterday.", false], ["Normal speech and breathing with only a local sting mark.", false]],
     cluesFeedback: "Airway swelling, breathing difficulty, and circulation problems after allergen exposure are the critical features.",
@@ -573,7 +573,7 @@ const scenarioCaseLibrary = [
     sequence: ["Recognise airway, breathing, or circulation danger after allergen exposure.", "Call 112 and state suspected anaphylaxis.", "Help with the casualty's prescribed adrenaline auto-injector if trained and allowed.", "Keep the casualty still in a safe position suited to breathing and consciousness.", "Monitor continuously and follow the care plan or dispatcher guidance if symptoms persist."],
     sequenceFeedback: "Emergency help and prescribed adrenaline should not be delayed in suspected anaphylaxis.",
     changePrompt: "Symptoms remain severe after the first auto-injector. What should happen next?",
-    changeOptions: [["Update 112, continue monitoring, and follow the casualty's care plan or dispatcher guidance about further adrenaline while preparing for CPR if needed.", true, "Correct. Persistent symptoms require continued emergency management within training and the person's prescribed plan."], ["Make them stand and walk to spread the medicine faster.", false, "Standing can cause sudden collapse."], ["Assume the first device cannot work and throw it away without noting the time.", false, "Keep it for handover and record the time it was used."], ["Give food to test whether the throat swelling has improved.", false, "Food is unsafe when airway swelling is present." ]],
+    changeOptions: [["Update 112, continue monitoring, and follow the casualty's care plan or dispatcher guidance about further adrenaline while preparing for CPR if needed.", true, "Correct. Persistent symptoms require continued emergency management within training and the person's prescribed plan."], ["Help them stand and walk slowly to improve circulation, then reassess whether the first auto-injector has started working before contacting 112 again.", false, "Standing can cause sudden collapse."], ["Discard the first device, use another immediately without checking the prescribed plan, and estimate both injection times during handover from memory.", false, "Keep it for handover and record the time it was used."], ["Keep them upright, give a small amount of food to test the throat swelling, and repeat adrenaline only if swallowing fails completely.", false, "Food is unsafe when airway swelling is present." ]],
     handoverFact: "the suspected trigger, airway and breathing signs, and the exact auto-injector time"
   },
   {
@@ -583,7 +583,7 @@ const scenarioCaseLibrary = [
     scene: "At a bus stop beside a busy road, two people have fallen after avoiding a bicycle. One person is sitting up, crying loudly, and holding a painful ankle. The other is quiet on the pavement and does not respond when spoken to. Traffic is still passing close to the curb and several bystanders are available.",
     development: "The quiet casualty is breathing abnormally. The person with the ankle injury keeps calling for attention but remains awake and able to speak.",
     focus: ["scene control", "life-threat priority", "use bystanders safely", "request enough help"],
-    opening: [["Keep everyone away from traffic, call 112 for multiple casualties, check the quiet unresponsive person first, and give clear simple tasks to willing bystanders.", true, "The quiet casualty may have the greatest life threat. Scene safety and extra help are immediate priorities."], ["Treat the loud ankle injury first because that casualty is asking for help.", false, "The loudest casualty is not always the most seriously ill."], ["Move both casualties into the road so there is more space to examine them.", false, "Do not move into danger. Control the scene and move a casualty only when remaining creates immediate danger."], ["Ask every bystander to assess a different body part at the same time.", false, "Uncoordinated help creates confusion. Give simple, safe, specific tasks." ]],
+    opening: [["Control the traffic risk, call 112 for multiple casualties, check the quiet unresponsive person first, and give bystanders specific safe tasks.", true, "The quiet casualty may have the greatest life threat. Scene safety and extra help are immediate priorities."], ["Control the traffic risk, assess the conscious ankle injury first for a rapid history, record the findings, then move to the quiet casualty.", false, "The loudest casualty is not always the most seriously ill."], ["Ask bystanders to move both casualties together into a wider road area, then compare their injuries in the larger space before calling 112.", false, "Do not move into danger. Control the scene and move a casualty only when remaining creates immediate danger."], ["Call 112, ask each bystander to assess a different injury at once, and combine all their findings before choosing the first treatment priority.", false, "Uncoordinated help creates confusion. Give simple, safe, specific tasks." ]],
     cluesPrompt: "Select all priorities that matter in the first minute.",
     clues: [["Prevent another collision and keep responders out of traffic.", true], ["Tell 112 there is more than one casualty.", true], ["Check responsiveness and breathing of the quiet casualty.", true], ["Use a bystander to guide emergency services or control the crowd.", true], ["Decide who caused the bicycle incident.", false], ["Photograph every injury before giving aid.", false]],
     cluesFeedback: "Control continuing danger, request enough resources, and find life threats before minor injuries or incident details take attention.",
@@ -591,7 +591,7 @@ const scenarioCaseLibrary = [
     sequence: ["Control immediate danger without entering moving traffic.", "Call 112, state the exact location, and report multiple casualties.", "Rapidly identify who has an airway, breathing, or severe-bleeding threat.", "Begin life-saving care for the highest-priority casualty.", "Keep reassessing both casualties and give safe tasks to available bystanders."],
     sequenceFeedback: "Triage is a rapid priority process: safety, help, life threats, immediate care, then repeated reassessment.",
     changePrompt: "Who remains the first clinical priority after this update?",
-    changeOptions: [["The unresponsive person with abnormal breathing; start the emergency response and CPR pathway as directed or trained.", true, "Correct. Abnormal breathing in an unresponsive casualty is immediately life-threatening."], ["The person with ankle pain because they are speaking the loudest.", false, "Pain matters, but an airway or breathing threat takes priority."], ["The bystanders because they want an explanation before helping.", false, "Give brief directions, but do not delay life-saving care."], ["The bicycle because it may be damaged.", false, "Property is not the clinical priority." ]],
+    changeOptions: [["The unresponsive person with abnormal breathing; begin the emergency response and CPR pathway as directed or trained.", true, "Correct. Abnormal breathing in an unresponsive casualty is immediately life-threatening."], ["The conscious person with ankle pain; severe pain and repeated calls for help make that casualty the clearest priority.", false, "Pain matters, but an airway or breathing threat takes priority."], ["The bystanders requesting an explanation; gaining their cooperation should be completed before beginning care for either casualty.", false, "Give brief directions, but do not delay life-saving care."], ["The bicycle and traffic evidence; preserving the incident scene should be finished before changing either casualty's position.", false, "Property is not the clinical priority." ]],
     handoverFact: "the number of casualties, initial priority decision, breathing findings, and care given to each person"
   },
   {
@@ -601,7 +601,7 @@ const scenarioCaseLibrary = [
     scene: "Smoke is coming from a canteen doorway. Outside, one casualty has a painful burn on the forearm and another is coughing, confused, and struggling to breathe. A third person says somebody may still be inside. The fire alarm is sounding and people are gathering near the entrance.",
     development: "The breathing casualty becomes less responsive while smoke continues to drift across the gathering area.",
     focus: ["do not enter smoke", "move to clean air", "breathing priority", "fire and ambulance response"],
-    opening: [["Keep everyone out of the smoke, move casualties to clean air only if safe, call 112 for fire and medical help, and prioritise the confused breathing casualty.", true, "Do not create more casualties by entering smoke. Breathing difficulty and confusion are the immediate clinical threat."], ["Enter the canteen alone to search because first aiders should always reach every casualty.", false, "An unprotected first aider must not enter a smoke-filled area."], ["Treat the visible arm burn first because it is easier to see.", false, "The breathing casualty has the greater immediate life threat."], ["Open every door and window without knowing the fire conditions.", false, "Do not improvise fire control. Withdraw, call the fire service, and follow safety instructions." ]],
+    opening: [["Keep everyone out of smoke, move casualties to clean air if safe, call 112 for fire and medical help, and prioritise breathing.", true, "Do not create more casualties by entering smoke. Breathing difficulty and confusion are the immediate clinical threat."], ["Ask one capable bystander to search just inside the doorway while you call 112, gather equipment, and begin treating the casualties outside.", false, "An unprotected first aider must not enter a smoke-filled area."], ["Move both casualties away from smoke, cool the visible arm burn for several minutes first, and assess the confused casualty once cooling is established.", false, "The breathing casualty has the greater immediate life threat."], ["Open nearby doors and windows to clear the smoke, then call 112 once you know whether anyone remains inside and which exit is safest.", false, "Do not improvise fire control. Withdraw, call the fire service, and follow safety instructions." ]],
     cluesPrompt: "Select all actions that keep this changing scene safer.",
     clues: [["Move the gathering point away from drifting smoke.", true], ["Tell 112 there may be a person inside.", true], ["Prevent unprotected people from re-entering.", true], ["Monitor the casualty with breathing difficulty continuously.", true], ["Send a bystander inside with a wet cloth over their face.", false], ["Ignore the wind direction once casualties are outside.", false]],
     cluesFeedback: "Scene safety continues throughout care. Smoke movement, re-entry risk, and access for fire and ambulance crews all matter.",
@@ -609,7 +609,7 @@ const scenarioCaseLibrary = [
     sequence: ["Stay out of smoke and move everyone away from continuing exposure if safe.", "Call 112 for fire and medical help and report a possible person inside.", "Prioritise airway and breathing assessment of the confused casualty.", "Cool the visible burn with running water when this can be done without delaying breathing care.", "Reassess both casualties and prepare a clear handover."],
     sequenceFeedback: "Do not enter danger. Remove exposure, request the right resources, prioritise breathing, then manage the burn and continue reassessment.",
     changePrompt: "What is the immediate priority as responsiveness decreases?",
-    changeOptions: [["Move to clean air if not already there, update 112, check airway and breathing, and prepare for unresponsive care or CPR.", true, "Correct. Reduced responsiveness after smoke exposure can rapidly threaten the airway and breathing."], ["Return to the burn casualty because visible injuries must always be treated first.", false, "Breathing and reduced responsiveness take priority over a stable visible burn."], ["Give water to clear smoke from the lungs.", false, "Do not give oral fluids to a less responsive casualty."], ["Carry the casualty back toward the doorway so firefighters can see them.", false, "Do not move anyone closer to smoke or fire." ]],
+    changeOptions: [["Move to clean air if needed, update 112, check airway and breathing, and prepare for unresponsive care or CPR.", true, "Correct. Reduced responsiveness after smoke exposure can rapidly threaten the airway and breathing."], ["Return to the burn casualty, establish twenty minutes of cooling, and reassess the breathing casualty after the burn is covered.", false, "Breathing and reduced responsiveness take priority over a stable visible burn."], ["Keep them sitting upright, give small sips of water to clear smoke irritation, and update 112 if swallowing becomes difficult.", false, "Do not give oral fluids to a less responsive casualty."], ["Carry the casualty closer to the doorway where firefighters can see them, while keeping their face turned away from the smoke.", false, "Do not move anyone closer to smoke or fire." ]],
     handoverFact: "smoke exposure, time removed to fresh air, breathing and consciousness changes, and burn cooling"
   }
 ];
@@ -700,6 +700,10 @@ let selectedPracticeMode = "individual";
 let scenarioStepComplete = false;
 let scenarioRunComplete = false;
 let scenarioRewardAwarded = false;
+let scenarioCorrectPositionState = {
+  opening: { deck: [], last: -1, optionCount: 0 },
+  change: { deck: [], last: -1, optionCount: 0 }
+};
 let selectedLessonCategoryId = "assessment";
 let expandedLessonId = "";
 let quizIndex = 0;
@@ -970,12 +974,30 @@ function scenarioOptionObjects(options) {
   return shuffleScenarioItems(options.map(([label, correct, feedback = ""]) => ({ label, correct, feedback })));
 }
 
+function balancedSingleOptions(options, sequenceName) {
+  const normalized = options.map(([label, correct, feedback = ""]) => ({ label, correct, feedback }));
+  const correctOption = normalized.find((option) => option.correct);
+  const distractors = shuffleScenarioItems(normalized.filter((option) => !option.correct));
+  const state = scenarioCorrectPositionState[sequenceName];
+
+  if (!state.deck.length || state.optionCount !== normalized.length) {
+    state.optionCount = normalized.length;
+    state.deck = shuffleScenarioItems(normalized.map((_, index) => index));
+    if (state.deck.length > 1 && state.deck[0] === state.last) {
+      [state.deck[0], state.deck[1]] = [state.deck[1], state.deck[0]];
+    }
+  }
+
+  const correctPosition = state.deck.shift();
+  state.last = correctPosition;
+  distractors.splice(correctPosition, 0, correctOption);
+  return distractors;
+}
+
 function teamOpeningOptions(caseData) {
-  return scenarioOptionObjects(caseData.opening).map((option) => ({
+  return balancedSingleOptions(caseData.opening, "opening").map((option) => ({
     ...option,
-    label: option.correct
-      ? `The leader states the priorities, gives named tasks, and directs the primary responder to act as follows: ${option.label}`
-      : `The team chooses this plan: ${option.label}`
+    label: `Leader's plan: ${option.label}`
   }));
 }
 
@@ -1009,9 +1031,9 @@ function buildScenario() {
       : [...caseData.focus, "personal safety", "clear emergency call"]
   };
 
-  const openingOptions = isTeam ? teamOpeningOptions(caseData) : scenarioOptionObjects(caseData.opening);
+  const openingOptions = isTeam ? teamOpeningOptions(caseData) : balancedSingleOptions(caseData.opening, "opening");
   const clueOptions = scenarioOptionObjects(caseData.clues);
-  const changeOptions = scenarioOptionObjects(caseData.changeOptions);
+  const changeOptions = balancedSingleOptions(caseData.changeOptions, "change");
   const orderItems = shuffledOrderItems(caseData.sequence, isTeam);
 
   scenarioSteps = [
@@ -1460,6 +1482,7 @@ function renderCategorySelect() {
 function renderScenarioOptions(step) {
   const options = document.getElementById("scenario-options");
   const action = document.getElementById("scenario-action");
+  options.dataset.activityType = step.type;
 
   if (step.type === "single") {
     options.innerHTML = step.options.map((option, index) => `
