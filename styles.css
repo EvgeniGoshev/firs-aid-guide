@@ -3382,6 +3382,13 @@ input:focus-visible {
 
 .certificate-card p { color: #cbd8dc; }
 .certificate-card .academy-card-heading h2 { color: white; }
+.certificate-disclaimer {
+  padding: 10px 12px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 11px;
+  font-size: .78rem;
+  line-height: 1.45;
+}
 .certificate-watermark {
   position: absolute;
   right: -25px;
@@ -3605,6 +3612,14 @@ input:focus-visible {
 .certificate-sheet h2 { margin: 8px 0 24px; font-size: 2rem; }
 .certificate-sheet h3 { color: var(--red-dark); font-size: 1.45rem; }
 .certificate-sheet > strong { display: block; margin: 10px 0; font-size: 2rem; }
+
+.certificate-sheet .certificate-sheet-disclaimer {
+  max-width: 570px;
+  margin: 20px auto 0;
+  border-color: #efd49b;
+  color: #725615;
+  background: #fff8e8;
+}
 
 .certificate-meta {
   display: flex;

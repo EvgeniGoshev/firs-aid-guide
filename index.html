@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>First Aid Trainer</title>
-  <link rel="stylesheet" href="styles.css?v=20260721-4">
+  <link rel="stylesheet" href="styles.css?v=20260721-5">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js" defer></script>
-  <script src="app.js?v=20260721-4" defer></script>
+  <script src="app.js?v=20260721-5" defer></script>
 </head>
 <body class="auth-pending auth-locked">
   <div class="ambient-shape ambient-shape-one" aria-hidden="true"></div>
@@ -351,7 +351,8 @@
             <div class="academy-card-heading">
               <div><span class="feature-icon green"><i data-lucide="badge-check"></i></span><h2 data-i18n="certificate">Certificate</h2></div>
             </div>
-            <p data-i18n="certificateDescription">Complete 10 lessons and score at least 80% to earn your First Aid Foundations certificate.</p>
+            <p data-i18n="certificateDescription">Complete 10 lessons and score at least 80% to earn an in-platform First Aid Foundations training certificate.</p>
+            <p class="certificate-disclaimer" data-i18n="certificateDisclaimer">Training recognition only — it is not an accredited medical qualification and does not replace a certified first-aid course.</p>
             <div id="certificate-status" class="certificate-status">Keep training to unlock your certificate.</div>
             <button class="primary-button" id="issue-certificate" type="button"><i data-lucide="award"></i><span data-i18n="checkEligibility">Check eligibility</span></button>
           </article>
@@ -606,11 +607,12 @@
       <button class="icon-button certificate-close" id="close-certificate" type="button" aria-label="Close certificate"><i data-lucide="x"></i></button>
       <div class="certificate-emblem"><i data-lucide="shield-plus"></i></div>
       <p class="eyebrow">First Aid Trainer Academy</p>
-      <h2 id="certificate-title" data-i18n="certificateTitle">Certificate of Achievement</h2>
+      <h2 id="certificate-title" data-i18n="certificateTitle">Training Certificate of Achievement</h2>
       <p data-i18n="certifiesThat">This certifies that</p>
       <strong id="certificate-name">First Aid Learner</strong>
       <p data-i18n="completedRequirements">has successfully completed the requirements for</p>
       <h3>First Aid Foundations</h3>
+      <p class="certificate-disclaimer certificate-sheet-disclaimer" data-i18n="certificateDisclaimer">Training recognition only — it is not an accredited medical qualification and does not replace a certified first-aid course.</p>
       <div class="certificate-meta"><span id="certificate-date"></span><span id="certificate-code"></span></div>
       <button class="primary-button certificate-print" id="print-certificate" type="button"><i data-lucide="printer"></i><span data-i18n="printCertificate">Print / Save as PDF</span></button>
     </div>
