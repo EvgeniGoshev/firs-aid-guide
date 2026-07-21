@@ -617,46 +617,271 @@ const scenarioCaseLibrary = [
 let activeScenario = {};
 let scenarioSteps = [];
 
-const fallbackQuizQuestions = [
+const quizQuestionBank = [
   {
-    question: "What is the first thing to check before giving aid?",
-    options: ["Scene safety", "Pulse rate", "Medical history"],
+    rotationGroup: 0,
+    topic: "Scene safety",
+    question: "A casualty is lying beside a damaged extension lead that is still sparking. What is your safest first decision?",
+    options: [
+      "Keep back, have the power isolated, call for help, and approach only when the area is safe.",
+      "Pull the casualty away by their clothing, then ask someone else to disconnect the damaged extension lead.",
+      "Step around the cable, check responsiveness quickly, and decide whether the electrical risk is still active.",
+      "Cover the sparking section with a dry towel, warn bystanders, and begin the primary assessment immediately."
+    ],
     answer: 0,
-    why: "Scene safety protects the responder, casualty, and bystanders."
+    why: "An active electrical hazard can create another casualty. Control the danger before approaching or touching the person."
   },
   {
-    question: "A person is unresponsive and not breathing normally. What should you do?",
-    options: ["Call emergency services and start CPR if trained", "Give them a drink", "Walk them around"],
-    answer: 0,
-    why: "This is a life-threatening emergency requiring immediate help and CPR."
+    rotationGroup: 0,
+    topic: "Cardiac arrest",
+    question: "An adult is unresponsive and their breathing is slow, irregular, and gasping. Which response has the best priority?",
+    options: [
+      "Place them in the recovery position first, then call 112 if the gasping becomes less frequent.",
+      "Call 112 on speaker, start CPR, and attach an AED as soon as one becomes available.",
+      "Check for a wrist pulse for one full minute before deciding whether chest compressions are required.",
+      "Give two rescue breaths first, reassess their breathing, and call 112 only if there is no change."
+    ],
+    answer: 1,
+    why: "Gasping is abnormal breathing. Call 112 without delay, begin CPR, and use an AED as soon as possible."
   },
   {
-    question: "For severe bleeding, what is the priority?",
-    options: ["Direct pressure", "Remove all clothing", "Apply ice directly"],
-    answer: 0,
-    why: "Firm direct pressure helps control serious bleeding."
+    rotationGroup: 0,
+    topic: "Severe bleeding",
+    question: "Firm pressure is being applied to a deep leg wound, but blood is soaking through the first dressing. What should happen next?",
+    options: [
+      "Lift the first dressing to inspect the wound, clean away clots, and replace it with a fresh sterile pad.",
+      "Raise the leg above the heart, reduce the pressure slightly, and check whether the bleeding settles naturally.",
+      "Maintain firm direct pressure, reinforce the dressing, call 112, and escalate with trained bleeding-control equipment if needed.",
+      "Wrap a bandage tightly below the wound, mark the time, and remove the original dressing once flow slows."
+    ],
+    answer: 2,
+    why: "Do not disturb clotting by removing the first dressing. Keep firm pressure, summon emergency help, and escalate bleeding control if trained."
   },
   {
-    question: "What should you do for a burn?",
-    options: ["Cool it with running water", "Put butter on it", "Break blisters"],
-    answer: 0,
-    why: "Cooling reduces damage. Avoid creams, ice, and breaking blisters."
+    rotationGroup: 0,
+    topic: "Burn care",
+    question: "Hot liquid has burned a casualty's forearm and a sleeve is partly stuck to the skin. Which plan is most appropriate?",
+    options: [
+      "Peel the sleeve away slowly, cool with ice wrapped in cloth, and apply a soothing burn cream.",
+      "Cover the arm immediately with a dry dressing, keep it raised, and delay cooling to prevent heat loss.",
+      "Cool for five minutes with very cold water, break large blisters, and wrap the arm firmly afterward.",
+      "Cool with running water for at least 20 minutes, remove loose items, leave stuck fabric, and cover loosely."
+    ],
+    answer: 3,
+    why: "Cool the burn promptly, do not pull away stuck material, and use a loose clean covering after cooling."
   },
   {
-    question: "If someone can cough during choking, what should you do?",
-    options: ["Encourage coughing", "Give water", "Put fingers in their mouth"],
+    rotationGroup: 0,
+    topic: "Choking",
+    question: "A diner is choking but can still speak and produce a strong cough. What is the best immediate response?",
+    options: [
+      "Encourage continued coughing, watch closely, and be ready to escalate if the cough becomes ineffective.",
+      "Begin up to five back blows immediately because any airway blockage can suddenly become complete.",
+      "Offer small sips of water between coughs and ask the person to take slow, controlled breaths.",
+      "Sweep the mouth with two fingers while they are coughing to remove any object that becomes visible."
+    ],
     answer: 0,
-    why: "Effective coughing can clear the blockage. Do not sweep blindly in the mouth."
+    why: "A strong cough is effective airway clearance. Escalate to back blows only if the cough becomes ineffective."
   },
   {
-    question: "When an AED arrives, what should you do?",
-    options: ["Turn it on and follow prompts", "Wait for permission from the casualty", "Use it only after CPR fails for ten minutes"],
+    rotationGroup: 1,
+    topic: "Stroke recognition",
+    question: "A colleague suddenly has facial droop and slurred speech, but says the symptoms are already improving. What matters most?",
+    options: [
+      "Let them rest for thirty minutes, repeat the FAST check, and call only if the signs return.",
+      "Use FAST, note when symptoms started or were last known well, and call 112 without delay.",
+      "Give a sweet drink, keep them walking, and watch whether their speech becomes clearer with movement.",
+      "Drive them to a clinic after work because improving symptoms make an ambulance response unnecessary."
+    ],
+    answer: 1,
+    why: "Stroke symptoms need urgent emergency assessment even if they improve. FAST and onset time support rapid treatment."
+  },
+  {
+    rotationGroup: 1,
+    topic: "Asthma",
+    question: "A person with asthma is breathless, speaking only a few words, and struggling to use their inhaler. What is the best plan?",
+    options: [
+      "Lay them flat, loosen clothing, and wait several minutes before offering their usual reliever inhaler.",
+      "Ask them to breathe into a paper bag, then use the inhaler only if tingling in the hands stops.",
+      "Help them sit comfortably and use their own reliever, while arranging urgent help if severe or not improving.",
+      "Give water first to moisten the airway, then walk them slowly to improve movement of air into the lungs."
+    ],
+    answer: 2,
+    why: "Support a comfortable position and help with the person's own reliever. Severe or worsening breathing difficulty requires emergency help."
+  },
+  {
+    rotationGroup: 1,
+    topic: "Anaphylaxis",
+    question: "Minutes after a bee sting, a casualty develops wheeze, widespread hives, and feels faint. Which response is the priority?",
+    options: [
+      "Give an antihistamine first, sit them upright, and wait ten minutes before considering emergency help.",
+      "Offer their reliever inhaler, encourage walking, and look for swelling before using an adrenaline device.",
+      "Remove the sting, give cool water, and monitor because a skin rash alone usually settles without treatment.",
+      "Call 112 and help use their adrenaline auto-injector promptly, positioning them according to breathing needs."
+    ],
+    answer: 3,
+    why: "Breathing difficulty plus systemic allergic signs suggests anaphylaxis. Adrenaline and an emergency call must not be delayed."
+  },
+  {
+    rotationGroup: 1,
+    topic: "Seizure care",
+    question: "A person has been convulsing for six minutes and has not regained consciousness. Which action is most appropriate?",
+    options: [
+      "Call 112, protect the head and surrounding space, time the seizure, and monitor breathing without restraining them.",
+      "Hold their arms and legs still, open the jaw carefully, and insert a soft object to protect the tongue.",
+      "Move them into the recovery position during the convulsions, then give water as soon as the shaking slows.",
+      "Wait for the seizure to reach ten minutes before calling, unless there is a visible injury or blue skin."
+    ],
     answer: 0,
-    why: "AEDs are designed to guide responders clearly and quickly."
+    why: "A seizure lasting more than five minutes is an emergency. Protect from injury, do not restrain, and put nothing in the mouth."
+  },
+  {
+    rotationGroup: 1,
+    topic: "Heat illness",
+    question: "After exercise in extreme heat, a runner is confused, unsteady, and very hot. What best distinguishes the correct response?",
+    options: [
+      "Treat as heat exhaustion with shade and slow drinks, then reassess after thirty minutes before seeking help.",
+      "Treat as heatstroke: call 112 and begin active cooling while continuously monitoring airway and breathing.",
+      "Cover them to prevent shock, avoid cooling too quickly, and wait for sweating to return before moving them.",
+      "Give a salt tablet with cold water, massage cramped muscles, and arrange transport if confusion continues."
+    ],
+    answer: 1,
+    why: "Confusion in a very hot casualty suggests heatstroke, which is a medical emergency requiring rapid cooling and emergency help."
+  },
+  {
+    rotationGroup: 2,
+    topic: "Poisoning",
+    question: "A conscious adult may have swallowed an unknown cleaning product. What information and action are most useful?",
+    options: [
+      "Give milk to dilute it, keep the bottle nearby, and make them vomit without delay if abdominal pain begins.",
+      "Ask them to drink water slowly, walk around, and call only if breathing or consciousness changes.",
+      "Seek urgent medical advice, keep the container for identification, and do not give food, drink, or induce vomiting.",
+      "Smell the person's breath to identify the chemical, then use activated charcoal from a home first-aid kit."
+    ],
+    answer: 2,
+    why: "Unknown poisoning needs prompt expert advice. Preserve the packaging and do not induce vomiting or give anything by mouth."
+  },
+  {
+    rotationGroup: 2,
+    topic: "Head injury",
+    question: "After a fall, a casualty initially seems well but later becomes confused and vomits twice. What should you do?",
+    options: [
+      "Let them sleep in a quiet room, wake them hourly, and arrange routine medical review the next morning.",
+      "Give pain relief and water, then ask them to walk in a straight line to assess whether balance improves.",
+      "Keep them seated upright, apply a cold pack firmly to the neck, and drive them home once vomiting stops.",
+      "Call 112, minimise unnecessary movement, monitor airway and breathing, and report the deterioration clearly."
+    ],
+    answer: 3,
+    why: "New confusion and repeated vomiting after head injury are warning signs. Treat deterioration as an emergency and keep reassessing."
+  },
+  {
+    rotationGroup: 2,
+    topic: "Shock",
+    question: "Bleeding is controlled, but the casualty is pale, clammy, restless, and breathing quickly. What is the best continuing care?",
+    options: [
+      "Call or update 112, keep them lying comfortably and warm, give nothing by mouth, and reassess frequently.",
+      "Sit them upright, loosen all dressings, and give small amounts of water to replace lost fluid gradually.",
+      "Stand them carefully to test circulation, then walk them to the ambulance meeting point with support.",
+      "Cool their skin with wet towels, raise the injured area, and wait for their breathing rate to settle."
+    ],
+    answer: 0,
+    why: "These are signs of shock. Maintain emergency help, warmth, position, and repeated ABCDE checks; do not give food or drink."
+  },
+  {
+    rotationGroup: 2,
+    topic: "AED use",
+    question: "An AED arrives while another responder is giving CPR. Which sequence minimises interruption to chest compressions?",
+    options: [
+      "Stop CPR, check for a pulse, dry the whole body, and attach pads only after confirming no circulation.",
+      "Turn on the AED and attach pads during CPR if possible, clear for analysis or shock, then resume compressions immediately.",
+      "Complete five full CPR cycles before opening the AED, because early rhythm analysis can delay effective compressions.",
+      "Attach both pads over clothing, keep hands on the chest during analysis, and pause only if a shock is advised."
+    ],
+    answer: 1,
+    why: "Prepare and attach the AED with minimal pause, ensure everyone is clear for analysis or shock, then restart compressions immediately."
+  },
+  {
+    rotationGroup: 2,
+    topic: "Recovery position",
+    question: "An adult is unresponsive after a medical episode but is breathing normally and has no obvious trauma. What is the best action?",
+    options: [
+      "Leave them flat on their back, place a pillow under the head, and check breathing every ten minutes.",
+      "Begin chest compressions because any unresponsive person should be treated as cardiac arrest until help arrives.",
+      "Place them in the recovery position, call 112 as appropriate, and continue checking that breathing remains normal.",
+      "Sit them against a wall, support the chin, and offer water as soon as they make any purposeful movement."
+    ],
+    answer: 2,
+    why: "An unresponsive person who is breathing normally should be placed on their side and monitored closely while help is arranged."
+  },
+  {
+    rotationGroup: 3,
+    topic: "Multiple casualties",
+    question: "At a safe road-side scene, one casualty is shouting with an arm injury and another is silent and not moving. Who needs assessment first?",
+    options: [
+      "The shouting casualty, because severe pain may indicate hidden bleeding and they can describe what happened clearly.",
+      "Whichever casualty is closest, because moving between people wastes time and delays the first full examination.",
+      "Ask both casualties to wait while you collect names, allergies, and medical histories for the ambulance handover.",
+      "The silent casualty, because absent response may indicate an immediate airway or breathing threat requiring rapid assessment."
+    ],
+    answer: 3,
+    why: "Noise does not equal priority. A silent, non-moving casualty may have an immediate airway or breathing problem."
+  },
+  {
+    rotationGroup: 3,
+    topic: "Emergency handover",
+    question: "Which handover gives emergency crews the clearest picture after a casualty deteriorates during your care?",
+    options: [
+      "What happened, key times, initial and current findings, treatment given, and how the casualty responded to it.",
+      "A complete account of every bystander statement, followed by your diagnosis and all possible alternative explanations.",
+      "The casualty's name and injury location first, then only the observations that remain abnormal when crews arrive.",
+      "Your actions in exact order, leaving out earlier findings because the crew can perform a new assessment themselves."
+    ],
+    answer: 0,
+    why: "A concise timeline of mechanism, changes, findings, actions, and response helps the next team understand both state and trend."
+  },
+  {
+    rotationGroup: 3,
+    topic: "Team response",
+    question: "During team CPR, the leader says, “Someone get the AED.” Which reply best demonstrates safer closed-loop communication?",
+    options: [
+      "Everyone should continue their current task until the leader repeats the instruction with more urgency.",
+      "One responder says, “I am getting the AED now,” completes the task, and reports when it is ready.",
+      "The nearest responder leaves silently so communication does not interrupt the compression count or rescue breaths.",
+      "Two responders both go for the AED to ensure it arrives quickly, while the leader covers their original tasks."
+    ],
+    answer: 1,
+    why: "Named or acknowledged tasks reduce ambiguity. Confirm the instruction, perform it, and report completion."
+  },
+  {
+    rotationGroup: 3,
+    topic: "Reassessment",
+    question: "A casualty's initial assessment is stable, but they now answer slowly and look paler. What is the strongest next step?",
+    options: [
+      "Finish recording the first assessment before repeating checks, so the original findings remain complete and reliable for later comparison.",
+      "Ask a relative whether this behaviour is normal, then continue observation unless they become fully unresponsive.",
+      "Repeat the ABCDE assessment, treat new life threats, and update emergency services with the change and its timing.",
+      "Move directly to a detailed head-to-toe examination because the first ABCDE assessment was already reassuring."
+    ],
+    answer: 2,
+    why: "A change in responsiveness can signal deterioration. Return to ABCDE, act on threats, and communicate the change promptly."
+  },
+  {
+    rotationGroup: 3,
+    topic: "Smoke exposure",
+    question: "Smoke is coming from a building and a coughing casualty has reached the doorway. What should an unprotected first aider do?",
+    options: [
+      "Enter briefly to guide other people out, staying low for several minutes and covering the mouth with a damp piece of clothing.",
+      "Open windows from inside to improve ventilation, then return outside to assess the casualty's breathing and burns.",
+      "Treat the casualty at the doorway so fire crews can find them quickly, while another bystander searches nearby rooms.",
+      "Stay out, move the casualty to clean air if safe, call 112 for fire and medical help, and assess breathing."
+    ],
+    answer: 3,
+    why: "Do not enter a smoke-filled area without appropriate protection. Remove ongoing exposure safely and call the correct emergency services."
   }
 ];
 
-let quizQuestions = fallbackQuizQuestions.slice(0, 5);
+let quizQuestions = [];
+let activeQuizSourceQuestions = [];
 let activeQuizRotationGroup = 0;
 
 const supabaseConfig = window.FIRST_AID_SUPABASE_CONFIG || {};
@@ -709,6 +934,7 @@ let expandedLessonId = "";
 let quizIndex = 0;
 let quizCorrect = 0;
 let quizAnswered = false;
+let quizCorrectPositionState = { deck: [], last: -1, optionCount: 0 };
 let currentUser = null;
 let authMode = "login";
 let authMessage = "";
@@ -994,6 +1220,56 @@ function balancedSingleOptions(options, sequenceName) {
   return distractors;
 }
 
+function nextBalancedQuizPosition(optionCount) {
+  if (!quizCorrectPositionState.deck.length || quizCorrectPositionState.optionCount !== optionCount) {
+    quizCorrectPositionState.optionCount = optionCount;
+    quizCorrectPositionState.deck = shuffleScenarioItems(Array.from({ length: optionCount }, (_, index) => index));
+    if (quizCorrectPositionState.deck.length > 1 && quizCorrectPositionState.deck[0] === quizCorrectPositionState.last) {
+      [quizCorrectPositionState.deck[0], quizCorrectPositionState.deck[1]] = [quizCorrectPositionState.deck[1], quizCorrectPositionState.deck[0]];
+    }
+  }
+
+  const position = quizCorrectPositionState.deck.shift();
+  quizCorrectPositionState.last = position;
+  return position;
+}
+
+function prepareQuizQuestions(sourceQuestions) {
+  quizCorrectPositionState.deck = [];
+  quizCorrectPositionState.optionCount = 0;
+  return shuffleScenarioItems(sourceQuestions).map((item) => {
+    const correctOption = item.options[item.answer];
+    const distractors = shuffleScenarioItems(item.options.filter((_, index) => index !== item.answer));
+    const answer = nextBalancedQuizPosition(item.options.length);
+    distractors.splice(answer, 0, correctOption);
+    return { ...item, options: distractors, answer };
+  });
+}
+
+function setActiveQuizQuestions(sourceQuestions) {
+  activeQuizSourceQuestions = sourceQuestions.map((item) => ({ ...item, options: [...item.options] }));
+  quizQuestions = prepareQuizQuestions(activeQuizSourceQuestions);
+}
+
+function localQuizQuestionsForRotation() {
+  return quizQuestionBank.filter((item) => item.rotationGroup === activeQuizRotationGroup).slice(0, 5);
+}
+
+function quizSetLooksChallenging(items) {
+  if (!Array.isArray(items) || items.length < 5) return false;
+  const validItems = items.every((item) => {
+    if (!Array.isArray(item.options) || item.options.length < 4 || !Number.isInteger(item.answer)) return false;
+    if (item.answer < 0 || item.answer >= item.options.length) return false;
+    const lengths = item.options.map((option) => option.trim().split(/\s+/).length);
+    const longestLength = Math.max(...lengths);
+    const correctIsOnlyLongest = lengths[item.answer] === longestLength
+      && lengths.filter((length) => length === longestLength).length === 1;
+    return !correctIsOnlyLongest;
+  });
+  const answerPositions = new Set(items.map((item) => item.answer));
+  return validItems && answerPositions.size > 1;
+}
+
 function teamOpeningOptions(caseData) {
   return balancedSingleOptions(caseData.opening, "opening").map((option) => ({
     ...option,
@@ -1239,9 +1515,10 @@ function currentQuizRotationGroup() {
 
 async function loadRotatingQuizQuestions() {
   activeQuizRotationGroup = currentQuizRotationGroup();
+  const localQuestions = localQuizQuestionsForRotation();
 
   if (!supabaseClient || !currentUser) {
-    quizQuestions = fallbackQuizQuestions.slice(0, 5);
+    setActiveQuizQuestions(localQuestions);
     return;
   }
 
@@ -1254,17 +1531,19 @@ async function loadRotatingQuizQuestions() {
     .limit(5);
 
   if (error || !data || data.length < 5) {
-    quizQuestions = fallbackQuizQuestions.slice(0, 5);
-    showStreakToast("Quiz database not ready. Using demo questions.");
+    setActiveQuizQuestions(localQuestions);
+    showStreakToast("Quiz database not ready. Using the built-in challenge set.");
     return;
   }
 
-  quizQuestions = data.map((item) => ({
+  const remoteQuestions = data.map((item) => ({
     question: item.question,
     options: item.options,
     answer: item.answer_index,
-    why: item.explanation
+    why: item.explanation,
+    topic: "First aid decision"
   }));
+  setActiveQuizQuestions(quizSetLooksChallenging(remoteQuestions) ? remoteQuestions : localQuestions);
 }
 
 async function recordQuizAttempt() {
@@ -1643,10 +1922,17 @@ function renderQuiz() {
   if (!item) return;
   document.getElementById("quiz-count").textContent = `Question ${quizIndex + 1} of ${quizQuestions.length}`;
   document.getElementById("quiz-live-score").textContent = `${quizCorrect} correct`;
+  document.getElementById("quiz-topic").textContent = item.topic || "Applied first aid";
+  document.getElementById("quiz-difficulty").textContent = "Decision challenge";
   document.getElementById("quiz-question").textContent = item.question;
+  document.getElementById("quiz-options").dataset.activityType = "quiz";
   document.getElementById("quiz-options").innerHTML = item.options.map((option, index) => `
-    <button class="option-button" type="button" data-quiz-option="${index}">${option}</button>
+    <button class="option-button quiz-choice" type="button" data-quiz-option="${index}">
+      <span class="option-letter">${String.fromCharCode(65 + index)}</span>
+      <span>${escapeHtml(option)}</span>
+    </button>
   `).join("");
+  document.getElementById("quiz-action").innerHTML = "";
 }
 
 function answerQuiz(optionIndex) {
@@ -1665,18 +1951,24 @@ function answerQuiz(optionIndex) {
   document.getElementById("quiz-feedback").textContent = `${correct ? "Correct." : "Not quite."} ${item.why}`;
   document.getElementById("quiz-live-score").textContent = `${quizCorrect} correct`;
 
-  window.setTimeout(() => {
-    if (quizIndex === quizQuestions.length - 1) {
-      progress.quizTaken = true;
-      progress.quizScore = Math.round((quizCorrect / quizQuestions.length) * 100);
-      recordQuizAttempt();
-      awardTrainingReward("quiz", 15);
-      document.getElementById("quiz-feedback").textContent = `Quiz complete. Your score is ${progress.quizScore}%.`;
-      return;
-    }
-    quizIndex += 1;
-    renderQuiz();
-  }, 1100);
+  if (quizIndex === quizQuestions.length - 1) {
+    progress.quizTaken = true;
+    progress.quizScore = Math.round((quizCorrect / quizQuestions.length) * 100);
+    recordQuizAttempt();
+    awardTrainingReward("quiz", 15);
+    document.getElementById("quiz-feedback").textContent = `${correct ? "Correct." : "Not quite."} ${item.why} Quiz complete: ${quizCorrect}/${quizQuestions.length} (${progress.quizScore}%).`;
+    document.getElementById("quiz-action").innerHTML = `<button class="primary-button" type="button" data-quiz-restart>Try another shuffled set</button>`;
+    return;
+  }
+
+  document.getElementById("quiz-action").innerHTML = `<button class="primary-button" type="button" data-quiz-next>Continue to next question</button>`;
+}
+
+function advanceQuiz() {
+  if (!quizAnswered || quizIndex >= quizQuestions.length - 1) return;
+  quizIndex += 1;
+  document.getElementById("quiz-feedback").textContent = "Compare all options carefully before choosing the safest priority.";
+  renderQuiz();
 }
 
 function restartScenario() {
@@ -1698,7 +1990,10 @@ function generateScenario() {
 function restartQuiz() {
   quizIndex = 0;
   quizCorrect = 0;
-  document.getElementById("quiz-feedback").textContent = "Select an answer to see why it is right or wrong.";
+  if (activeQuizSourceQuestions.length) {
+    quizQuestions = prepareQuizQuestions(activeQuizSourceQuestions);
+  }
+  document.getElementById("quiz-feedback").textContent = "New question order and answer positions are ready. Compare every option.";
   renderQuiz();
 }
 
@@ -2055,6 +2350,8 @@ document.addEventListener("click", (event) => {
 
   const quizOption = event.target.closest("[data-quiz-option]");
   if (quizOption) answerQuiz(Number(quizOption.dataset.quizOption));
+  if (event.target.closest("[data-quiz-next]")) advanceQuiz();
+  if (event.target.closest("[data-quiz-restart]")) restartQuiz();
 
   const resourceButton = event.target.closest("[data-resource-id]");
   if (resourceButton) openAcademyResource(resourceButton.dataset.resourceId);
