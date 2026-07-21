@@ -1041,6 +1041,7 @@ let quizAnswered = false;
 let quizCorrectPositionState = { deck: [], last: -1, optionCount: 0 };
 let emergencyCallCaseIndex = 0;
 let emergencyCallAssessment = null;
+let trainingWriteQueue = Promise.resolve();
 let currentUser = null;
 let authMode = "login";
 let authMessage = "";
@@ -1516,28 +1517,38 @@ function loadProgress() {
   return saved ? { ...defaultProgress, ...JSON.parse(saved) } : { ...defaultProgress };
 }
 
+function queueTrainingWrite(task) {
+  trainingWriteQueue = trainingWriteQueue
+    .catch(() => undefined)
+    .then(task);
+  return trainingWriteQueue;
+}
+
 function saveProgress() {
   localStorage.setItem("firstAidTrainerProgress", JSON.stringify(progress));
-  syncRemoteProgress();
+  const progressSnapshot = { ...progress };
+  const syncPromise = queueTrainingWrite(() => syncRemoteProgress(progressSnapshot));
   renderStats();
   renderAccount();
   renderProgress();
   renderRecommendations();
+  return syncPromise;
 }
 
-async function syncRemoteProgress() {
+async function syncRemoteProgress(progressSnapshot = progress) {
   if (!supabaseClient || !currentUser) return;
 
-  await supabaseClient.from("user_progress").upsert({
+  const { error } = await supabaseClient.from("user_progress").upsert({
     user_id: currentUser.id,
-    quiz_score: progress.quizScore,
-    quiz_taken: progress.quizTaken,
-    scenarios_passed: progress.scenariosPassed,
-    streak: progress.streak,
-    last_streak_date: progress.lastStreakDate || null,
-    total_xp: progress.totalXp,
+    quiz_score: progressSnapshot.quizScore,
+    quiz_taken: progressSnapshot.quizTaken,
+    scenarios_passed: progressSnapshot.scenariosPassed,
+    streak: progressSnapshot.streak,
+    last_streak_date: progressSnapshot.lastStreakDate || null,
+    total_xp: progressSnapshot.totalXp,
     updated_at: new Date().toISOString()
   });
+  if (error) console.error("Training progress could not be synced.", error);
 }
 
 async function syncLessonLearned(lessonId) {
@@ -1580,26 +1591,40 @@ async function loadRemoteProgress() {
   }
 
   currentAppRole = profile?.app_role || "learner";
+  const localProgress = { ...progress, completedLessons: [...progress.completedLessons] };
+  const remoteLessonIds = learnedLessons?.map((item) => item.lesson_id) || [];
+  const completedLessons = [...new Set([...localProgress.completedLessons, ...remoteLessonIds])];
+  const remoteStreakDate = remoteProgress?.last_streak_date || "";
+  const localStreakIsNewer = localProgress.lastStreakDate && localProgress.lastStreakDate > remoteStreakDate;
 
   progress = {
     ...defaultProgress,
-    ...progress,
+    ...localProgress,
     email: currentUser.email || "",
-    profileName: profile?.display_name || progress.profileName || "",
+    profileName: profile?.display_name || localProgress.profileName || "",
     teamName: "First aid learner",
-    initials: profile?.initials || progress.initials || "FA",
-    role: profile?.role || progress.role || "Competitor",
-    heardFrom: profile?.heard_from || progress.heardFrom || "Other",
-    quizScore: remoteProgress?.quiz_score ?? progress.quizScore,
-    quizTaken: remoteProgress?.quiz_taken ?? progress.quizTaken,
-    scenariosPassed: remoteProgress?.scenarios_passed ?? progress.scenariosPassed,
-    streak: remoteProgress?.streak ?? progress.streak,
-    lastStreakDate: remoteProgress?.last_streak_date || progress.lastStreakDate,
-    totalXp: remoteProgress?.total_xp ?? progress.totalXp,
-    completedLessons: learnedLessons?.map((item) => item.lesson_id) || progress.completedLessons
+    initials: profile?.initials || localProgress.initials || "FA",
+    role: profile?.role || localProgress.role || "Competitor",
+    heardFrom: profile?.heard_from || localProgress.heardFrom || "Other",
+    quizScore: Math.max(remoteProgress?.quiz_score || 0, localProgress.quizScore || 0),
+    quizTaken: Boolean(remoteProgress?.quiz_taken || localProgress.quizTaken),
+    scenariosPassed: Math.max(remoteProgress?.scenarios_passed || 0, localProgress.scenariosPassed || 0),
+    streak: localStreakIsNewer ? localProgress.streak : (remoteProgress?.streak ?? localProgress.streak),
+    lastStreakDate: localStreakIsNewer ? localProgress.lastStreakDate : (remoteStreakDate || localProgress.lastStreakDate),
+    totalXp: Math.max(remoteProgress?.total_xp || 0, localProgress.totalXp || 0),
+    completedLessons
   };
 
   localStorage.setItem("firstAidTrainerProgress", JSON.stringify(progress));
+
+  const remoteNeedsRepair = !remoteProgress
+    || progress.quizScore > (remoteProgress.quiz_score || 0)
+    || progress.scenariosPassed > (remoteProgress.scenarios_passed || 0)
+    || progress.totalXp > (remoteProgress.total_xp || 0)
+    || localStreakIsNewer;
+  const missingRemoteLessons = completedLessons.filter((lessonId) => !remoteLessonIds.includes(lessonId));
+  missingRemoteLessons.forEach((lessonId) => queueTrainingWrite(() => syncLessonLearned(lessonId)));
+  if (remoteNeedsRepair) queueTrainingWrite(() => syncRemoteProgress({ ...progress }));
 }
 
 function todayKey() {
@@ -1673,14 +1698,27 @@ function awardTrainingReward(reason, xp) {
 
   if (progress.lastStreakDate === today) {
     showStreakToast(`${reason} complete. Streak already earned today. +${xp} XP`);
-    saveProgress();
+    saveProgress().then(refreshAchievementsAfterTraining);
     return;
   }
 
   progress.streak = progress.lastStreakDate === yesterdayKey() ? progress.streak + 1 : 1;
   progress.lastStreakDate = today;
   showStreakToast(`+1 day streak for ${reason}. +${xp} XP`);
-  saveProgress();
+  saveProgress().then(refreshAchievementsAfterTraining);
+}
+
+async function refreshAchievementsAfterTraining() {
+  if (!supabaseClient || !currentUser) return;
+  const earnedBefore = new Set(academyData.earnedAchievementIds);
+  await loadAcademyData();
+  const newlyEarnedIds = academyData.earnedAchievementIds.filter((id) => !earnedBefore.has(id));
+  if (!newlyEarnedIds.length) return;
+
+  const titles = newlyEarnedIds.map((id) => (
+    academyData.achievementCatalog.find((achievement) => achievement.id === id)?.title || id
+  ));
+  showStreakToast(`${currentLanguage === "bg" ? "Отключено постижение" : "Achievement unlocked"}: ${titles.join(", ")}`);
 }
 
 function showStreakToast(message) {
@@ -2257,6 +2295,7 @@ function renderProgress() {
 async function loadAcademyData() {
   if (!supabaseClient || !currentUser) return;
 
+  await trainingWriteQueue.catch(() => undefined);
   await supabaseClient.rpc("refresh_my_achievements");
 
   const [leaderboardResult, catalogResult, earnedResult, certificatesResult, resourcesResult, contentResult, notificationsResult] = await Promise.all([
@@ -2537,15 +2576,18 @@ document.addEventListener("click", (event) => {
   const complete = event.target.closest("[data-complete]");
   if (complete) {
     const id = complete.dataset.complete;
+    let lessonWasNew = false;
     if (!progress.completedLessons.includes(id)) {
       progress.completedLessons.push(id);
       progress.totalXp += 5;
-      syncLessonLearned(id);
+      queueTrainingWrite(() => syncLessonLearned(id));
+      lessonWasNew = true;
       showStreakToast("Lesson learned. +5 XP");
     } else {
       showStreakToast("Lesson already learned.");
     }
-    saveProgress();
+    const syncPromise = saveProgress();
+    if (lessonWasNew) syncPromise.then(refreshAchievementsAfterTraining);
     renderLessons();
   }
 
