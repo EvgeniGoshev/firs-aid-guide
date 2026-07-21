@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>First Aid Trainer</title>
-  <link rel="stylesheet" href="styles.css?v=20260721-1">
+  <link rel="stylesheet" href="styles.css?v=20260721-2">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js" defer></script>
-  <script src="app.js?v=20260721-1" defer></script>
+  <script src="app.js?v=20260721-2" defer></script>
 </head>
 <body class="auth-pending auth-locked">
   <div class="ambient-shape ambient-shape-one" aria-hidden="true"></div>
@@ -377,11 +377,22 @@
         <button class="auth-tab active" type="button" data-auth-mode="login">Login</button>
         <button class="auth-tab" type="button" data-auth-mode="register">Register</button>
       </div>
+      <div class="social-auth-options standard-auth-only" aria-label="Social sign in options">
+        <button class="social-auth-button google-auth-button" id="google-auth-button" type="button">
+          <span class="google-mark" aria-hidden="true">G</span>
+          <span>Continue with Google</span>
+        </button>
+        <button class="social-auth-button github-auth-button" id="github-auth-button" type="button">
+          <i data-lucide="github" aria-hidden="true"></i>
+          <span>Continue with GitHub</span>
+        </button>
+        <div class="auth-divider" aria-hidden="true"><span>or continue with email</span></div>
+      </div>
       <div class="email-confirmation-notice register-only hidden" role="note">
         <span aria-hidden="true"><i data-lucide="mail-warning"></i></span>
         <div>
-          <strong>Email confirmation is required</strong>
-          <p>After registration we will send you a confirmation email. Open it and click the confirmation link before trying to log in. Check your Spam folder too.</p>
+          <strong>Email confirmation is required for email registration</strong>
+          <p>If you register with email and password, open the confirmation email and click its link before logging in. Google and GitHub sign-in do not need this step.</p>
         </div>
       </div>
       <div class="password-recovery-notice recovery-only hidden" role="note">
@@ -435,7 +446,6 @@
         <input id="account-initials" type="text" maxlength="3" placeholder="FA">
       </label>
       <button class="primary-button" type="submit"><i data-lucide="log-in"></i><span id="account-submit-text">Login</span></button>
-      <button class="secondary-button login-only" id="magic-link-button" type="button"><i data-lucide="mail-check"></i><span>Email me a Magic Link</span></button>
       <button class="secondary-button hidden" id="logout-button" type="button"><i data-lucide="log-out"></i><span>Logout</span></button>
     </form>
   </div>

@@ -524,10 +524,10 @@ function showAuthMessage(message) {
 
 function defaultAuthMessage() {
   if (!supabaseClient) return "Secure sign-in is unavailable until Supabase is connected.";
-  if (authMode === "register") return "Create your account, then confirm the email we send you before logging in.";
+  if (authMode === "register") return "Continue with Google or GitHub, or create an email account and confirm it before logging in.";
   if (authMode === "recovery") return "Enter and save your new password.";
   if (currentUser) return `Signed in as ${currentUser.email}`;
-  return "Enter your email and password, or request a password reset below.";
+  return "Continue with Google or GitHub, or enter your email and password.";
 }
 
 function friendlyAuthError(error) {
@@ -540,6 +540,9 @@ function friendlyAuthError(error) {
   }
   if (/user already registered/i.test(message)) {
     return "An account with this email already exists. Log in or use ‘Forgot your password?’.";
+  }
+  if (/provider.*not.*enabled|unsupported provider/i.test(message)) {
+    return "This social sign-in option is not enabled in Supabase yet.";
   }
   if (/rate limit/i.test(message)) {
     return "Too many email requests. Wait a few minutes, then try again.";
@@ -930,6 +933,9 @@ function renderAuthMode() {
   });
   document.querySelectorAll(".recovery-only").forEach((element) => {
     element.classList.toggle("hidden", !isRecovery);
+  });
+  document.querySelectorAll(".standard-auth-only").forEach((element) => {
+    element.classList.toggle("hidden", isRecovery);
   });
   document.getElementById("auth-tabs").classList.toggle("hidden", isRecovery);
   document.getElementById("auth-email-field").classList.toggle("hidden", isRecovery);
@@ -1656,23 +1662,35 @@ document.getElementById("account-form").addEventListener("submit", async (event)
   document.getElementById("account-modal").classList.add("hidden");
   showStreakToast("Account created and signed in securely.");
 });
-document.getElementById("magic-link-button").addEventListener("click", async () => {
-  const email = document.getElementById("account-email").value.trim();
-  if (!email) {
-    showAuthMessage("Enter your email address first.");
+async function signInWithSocialProvider(provider) {
+  if (!supabaseClient) {
+    showAuthMessage("Social sign-in is unavailable. Check the Supabase configuration.");
     return;
   }
 
+  const providerName = provider === "google" ? "Google" : "GitHub";
+  const buttons = [
+    document.getElementById("google-auth-button"),
+    document.getElementById("github-auth-button")
+  ];
+  buttons.forEach((button) => { button.disabled = true; });
+  showAuthMessage(`Opening ${providerName} secure sign-in...`);
   const redirectTo = `${window.location.origin}${window.location.pathname}`;
-  const { error } = await supabaseClient.auth.signInWithOtp({
-    email,
-    options: { shouldCreateUser: false, emailRedirectTo: redirectTo }
+  const { error } = await supabaseClient.auth.signInWithOAuth({
+    provider,
+    options: { redirectTo }
   });
   if (error) {
+    buttons.forEach((button) => { button.disabled = false; });
     showAuthMessage(friendlyAuthError(error));
-    return;
   }
-  showAuthMessage("Magic Link sent. Open your email to sign in securely.");
+}
+
+document.getElementById("google-auth-button").addEventListener("click", () => {
+  signInWithSocialProvider("google");
+});
+document.getElementById("github-auth-button").addEventListener("click", () => {
+  signInWithSocialProvider("github");
 });
 document.getElementById("password-visibility-button").addEventListener("click", () => {
   const passwordInput = document.getElementById("account-password");

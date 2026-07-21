@@ -801,6 +801,83 @@ p {
   box-shadow: 0 4px 14px rgba(23, 33, 31, 0.08);
 }
 
+.social-auth-options {
+  display: grid;
+  gap: 10px;
+}
+
+.social-auth-button {
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--white);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+.social-auth-button:hover,
+.social-auth-button:focus-visible {
+  transform: translateY(-1px);
+  border-color: #b6c8c2;
+  box-shadow: 0 8px 22px rgba(23, 53, 45, .11);
+}
+
+.social-auth-button:disabled {
+  opacity: .58;
+  cursor: wait;
+  transform: none;
+}
+
+.github-auth-button {
+  background: #17211f;
+  border-color: #17211f;
+  color: var(--white);
+}
+
+.social-auth-button svg,
+.google-mark {
+  width: 21px;
+  height: 21px;
+  flex: 0 0 auto;
+}
+
+.google-mark {
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: conic-gradient(from -35deg, #4285f4 0 25%, #34a853 0 43%, #fbbc05 0 68%, #ea4335 0 82%, #4285f4 0);
+  color: var(--white);
+  font-size: .82rem;
+  font-weight: 900;
+  box-shadow: inset 0 0 0 4px var(--white);
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted);
+  font-size: .78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: var(--line);
+}
+
 .auth-status {
   margin: 0;
   padding: 10px 12px;
