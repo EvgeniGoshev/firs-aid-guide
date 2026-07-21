@@ -478,6 +478,103 @@ let academyData = {
   notifications: []
 };
 
+const translations = {
+  en: {
+    brandTagline: "Practice for responders", navDashboard: "Dashboard", navLessons: "Lessons", navScenario: "Scenario", navQuiz: "Quiz", navProgress: "Progress", navAcademy: "Academy", navStudio: "Studio",
+    trainingMode: "Training mode", emergencyNotice: "In a real emergency, call your local emergency number immediately.", emergencyNumber: "Emergency: 112", privacyPolicy: "Privacy Policy", responderPractice: "Responder practice", readyToRespond: "Ready to respond",
+    welcomeBack: "Welcome back", dayStreak: "Day streak", trainingXp: "Training XP", dailyStreakGoal: "Daily Streak Goal", trainToday: "Train Today", medicalDisclaimer: "This app supports training and revision. It does not replace certified instruction, medical advice, or emergency services.",
+    lessonsCompleted: "Lessons completed", quizScore: "Quiz score", scenariosPassed: "Scenarios passed", continueTraining: "Continue Training", fastScenarioDrill: "Fast Scenario Drill", fastScenarioDescription: "Practice decisions in order: safety, responsiveness, call for help, then care.", startDrill: "Start Drill",
+    lessonLibrary: "Lesson Library", lessonLibraryDescription: "Choose a category, then open a lesson for signs, actions, common mistakes, team roles, and practice ideas.", scenarioBuilder: "Competition Scenario Builder", scenarioBuilderDescription: "Pick a category, then generate a different practice case for a student first aid team.", generateScenario: "Generate scenario", coachNotes: "Coach Notes", restart: "Restart", answerReview: "Answer Review", restartQuiz: "Restart Quiz", yourProgress: "Your Progress", progressSaved: "Progress is saved securely to your account.",
+    secureAccount: "Secure Account", login: "Login", register: "Register", continueGoogle: "Continue with Google", continueGitHub: "Continue with GitHub", continueEmail: "or continue with email", confirmationRequired: "Email confirmation is required for email registration", confirmationExplanation: "If you register with email and password, open the confirmation email and click its link before logging in. Google and GitHub sign-in do not need this step.", createNewPassword: "Create a new password", newPasswordExplanation: "Use at least 8 characters. After saving it, you will stay signed in.",
+    email: "Email", password: "Password", forgotPassword: "Forgot your password?", resendConfirmation: "Resend confirmation email", name: "Name", role: "Role", heardAboutUs: "Where did you hear about us?", avatarInitials: "Avatar initials", logout: "Logout", deleteAccount: "Delete my account", dataProtected: "Your account data is protected by Supabase.",
+    privacyEyebrow: "Your data", privacyTitle: "Privacy Policy", permanentAction: "Permanent action", deleteAccountTitle: "Delete your account?", deleteAccountExplanation: "Your profile, training progress, achievements, room participation, and authentication account will be permanently removed.", typeDelete: "Type DELETE to confirm", cancel: "Cancel", deletePermanently: "Delete permanently",
+    accountReady: "Account ready", welcomeTitle: "Welcome to First Aid Trainer!", welcomeMessage: "Your secure profile was created successfully. Your training progress will now follow you across devices.", benefitProgress: "Progress saved securely", benefitAchievements: "Achievements and certificates", benefitAcademy: "Academy and live practice", startTraining: "Start training",
+    pageDashboard: "Dashboard", pageLessons: "Lessons", pageScenario: "Scenario Practice", pageQuiz: "Knowledge Quiz", pageProgress: "Progress", pageAcademy: "Responder Academy", pageStudio: "Academy Studio",
+    createAccount: "Create your account", secureBackend: "Secure backend account", notSignedIn: "Not signed in", authUnavailable: "Authentication unavailable", profile: "Profile",
+    dailyEarned: "Daily streak earned. Come back tomorrow to keep it alive.", dailyGoal: "Complete one quiz or scenario today to earn +1 streak.",
+    authHeading: "Sign in to start training", authDescription: "An account is required to access lessons, scenarios, quizzes, and progress.", recoveryHeading: "Reset your password", recoveryDescription: "The recovery link is verified. Choose a new password for your account.",
+    submitLogin: "Login", submitRegister: "Create account and send confirmation email", submitRecovery: "Save new password", signingIn: "Signing in...", creatingAccount: "Creating account...", savingPassword: "Saving password...", sendingEmail: "Sending email...", deletingAccount: "Deleting account...",
+    authLoginPrompt: "Continue with Google or GitHub, or enter your email and password.", authRegisterPrompt: "Continue with Google or GitHub, or create an email account and confirm it before logging in.", authRecoveryPrompt: "Enter and save your new password.", authLockedPrompt: "Login or create an account to unlock the training platform.", authUnavailablePrompt: "Secure sign-in is unavailable until Supabase is connected.", signedInAs: "Signed in as {email}",
+    invalidCredentials: "The email or password is incorrect. If you just registered, confirm your email before logging in.", emailNotConfirmed: "Your email is not confirmed yet. Open the confirmation email and click its link before logging in.", alreadyRegistered: "An account with this email already exists. Log in or use ‘Forgot your password?’.", providerDisabled: "This social sign-in option is not enabled in Supabase yet.", rateLimited: "Too many email requests. Wait a few minutes, then try again.",
+    enterEmailFirst: "Enter your email address first.", resetSent: "Password reset email sent. Open it and click the recovery link to choose a new password. Check your Spam folder too.", confirmationSent: "A new confirmation email was sent. Open it and click the confirmation link. Check your Spam folder too.", resendIn: "Resend in {seconds}s", registrationSent: "Registration successful — we sent a confirmation email. Open it, click the confirmation link, then return here and log in. Check your Spam folder if you cannot see it.",
+    passwordUpdated: "Password updated successfully. You are now signed in.", loggedIn: "Logged in securely.", loggedOut: "You have been logged out. Sign in to continue training.", accountDeleted: "Your account and saved training data were deleted.", socialOpening: "Opening {provider} secure sign-in...",
+    category: "Category", difficulty: "Difficulty", basic: "Basic", competition: "Competition", advanced: "Advanced", inProgress: "In progress", collapsedAdult: "Collapsed Adult",
+    academyEyebrow: "First aid community", academyTitle: "Responder Academy", academyDescription: "Compete, collect achievements, join live practice, and use trusted learning resources.", learner: "Learner", leaderboard: "Leaderboard", achievements: "Achievements", certificate: "Certificate", certificateDescription: "Complete 10 lessons and score at least 80% to earn your First Aid Foundations certificate.", checkEligibility: "Check eligibility", liveRoom: "Live Training Room", offline: "Offline", liveRoomDescription: "Join an instructor-led scenario and see updates in real time.", join: "Join", resourceLibrary: "Resource Library", smartCoach: "Smart Coach Search", smartSearch: "Smart search", smartCoachDescription: "Search lessons and academy content by topic, symptom, or action.", search: "Search", academyFeed: "Academy Feed",
+    instructorTools: "Instructor tools", academyStudio: "Academy Studio", studioDescription: "Create learning content, upload resources, and start live practice rooms.", staffAccess: "Staff access", publishContent: "Publish Content", type: "Type", title: "Title", summary: "Summary", publish: "Publish", uploadResource: "Upload Resource", selectFile: "Select PDF, image, or MP4 (max 50 MB)", uploadSecurely: "Upload securely", startLiveRoom: "Start Live Room", roomTitle: "Room title", openingPrompt: "Opening prompt", createLiveRoom: "Create live room", automations: "Automations", automationDescription: "Daily in-app streak reminders are generated automatically at 18:00 UTC with Supabase Cron.", refreshSearch: "Refresh smart-search index",
+    certificateTitle: "Certificate of Achievement", certifiesThat: "This certifies that", completedRequirements: "has successfully completed the requirements for", printCertificate: "Print / Save as PDF", emailPlaceholder: "you@example.com", passwordPlaceholder: "Minimum 8 characters", namePlaceholder: "Your name"
+  },
+  bg: {
+    brandTagline: "Практика за оказващи първа помощ", navDashboard: "Табло", navLessons: "Уроци", navScenario: "Сценарий", navQuiz: "Тест", navProgress: "Напредък", navAcademy: "Академия", navStudio: "Студио",
+    trainingMode: "Режим обучение", emergencyNotice: "При реална спешна ситуация веднага се обади на местния спешен номер.", emergencyNumber: "Спешен номер: 112", privacyPolicy: "Политика за поверителност", responderPractice: "Практика за спасители", readyToRespond: "Готов за действие",
+    welcomeBack: "Добре дошъл отново", dayStreak: "Дневна серия", trainingXp: "Тренировъчен XP", dailyStreakGoal: "Дневна цел", trainToday: "Тренирай днес", medicalDisclaimer: "Приложението подпомага обучението и преговора. То не заменя сертифицирано обучение, медицински съвет или спешна помощ.",
+    lessonsCompleted: "Завършени уроци", quizScore: "Резултат от теста", scenariosPassed: "Успешни сценарии", continueTraining: "Продължи обучението", fastScenarioDrill: "Бърза сценарийна тренировка", fastScenarioDescription: "Упражнявай решенията подред: безопасност, реакция, повикване на помощ и грижа.", startDrill: "Започни тренировка",
+    lessonLibrary: "Библиотека с уроци", lessonLibraryDescription: "Избери категория и отвори урок със симптоми, действия, чести грешки, екипни роли и идеи за практика.", scenarioBuilder: "Създател на състезателни сценарии", scenarioBuilderDescription: "Избери категория и генерирай различен тренировъчен случай за ученически отбор по първа помощ.", generateScenario: "Генерирай сценарий", coachNotes: "Бележки на треньора", restart: "Рестартирай", answerReview: "Преглед на отговора", restartQuiz: "Рестартирай теста", yourProgress: "Твоят напредък", progressSaved: "Напредъкът се пази сигурно в профила ти.",
+    secureAccount: "Защитен профил", login: "Вход", register: "Регистрация", continueGoogle: "Продължи с Google", continueGitHub: "Продължи с GitHub", continueEmail: "или продължи с имейл", confirmationRequired: "Регистрацията с имейл изисква потвърждение", confirmationExplanation: "След регистрацията отвори получения имейл и натисни връзката за потвърждение. При вход с Google или GitHub тази стъпка не е нужна.", createNewPassword: "Създай нова парола", newPasswordExplanation: "Използвай поне 8 символа. След записването ще останеш влязъл.",
+    email: "Имейл", password: "Парола", forgotPassword: "Забравена парола?", resendConfirmation: "Изпрати отново потвърждението", name: "Име", role: "Роля", heardAboutUs: "Откъде научи за нас?", avatarInitials: "Инициали за аватар", logout: "Изход", deleteAccount: "Изтрий профила ми", dataProtected: "Данните на профила са защитени от Supabase.",
+    privacyEyebrow: "Твоите данни", privacyTitle: "Политика за поверителност", permanentAction: "Необратимо действие", deleteAccountTitle: "Да изтрием ли профила?", deleteAccountExplanation: "Профилът, учебният напредък, постиженията, участието в стаи и акаунтът за вход ще бъдат окончателно премахнати.", typeDelete: "Напиши DELETE за потвърждение", cancel: "Отказ", deletePermanently: "Изтрий окончателно",
+    accountReady: "Профилът е готов", welcomeTitle: "Добре дошъл във First Aid Trainer!", welcomeMessage: "Защитеният ти профил беше създаден успешно. Учебният напредък вече ще те следва на различните устройства.", benefitProgress: "Сигурно запазен напредък", benefitAchievements: "Постижения и сертификати", benefitAcademy: "Академия и тренировки на живо", startTraining: "Започни обучение",
+    pageDashboard: "Табло", pageLessons: "Уроци", pageScenario: "Сценарийна практика", pageQuiz: "Тест за знания", pageProgress: "Напредък", pageAcademy: "Академия за спасители", pageStudio: "Студио на академията",
+    createAccount: "Създай своя профил", secureBackend: "Защитен профил в облака", notSignedIn: "Не си влязъл", authUnavailable: "Входът не е наличен", profile: "Профил",
+    dailyEarned: "Дневната серия е спечелена. Върни се утре, за да я продължиш.", dailyGoal: "Завърши един тест или сценарий днес, за да получиш +1 към серията.",
+    authHeading: "Влез, за да започнеш обучение", authDescription: "Необходим е профил за достъп до уроците, сценариите, тестовете и напредъка.", recoveryHeading: "Възстанови паролата си", recoveryDescription: "Връзката е потвърдена. Избери нова парола за профила.",
+    submitLogin: "Вход", submitRegister: "Създай профил и изпрати потвърждение", submitRecovery: "Запази новата парола", signingIn: "Влизане...", creatingAccount: "Създаване на профил...", savingPassword: "Запазване на паролата...", sendingEmail: "Изпращане...", deletingAccount: "Изтриване на профила...",
+    authLoginPrompt: "Продължи с Google или GitHub, или въведи имейл и парола.", authRegisterPrompt: "Продължи с Google или GitHub, или създай профил с имейл и го потвърди.", authRecoveryPrompt: "Въведи и запази новата си парола.", authLockedPrompt: "Влез или създай профил, за да отключиш обучителната платформа.", authUnavailablePrompt: "Защитеният вход не е наличен, докато Supabase не е свързан.", signedInAs: "Влязъл като {email}",
+    invalidCredentials: "Имейлът или паролата са грешни. Ако току-що си се регистрирал, първо потвърди имейла си.", emailNotConfirmed: "Имейлът още не е потвърден. Отвори полученото писмо и натисни връзката за потвърждение.", alreadyRegistered: "Вече има профил с този имейл. Влез или използвай „Забравена парола?“.", providerDisabled: "Този начин за социален вход още не е включен в Supabase.", rateLimited: "Изпратени са прекалено много заявки. Изчакай няколко минути и опитай пак.",
+    enterEmailFirst: "Първо въведи своя имейл адрес.", resetSent: "Изпратен е имейл за възстановяване на паролата. Отвори връзката в него. Провери и папка Спам.", confirmationSent: "Изпратен е нов имейл за потвърждение. Отвори го и натисни връзката. Провери и папка Спам.", resendIn: "Повторно след {seconds} сек.", registrationSent: "Регистрацията е успешна — изпратихме имейл за потвърждение. Отвори го, натисни връзката и после се върни тук, за да влезеш. Провери и папка Спам.",
+    passwordUpdated: "Паролата е обновена успешно и вече си влязъл.", loggedIn: "Влезе успешно и защитено.", loggedOut: "Излезе от профила си. Влез отново, за да продължиш.", accountDeleted: "Профилът и запазеният учебен напредък бяха изтрити.", socialOpening: "Отваряне на защитен вход с {provider}...",
+    category: "Категория", difficulty: "Трудност", basic: "Основна", competition: "Състезателна", advanced: "Напреднала", inProgress: "В процес", collapsedAdult: "Припаднал възрастен",
+    academyEyebrow: "Общност по първа помощ", academyTitle: "Академия за спасители", academyDescription: "Състезавай се, събирай постижения, участвай в тренировки на живо и използвай доверени учебни материали.", learner: "Обучаващ се", leaderboard: "Класация", achievements: "Постижения", certificate: "Сертификат", certificateDescription: "Завърши 10 урока и постигни поне 80% на теста, за да получиш сертификата First Aid Foundations.", checkEligibility: "Провери условията", liveRoom: "Тренировъчна стая на живо", offline: "Извън линия", liveRoomDescription: "Включи се в сценарий с инструктор и получавай промени в реално време.", join: "Включи се", resourceLibrary: "Библиотека с ресурси", smartCoach: "Умно търсене с треньора", smartSearch: "Умно търсене", smartCoachDescription: "Търси в уроците и съдържанието на академията по тема, симптом или действие.", search: "Търси", academyFeed: "Новини от академията",
+    instructorTools: "Инструменти за инструктори", academyStudio: "Студио на академията", studioDescription: "Създавай учебно съдържание, качвай ресурси и започвай тренировки на живо.", staffAccess: "Достъп за екипа", publishContent: "Публикувай съдържание", type: "Тип", title: "Заглавие", summary: "Обобщение", publish: "Публикувай", uploadResource: "Качи ресурс", selectFile: "Избери PDF, изображение или MP4 (до 50 MB)", uploadSecurely: "Качи защитено", startLiveRoom: "Започни стая на живо", roomTitle: "Заглавие на стаята", openingPrompt: "Начална ситуация", createLiveRoom: "Създай стая на живо", automations: "Автоматизации", automationDescription: "Ежедневните напомняния за серия се генерират автоматично в 18:00 UTC чрез Supabase Cron.", refreshSearch: "Обнови индекса за умно търсене",
+    certificateTitle: "Сертификат за постижение", certifiesThat: "С настоящото се удостоверява, че", completedRequirements: "успешно изпълни изискванията за", printCertificate: "Печат / Запази като PDF", emailPlaceholder: "твоят@имейл.bg", passwordPlaceholder: "Минимум 8 символа", namePlaceholder: "Твоето име"
+  }
+};
+
+let currentLanguage = localStorage.getItem("firstAidLanguage") === "bg" ? "bg" : "en";
+let authBusy = false;
+let resendCooldownTimer = null;
+
+function t(key, replacements = {}) {
+  const template = translations[currentLanguage]?.[key] || translations.en[key] || key;
+  return Object.entries(replacements).reduce(
+    (result, [name, value]) => result.replaceAll(`{${name}}`, String(value)),
+    template
+  );
+}
+
+function applyLanguage() {
+  document.documentElement.lang = currentLanguage;
+  document.body.dataset.language = currentLanguage;
+  document.querySelectorAll("[data-i18n]").forEach((element) => {
+    element.textContent = t(element.dataset.i18n);
+  });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((element) => {
+    element.setAttribute("placeholder", t(element.dataset.i18nPlaceholder));
+  });
+  document.querySelectorAll(".language-toggle-label").forEach((label) => {
+    label.textContent = currentLanguage === "en" ? "BG" : "EN";
+  });
+  document.querySelectorAll(".policy-language").forEach((section) => {
+    section.classList.toggle("hidden", section.dataset.policyLanguage !== currentLanguage);
+  });
+  renderAccount();
+  const activeView = document.querySelector(".view.active-view")?.id || "dashboard";
+  updatePageTitle(activeView);
+  updateResendButton();
+}
+
+function updatePageTitle(viewId) {
+  const titleKeys = {
+    dashboard: "pageDashboard",
+    lessons: "pageLessons",
+    scenario: "pageScenario",
+    quiz: "pageQuiz",
+    progress: "pageProgress",
+    community: "pageAcademy",
+    studio: "pageStudio"
+  };
+  document.getElementById("page-title").textContent = t(titleKeys[viewId] || "pageDashboard");
+}
+
 function isStaffMember() {
   return currentAppRole === "admin" || currentAppRole === "instructor";
 }
@@ -508,8 +605,8 @@ function updateAuthGate() {
 function requireAuthentication() {
   if (currentUser) return true;
   authMessage = supabaseClient
-    ? "Login or create an account to unlock the training platform."
-    : "Secure login is currently unavailable. Check the Supabase configuration.";
+    ? t("authLockedPrompt")
+    : t("authUnavailablePrompt");
   renderAccount();
   updateAuthGate();
   document.getElementById("account-email").focus();
@@ -522,27 +619,92 @@ function showAuthMessage(message) {
   showStreakToast(message);
 }
 
+function updateResendButton() {
+  const button = document.getElementById("resend-confirmation-button");
+  const cooldownUntil = Number(sessionStorage.getItem("firstAidResendCooldownUntil") || 0);
+  const seconds = Math.max(0, Math.ceil((cooldownUntil - Date.now()) / 1000));
+  button.disabled = authBusy || seconds > 0;
+  button.textContent = seconds > 0 ? t("resendIn", { seconds }) : t("resendConfirmation");
+
+  window.clearTimeout(resendCooldownTimer);
+  if (seconds > 0) {
+    resendCooldownTimer = window.setTimeout(updateResendButton, 1000);
+  }
+}
+
+function startResendCooldown() {
+  sessionStorage.setItem("firstAidResendCooldownUntil", String(Date.now() + 60_000));
+  updateResendButton();
+}
+
+function setAuthBusy(busy, labelKey = "") {
+  authBusy = busy;
+  const submitButton = document.getElementById("account-submit-button");
+  const socialButtons = [
+    document.getElementById("google-auth-button"),
+    document.getElementById("github-auth-button")
+  ];
+  submitButton.disabled = busy;
+  document.getElementById("forgot-password-button").disabled = busy;
+  socialButtons.forEach((button) => { button.disabled = busy; });
+  submitButton.classList.toggle("is-loading", busy);
+  socialButtons.forEach((button) => button.classList.toggle("is-loading", busy));
+
+  if (busy && labelKey) {
+    document.getElementById("account-submit-text").textContent = t(labelKey);
+  } else if (!busy) {
+    renderAuthMode();
+  }
+  updateResendButton();
+}
+
+async function withAuthBusy(labelKey, task) {
+  setAuthBusy(true, labelKey);
+  try {
+    return await task();
+  } finally {
+    setAuthBusy(false);
+  }
+}
+
+function maybeShowSocialWelcome(user) {
+  const provider = user?.app_metadata?.provider;
+  if (!user || !["google", "github"].includes(provider)) return;
+
+  const createdAt = new Date(user.created_at || 0).getTime();
+  const isFreshAccount = Number.isFinite(createdAt) && Date.now() - createdAt < 10 * 60 * 1000;
+  const storageKey = `firstAidSocialWelcome:${user.id}`;
+  if (!isFreshAccount || sessionStorage.getItem(storageKey)) return;
+
+  sessionStorage.setItem(storageKey, "shown");
+  document.getElementById("social-welcome-modal").classList.remove("hidden");
+  document.getElementById("close-social-welcome").focus();
+}
+
 function defaultAuthMessage() {
-  if (!supabaseClient) return "Secure sign-in is unavailable until Supabase is connected.";
-  if (authMode === "register") return "Create your account, then confirm the email we send you before logging in.";
-  if (authMode === "recovery") return "Enter and save your new password.";
-  if (currentUser) return `Signed in as ${currentUser.email}`;
-  return "Enter your email and password, or request a password reset below.";
+  if (!supabaseClient) return t("authUnavailablePrompt");
+  if (authMode === "register") return t("authRegisterPrompt");
+  if (authMode === "recovery") return t("authRecoveryPrompt");
+  if (currentUser) return t("signedInAs", { email: currentUser.email });
+  return t("authLoginPrompt");
 }
 
 function friendlyAuthError(error) {
   const message = String(error?.message || "Authentication failed.");
   if (/invalid login credentials/i.test(message)) {
-    return "The email or password is incorrect. If you just registered, confirm your email before logging in.";
+    return t("invalidCredentials");
   }
   if (/email not confirmed/i.test(message)) {
-    return "Your email is not confirmed yet. Open the confirmation email and click its link before logging in.";
+    return t("emailNotConfirmed");
   }
   if (/user already registered/i.test(message)) {
-    return "An account with this email already exists. Log in or use ‘Forgot your password?’.";
+    return t("alreadyRegistered");
+  }
+  if (/provider.*not.*enabled|unsupported provider/i.test(message)) {
+    return t("providerDisabled");
   }
   if (/rate limit/i.test(message)) {
-    return "Too many email requests. Wait a few minutes, then try again.";
+    return t("rateLimited");
   }
   return message;
 }
@@ -868,15 +1030,7 @@ function setView(viewId) {
   }
   document.querySelectorAll(".view").forEach((view) => view.classList.toggle("active-view", view.id === viewId));
   document.querySelectorAll(".nav-tab").forEach((tab) => tab.classList.toggle("active", tab.dataset.view === viewId));
-  document.getElementById("page-title").textContent = {
-    dashboard: "Dashboard",
-    lessons: "Lessons",
-    scenario: "Scenario Practice",
-    quiz: "Knowledge Quiz",
-    progress: "Progress",
-    community: "Responder Academy",
-    studio: "Academy Studio"
-  }[viewId];
+  updatePageTitle(viewId);
 
   if (viewId === "community" || viewId === "studio") {
     loadAcademyData();
@@ -890,8 +1044,8 @@ function renderStats() {
 }
 
 function renderAccount() {
-  const displayName = progress.profileName || "Create your account";
-  const backendLabel = currentUser ? "Secure backend account" : (supabaseClient ? "Not signed in" : "Authentication unavailable");
+  const displayName = progress.profileName || t("createAccount");
+  const backendLabel = currentUser ? t("secureBackend") : (supabaseClient ? t("notSignedIn") : t("authUnavailable"));
   const teamName = `${progress.role || "Competitor"} · ${backendLabel}`;
   const initials = (progress.initials || progress.profileName.slice(0, 2) || "FA").toUpperCase();
   const earnedToday = progress.lastStreakDate === todayKey();
@@ -902,12 +1056,13 @@ function renderAccount() {
   document.getElementById("streak-count").textContent = String(progress.streak);
   document.getElementById("xp-count").textContent = String(progress.totalXp);
   document.getElementById("daily-goal-text").textContent = earnedToday
-    ? "Daily streak earned. Come back tomorrow to keep it alive."
-    : "Complete one quiz or scenario today to earn +1 streak.";
+    ? t("dailyEarned")
+    : t("dailyGoal");
 
-  document.getElementById("account-button-text").textContent = currentUser ? "Profile" : "Login";
+  document.getElementById("account-button-text").textContent = currentUser ? t("profile") : t("login");
   document.getElementById("auth-status").textContent = authMessage || defaultAuthMessage();
   document.getElementById("logout-button").classList.toggle("hidden", !currentUser);
+  document.getElementById("delete-account-button").classList.toggle("hidden", !currentUser);
   document.getElementById("account-name").value = progress.profileName;
   document.getElementById("account-email").value = progress.email || currentUser?.email || "";
   document.getElementById("account-initials").value = initials;
@@ -931,16 +1086,19 @@ function renderAuthMode() {
   document.querySelectorAll(".recovery-only").forEach((element) => {
     element.classList.toggle("hidden", !isRecovery);
   });
+  document.querySelectorAll(".standard-auth-only").forEach((element) => {
+    element.classList.toggle("hidden", isRecovery);
+  });
   document.getElementById("auth-tabs").classList.toggle("hidden", isRecovery);
   document.getElementById("auth-email-field").classList.toggle("hidden", isRecovery);
-  document.getElementById("auth-heading").textContent = isRecovery ? "Reset your password" : "Sign in to start training";
+  document.getElementById("auth-heading").textContent = isRecovery ? t("recoveryHeading") : t("authHeading");
   document.getElementById("auth-description").textContent = isRecovery
-    ? "The recovery link is verified. Choose a new password for your account."
-    : "An account is required to access lessons, scenarios, quizzes, and progress.";
+    ? t("recoveryDescription")
+    : t("authDescription");
   document.getElementById("account-password").setAttribute("autocomplete", isRecovery || isRegister ? "new-password" : "current-password");
   document.getElementById("account-submit-text").textContent = isRecovery
-    ? "Save new password"
-    : (isRegister ? "Create account and send confirmation email" : "Login");
+    ? t("submitRecovery")
+    : (isRegister ? t("submitRegister") : t("submitLogin"));
 }
 
 function renderRecommendations() {
@@ -1535,6 +1693,109 @@ document.getElementById("account-modal").addEventListener("click", (event) => {
     document.getElementById("account-modal").classList.add("hidden");
   }
 });
+
+document.querySelectorAll(".language-toggle").forEach((button) => {
+  button.addEventListener("click", () => {
+    currentLanguage = currentLanguage === "en" ? "bg" : "en";
+    localStorage.setItem("firstAidLanguage", currentLanguage);
+    authMessage = "";
+    applyLanguage();
+    hydrateIcons();
+  });
+});
+
+document.querySelectorAll("[data-open-privacy]").forEach((button) => {
+  button.addEventListener("click", () => {
+    document.getElementById("privacy-modal").classList.remove("hidden");
+    document.getElementById("close-privacy").focus();
+  });
+});
+
+document.getElementById("close-privacy").addEventListener("click", () => {
+  document.getElementById("privacy-modal").classList.add("hidden");
+});
+
+document.getElementById("privacy-modal").addEventListener("click", (event) => {
+  if (event.target.id === "privacy-modal") {
+    event.currentTarget.classList.add("hidden");
+  }
+});
+
+document.getElementById("delete-account-button").addEventListener("click", () => {
+  const confirmationInput = document.getElementById("delete-account-confirmation");
+  confirmationInput.value = "";
+  document.getElementById("confirm-delete-account").disabled = true;
+  document.getElementById("delete-account-modal").classList.remove("hidden");
+  confirmationInput.focus();
+});
+
+document.getElementById("delete-account-confirmation").addEventListener("input", (event) => {
+  document.getElementById("confirm-delete-account").disabled = event.target.value.trim() !== "DELETE";
+});
+
+document.getElementById("cancel-delete-account").addEventListener("click", () => {
+  document.getElementById("delete-account-modal").classList.add("hidden");
+});
+
+document.getElementById("delete-account-modal").addEventListener("click", (event) => {
+  if (event.target.id === "delete-account-modal") {
+    event.currentTarget.classList.add("hidden");
+  }
+});
+
+document.getElementById("confirm-delete-account").addEventListener("click", async () => {
+  const confirmationInput = document.getElementById("delete-account-confirmation");
+  if (!supabaseClient || !currentUser || confirmationInput.value.trim() !== "DELETE") return;
+
+  const button = document.getElementById("confirm-delete-account");
+  const originalMarkup = button.innerHTML;
+  button.disabled = true;
+  button.classList.add("is-loading");
+  button.textContent = t("deletingAccount");
+
+  const { error } = await supabaseClient.functions.invoke("delete-account", {
+    body: { confirmation: "DELETE" }
+  });
+
+  if (error) {
+    button.innerHTML = originalMarkup;
+    button.classList.remove("is-loading");
+    button.disabled = false;
+    hydrateIcons();
+    showAuthMessage(error.message || "The account could not be deleted.");
+    return;
+  }
+
+  await supabaseClient.auth.signOut({ scope: "local" });
+  currentUser = null;
+  currentAppRole = "learner";
+  progress = { ...defaultProgress };
+  localStorage.removeItem("firstAidTrainerProgress");
+  document.getElementById("delete-account-modal").classList.add("hidden");
+  authMode = "login";
+  authMessage = t("accountDeleted");
+  renderAll();
+  applyLanguage();
+  updateAuthGate();
+  showStreakToast(t("accountDeleted"));
+});
+
+document.getElementById("close-social-welcome").addEventListener("click", () => {
+  document.getElementById("social-welcome-modal").classList.add("hidden");
+});
+
+document.getElementById("social-welcome-modal").addEventListener("click", (event) => {
+  if (event.target.id === "social-welcome-modal") {
+    event.currentTarget.classList.add("hidden");
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "Escape") return;
+  document.getElementById("privacy-modal").classList.add("hidden");
+  document.getElementById("delete-account-modal").classList.add("hidden");
+  document.getElementById("social-welcome-modal").classList.add("hidden");
+});
 document.getElementById("account-form").addEventListener("submit", async (event) => {
   event.preventDefault();
   const email = document.getElementById("account-email").value.trim();
@@ -1554,14 +1815,14 @@ document.getElementById("account-form").addEventListener("submit", async (event)
       showAuthMessage("Your new password must contain at least 8 characters.");
       return;
     }
-    const { error } = await supabaseClient.auth.updateUser({ password });
+    const { error } = await withAuthBusy("savingPassword", () => supabaseClient.auth.updateUser({ password }));
     if (error) {
       showAuthMessage(friendlyAuthError(error));
       return;
     }
     authMode = "login";
     document.getElementById("account-password").value = "";
-    authMessage = "Password updated successfully. You are now signed in.";
+    authMessage = t("passwordUpdated");
     renderAll();
     updateAuthGate();
     showStreakToast(authMessage);
@@ -1574,7 +1835,7 @@ document.getElementById("account-form").addEventListener("submit", async (event)
   }
 
   if (authMode === "login") {
-    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+    const { data, error } = await withAuthBusy("signingIn", () => supabaseClient.auth.signInWithPassword({ email, password }));
     if (error) {
       showAuthMessage(friendlyAuthError(error));
       return;
@@ -1587,7 +1848,7 @@ document.getElementById("account-form").addEventListener("submit", async (event)
     renderAll();
     updateAuthGate();
     document.getElementById("account-modal").classList.add("hidden");
-    showStreakToast("Logged in securely.");
+    showStreakToast(t("loggedIn"));
     return;
   }
 
@@ -1596,18 +1857,19 @@ document.getElementById("account-form").addEventListener("submit", async (event)
     return;
   }
 
-  const { data, error } = await supabaseClient.auth.signUp({
-    email,
-    password,
-    options: {
-      data: {
-        display_name: name,
-        initials: (initials || name.slice(0, 2) || "FA").toUpperCase(),
-        role,
-        heard_from: heardFrom
+  const { data, error } = await withAuthBusy("creatingAccount", () => supabaseClient.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${window.location.origin}${window.location.pathname}`,
+        data: {
+          display_name: name,
+          initials: (initials || name.slice(0, 2) || "FA").toUpperCase(),
+          role,
+          heard_from: heardFrom
+        }
       }
-    }
-  });
+    }));
 
   if (error) {
     showAuthMessage(friendlyAuthError(error));
@@ -1619,7 +1881,8 @@ document.getElementById("account-form").addEventListener("submit", async (event)
     authMode = "login";
     renderAuthMode();
     document.getElementById("account-password").value = "";
-    showAuthMessage("Registration successful — we sent a confirmation email. Open it, click the confirmation link, then return here and log in. Check your Spam folder if you cannot see it.");
+    startResendCooldown();
+    showAuthMessage(t("registrationSent"));
     updateAuthGate();
     return;
   }
@@ -1656,23 +1919,31 @@ document.getElementById("account-form").addEventListener("submit", async (event)
   document.getElementById("account-modal").classList.add("hidden");
   showStreakToast("Account created and signed in securely.");
 });
-document.getElementById("magic-link-button").addEventListener("click", async () => {
-  const email = document.getElementById("account-email").value.trim();
-  if (!email) {
-    showAuthMessage("Enter your email address first.");
+async function signInWithSocialProvider(provider) {
+  if (!supabaseClient) {
+    showAuthMessage("Social sign-in is unavailable. Check the Supabase configuration.");
     return;
   }
 
+  const providerName = provider === "google" ? "Google" : "GitHub";
+  setAuthBusy(true, "signingIn");
+  showAuthMessage(t("socialOpening", { provider: providerName }));
   const redirectTo = `${window.location.origin}${window.location.pathname}`;
-  const { error } = await supabaseClient.auth.signInWithOtp({
-    email,
-    options: { shouldCreateUser: false, emailRedirectTo: redirectTo }
+  const { error } = await supabaseClient.auth.signInWithOAuth({
+    provider,
+    options: { redirectTo }
   });
   if (error) {
+    setAuthBusy(false);
     showAuthMessage(friendlyAuthError(error));
-    return;
   }
-  showAuthMessage("Magic Link sent. Open your email to sign in securely.");
+}
+
+document.getElementById("google-auth-button").addEventListener("click", () => {
+  signInWithSocialProvider("google");
+});
+document.getElementById("github-auth-button").addEventListener("click", () => {
+  signInWithSocialProvider("github");
 });
 document.getElementById("password-visibility-button").addEventListener("click", () => {
   const passwordInput = document.getElementById("account-password");
@@ -1691,17 +1962,44 @@ document.getElementById("forgot-password-button").addEventListener("click", asyn
     return;
   }
   if (!email) {
-    showAuthMessage("Enter your email address first, then select ‘Forgot your password?’ again.");
+    showAuthMessage(t("enterEmailFirst"));
     document.getElementById("account-email").focus();
     return;
   }
   const redirectTo = `${window.location.origin}${window.location.pathname}`;
-  const { error } = await supabaseClient.auth.resetPasswordForEmail(email, { redirectTo });
+  const { error } = await withAuthBusy("sendingEmail", () => supabaseClient.auth.resetPasswordForEmail(email, { redirectTo }));
   if (error) {
     showAuthMessage(friendlyAuthError(error));
     return;
   }
-  showAuthMessage("Password reset email sent. Open it and click the recovery link to choose a new password. Check your Spam folder too.");
+  showAuthMessage(t("resetSent"));
+});
+
+document.getElementById("resend-confirmation-button").addEventListener("click", async () => {
+  const email = document.getElementById("account-email").value.trim();
+  if (!supabaseClient) {
+    showAuthMessage(t("authUnavailablePrompt"));
+    return;
+  }
+  if (!email) {
+    showAuthMessage(t("enterEmailFirst"));
+    document.getElementById("account-email").focus();
+    return;
+  }
+
+  const emailRedirectTo = `${window.location.origin}${window.location.pathname}`;
+  const { error } = await withAuthBusy("sendingEmail", () => supabaseClient.auth.resend({
+    type: "signup",
+    email,
+    options: { emailRedirectTo }
+  }));
+  if (error) {
+    showAuthMessage(friendlyAuthError(error));
+    return;
+  }
+
+  startResendCooldown();
+  showAuthMessage(t("confirmationSent"));
 });
 
 document.getElementById("join-room").addEventListener("click", joinTrainingRoom);
@@ -1845,13 +2143,13 @@ document.getElementById("logout-button").addEventListener("click", async () => {
   activeRoomRecord = null;
   academyData = { leaderboard: [], achievementCatalog: [], earnedAchievementIds: [], certificates: [], resources: [], content: [], notifications: [] };
   authMode = "login";
-  authMessage = "You have been logged out. Sign in to continue training.";
+  authMessage = t("loggedOut");
   progress = { ...defaultProgress };
   localStorage.removeItem("firstAidTrainerProgress");
   renderAll();
   updateAuthGate();
   document.getElementById("account-modal").classList.remove("hidden");
-  showStreakToast("Logged out.");
+  showStreakToast(t("loggedOut"));
 });
 function renderAll() {
   buildScenario();
@@ -1877,15 +2175,16 @@ async function initApp() {
       await loadAcademyData();
       authMessage = "";
     } else {
-      authMessage = "Login or create an account to unlock the training platform.";
+      authMessage = t("authLockedPrompt");
     }
 
     supabaseClient.auth.onAuthStateChange(async (event, session) => {
       currentUser = session?.user || null;
       if (event === "PASSWORD_RECOVERY" && currentUser) {
         authMode = "recovery";
-        authMessage = "Recovery link accepted. Enter a new password below.";
+        authMessage = t("authRecoveryPrompt");
         renderAll();
+        applyLanguage();
         updateAuthGate();
         document.getElementById("account-modal").classList.remove("hidden");
         document.getElementById("account-password").value = "";
@@ -1901,20 +2200,25 @@ async function initApp() {
         progress = { ...defaultProgress };
         currentAppRole = "learner";
         authMode = "login";
-        authMessage = "Login or create an account to unlock the training platform.";
+        authMessage = t("authLockedPrompt");
       }
       renderAll();
+      applyLanguage();
       updateAuthGate();
+      maybeShowSocialWelcome(currentUser);
     });
   } else {
-    authMessage = "Secure login is unavailable. Check the Supabase configuration.";
+    authMessage = t("authUnavailablePrompt");
   }
 
   await loadRotatingQuizQuestions();
   quizIndex = 0;
   quizCorrect = 0;
   renderAll();
+  applyLanguage();
+  updateResendButton();
   updateAuthGate();
+  maybeShowSocialWelcome(currentUser);
 }
 
 initApp();
