@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>First Aid Trainer</title>
-  <link rel="stylesheet" href="styles.css?v=20260721-2">
+  <link rel="stylesheet" href="styles.css?v=20260721-3">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js" defer></script>
-  <script src="app.js?v=20260721-2" defer></script>
+  <script src="app.js?v=20260721-3" defer></script>
 </head>
 <body class="auth-pending auth-locked">
   <div class="ambient-shape ambient-shape-one" aria-hidden="true"></div>
@@ -26,38 +26,40 @@
         <div>
           <small>First response academy</small>
           <strong>First Aid Trainer</strong>
-          <span>Practice for responders</span>
+          <span data-i18n="brandTagline">Practice for responders</span>
         </div>
       </div>
 
       <nav class="nav-tabs" aria-label="Main">
-        <button class="nav-tab active" data-view="dashboard"><i data-lucide="layout-dashboard"></i><span>Dashboard</span></button>
-        <button class="nav-tab" data-view="lessons"><i data-lucide="book-open-check"></i><span>Lessons</span></button>
-        <button class="nav-tab" data-view="scenario"><i data-lucide="route"></i><span>Scenario</span></button>
-        <button class="nav-tab" data-view="quiz"><i data-lucide="list-checks"></i><span>Quiz</span></button>
-        <button class="nav-tab" data-view="progress"><i data-lucide="chart-no-axes-column-increasing"></i><span>Progress</span></button>
-        <button class="nav-tab" data-view="community"><i data-lucide="users-round"></i><span>Academy</span></button>
-        <button class="nav-tab hidden" id="studio-nav" data-view="studio"><i data-lucide="panel-top-open"></i><span>Studio</span></button>
+        <button class="nav-tab active" data-view="dashboard"><i data-lucide="layout-dashboard"></i><span data-i18n="navDashboard">Dashboard</span></button>
+        <button class="nav-tab" data-view="lessons"><i data-lucide="book-open-check"></i><span data-i18n="navLessons">Lessons</span></button>
+        <button class="nav-tab" data-view="scenario"><i data-lucide="route"></i><span data-i18n="navScenario">Scenario</span></button>
+        <button class="nav-tab" data-view="quiz"><i data-lucide="list-checks"></i><span data-i18n="navQuiz">Quiz</span></button>
+        <button class="nav-tab" data-view="progress"><i data-lucide="chart-no-axes-column-increasing"></i><span data-i18n="navProgress">Progress</span></button>
+        <button class="nav-tab" data-view="community"><i data-lucide="users-round"></i><span data-i18n="navAcademy">Academy</span></button>
+        <button class="nav-tab hidden" id="studio-nav" data-view="studio"><i data-lucide="panel-top-open"></i><span data-i18n="navStudio">Studio</span></button>
       </nav>
 
       <div class="side-note">
         <div class="side-note-title">
           <span class="live-pulse" aria-hidden="true"></span>
-          <strong>Training mode</strong>
+          <strong data-i18n="trainingMode">Training mode</strong>
         </div>
-        <p>In a real emergency, call your local emergency number immediately.</p>
-        <div class="emergency-number"><i data-lucide="phone-call"></i><span>Emergency: 112</span></div>
+        <p data-i18n="emergencyNotice">In a real emergency, call your local emergency number immediately.</p>
+        <div class="emergency-number"><i data-lucide="phone-call"></i><span data-i18n="emergencyNumber">Emergency: 112</span></div>
+        <button class="sidebar-privacy-button" data-open-privacy type="button"><i data-lucide="shield-check"></i><span data-i18n="privacyPolicy">Privacy Policy</span></button>
       </div>
     </aside>
 
     <main class="content">
       <header class="topbar">
         <div>
-          <p class="eyebrow">Responder practice</p>
+          <p class="eyebrow" data-i18n="responderPractice">Responder practice</p>
           <h1 id="page-title">Dashboard</h1>
         </div>
         <div class="topbar-actions">
-          <div class="training-status"><span class="live-pulse" aria-hidden="true"></span>Ready to respond</div>
+          <div class="training-status"><span class="live-pulse" aria-hidden="true"></span><span data-i18n="readyToRespond">Ready to respond</span></div>
+          <button class="ghost-button language-toggle" type="button" aria-label="Switch language"><i data-lucide="languages"></i><span class="language-toggle-label">BG</span></button>
           <button class="ghost-button notification-button" id="notification-button" type="button" aria-label="Notifications"><i data-lucide="bell"></i><span class="notification-count hidden" id="notification-count">0</span></button>
           <button class="ghost-button" id="account-button" type="button"><i data-lucide="user-round"></i><span id="account-button-text">Account</span></button>
         </div>
@@ -68,7 +70,7 @@
           <div class="learner-profile">
             <div class="avatar-badge" id="profile-avatar">FA</div>
             <div>
-              <p class="eyebrow">Welcome back</p>
+              <p class="eyebrow" data-i18n="welcomeBack">Welcome back</p>
               <h2 id="profile-name">Create your account</h2>
               <p id="profile-team">Student first aid team</p>
             </div>
@@ -81,14 +83,14 @@
           <div class="streak-card">
             <i data-lucide="flame"></i>
             <div>
-              <span>Day streak</span>
+              <span data-i18n="dayStreak">Day streak</span>
               <strong id="streak-count">0</strong>
             </div>
           </div>
           <div class="xp-card">
             <i data-lucide="zap"></i>
             <div>
-              <span>Training XP</span>
+              <span data-i18n="trainingXp">Training XP</span>
               <strong id="xp-count">0</strong>
             </div>
           </div>
@@ -98,29 +100,29 @@
           <div class="daily-quest-copy">
             <span class="quest-icon" aria-hidden="true"><i data-lucide="heart-pulse"></i></span>
             <div>
-            <h2>Daily Streak Goal</h2>
+            <h2 data-i18n="dailyStreakGoal">Daily Streak Goal</h2>
             <p id="daily-goal-text">Complete one quiz or scenario today to earn +1 streak.</p>
             </div>
           </div>
-          <button class="primary-button" data-goto="scenario" type="button"><i data-lucide="flame"></i><span>Train Today</span></button>
+          <button class="primary-button" data-goto="scenario" type="button"><i data-lucide="flame"></i><span data-i18n="trainToday">Train Today</span></button>
         </div>
 
         <div class="notice">
           <i data-lucide="shield-alert"></i>
-          <p>This app supports training and revision. It does not replace certified instruction, medical advice, or emergency services.</p>
+          <p data-i18n="medicalDisclaimer">This app supports training and revision. It does not replace certified instruction, medical advice, or emergency services.</p>
         </div>
 
         <div class="stats-grid">
           <article class="stat-card">
-            <span>Lessons completed</span>
+            <span data-i18n="lessonsCompleted">Lessons completed</span>
             <strong id="stat-lessons">0/6</strong>
           </article>
           <article class="stat-card">
-            <span>Quiz score</span>
+            <span data-i18n="quizScore">Quiz score</span>
             <strong id="stat-score">0%</strong>
           </article>
           <article class="stat-card">
-            <span>Scenarios passed</span>
+            <span data-i18n="scenariosPassed">Scenarios passed</span>
             <strong id="stat-scenarios">0</strong>
           </article>
         </div>
@@ -128,7 +130,7 @@
         <section class="dashboard-layout">
           <div>
             <div class="section-heading">
-              <h2>Continue Training</h2>
+              <h2 data-i18n="continueTraining">Continue Training</h2>
             </div>
             <div id="recommended-lessons" class="card-grid"></div>
           </div>
@@ -142,17 +144,17 @@
                 <path d="M42 36h48M42 52h28M148 96h36M148 112h25"></path>
               </svg>
             </div>
-            <h2>Fast Scenario Drill</h2>
-            <p>Practice decisions in order: safety, responsiveness, call for help, then care.</p>
-            <button class="primary-button" data-goto="scenario" type="button"><i data-lucide="play"></i><span>Start Drill</span></button>
+            <h2 data-i18n="fastScenarioDrill">Fast Scenario Drill</h2>
+            <p data-i18n="fastScenarioDescription">Practice decisions in order: safety, responsiveness, call for help, then care.</p>
+            <button class="primary-button" data-goto="scenario" type="button"><i data-lucide="play"></i><span data-i18n="startDrill">Start Drill</span></button>
           </div>
         </section>
       </section>
 
       <section id="lessons" class="view">
         <div class="section-heading">
-          <h2>Lesson Library</h2>
-          <p>Choose a category, then open a lesson for signs, actions, common mistakes, team roles, and practice ideas.</p>
+          <h2 data-i18n="lessonLibrary">Lesson Library</h2>
+          <p data-i18n="lessonLibraryDescription">Choose a category, then open a lesson for signs, actions, common mistakes, team roles, and practice ideas.</p>
         </div>
         <div id="lesson-categories" class="category-tabs" aria-label="Lesson categories"></div>
         <div id="lesson-category-summary" class="category-summary"></div>
@@ -161,23 +163,23 @@
 
       <section id="scenario" class="view">
         <div class="section-heading">
-          <h2>Competition Scenario Builder</h2>
-          <p>Pick a category, then generate a different practice case for a student first aid team.</p>
+          <h2 data-i18n="scenarioBuilder">Competition Scenario Builder</h2>
+          <p data-i18n="scenarioBuilderDescription">Pick a category, then generate a different practice case for a student first aid team.</p>
         </div>
         <div class="scenario-builder">
           <label>
-            <span>Category</span>
+            <span data-i18n="category">Category</span>
             <select id="scenario-category"></select>
           </label>
           <label>
-            <span>Difficulty</span>
+            <span data-i18n="difficulty">Difficulty</span>
             <select id="scenario-difficulty">
-              <option value="basic">Basic</option>
-              <option value="competition">Competition</option>
-              <option value="advanced">Advanced</option>
+              <option value="basic" data-i18n="basic">Basic</option>
+              <option value="competition" data-i18n="competition">Competition</option>
+              <option value="advanced" data-i18n="advanced">Advanced</option>
             </select>
           </label>
-          <button class="primary-button" id="generate-scenario" type="button"><i data-lucide="sparkles"></i><span>Generate scenario</span></button>
+          <button class="primary-button" id="generate-scenario" type="button"><i data-lucide="sparkles"></i><span data-i18n="generateScenario">Generate scenario</span></button>
         </div>
         <div class="scenario-shell">
           <div class="scenario-card">
@@ -191,10 +193,10 @@
             <div id="scenario-options" class="option-list"></div>
           </div>
           <aside class="feedback-panel">
-            <h2>Coach Notes</h2>
+            <h2 data-i18n="coachNotes">Coach Notes</h2>
             <p id="scenario-feedback">Choose the safest first action.</p>
             <div id="scenario-focus" class="focus-list"></div>
-            <button class="secondary-button" id="restart-scenario" type="button"><i data-lucide="refresh-cw"></i><span>Restart</span></button>
+            <button class="secondary-button" id="restart-scenario" type="button"><i data-lucide="refresh-cw"></i><span data-i18n="restart">Restart</span></button>
           </aside>
         </div>
       </section>
@@ -210,17 +212,17 @@
             <div id="quiz-options" class="option-list"></div>
           </div>
           <aside class="feedback-panel">
-            <h2>Answer Review</h2>
+            <h2 data-i18n="answerReview">Answer Review</h2>
             <p id="quiz-feedback">Select an answer to see why it is right or wrong.</p>
-            <button class="secondary-button" id="restart-quiz" type="button"><i data-lucide="refresh-cw"></i><span>Restart Quiz</span></button>
+            <button class="secondary-button" id="restart-quiz" type="button"><i data-lucide="refresh-cw"></i><span data-i18n="restartQuiz">Restart Quiz</span></button>
           </aside>
         </div>
       </section>
 
       <section id="progress" class="view">
         <div class="section-heading">
-          <h2>Your Progress</h2>
-          <p>Progress is saved on this device.</p>
+          <h2 data-i18n="yourProgress">Your Progress</h2>
+          <p data-i18n="progressSaved">Progress is saved securely to your account.</p>
         </div>
         <div class="progress-layout">
           <div class="progress-ring" aria-label="Overall completion">
@@ -237,9 +239,9 @@
       <section id="community" class="view">
         <div class="section-heading academy-heading">
           <div>
-            <p class="eyebrow">First aid community</p>
-            <h2>Responder Academy</h2>
-            <p>Compete, collect achievements, join live practice, and use trusted learning resources.</p>
+            <p class="eyebrow" data-i18n="academyEyebrow">First aid community</p>
+            <h2 data-i18n="academyTitle">Responder Academy</h2>
+            <p data-i18n="academyDescription">Compete, collect achievements, join live practice, and use trusted learning resources.</p>
           </div>
           <span class="academy-role" id="academy-role">Learner</span>
         </div>
@@ -247,7 +249,7 @@
         <div class="academy-grid">
           <article class="academy-card leaderboard-card">
             <div class="academy-card-heading">
-              <div><span class="feature-icon red"><i data-lucide="trophy"></i></span><h2>Leaderboard</h2></div>
+              <div><span class="feature-icon red"><i data-lucide="trophy"></i></span><h2 data-i18n="leaderboard">Leaderboard</h2></div>
               <span class="live-label"><span class="live-pulse"></span>Live</span>
             </div>
             <div id="leaderboard-list" class="leaderboard-list"><p>Loading rankings...</p></div>
@@ -255,7 +257,7 @@
 
           <article class="academy-card achievements-card">
             <div class="academy-card-heading">
-              <div><span class="feature-icon amber"><i data-lucide="medal"></i></span><h2>Achievements</h2></div>
+              <div><span class="feature-icon amber"><i data-lucide="medal"></i></span><h2 data-i18n="achievements">Achievements</h2></div>
               <strong id="achievement-count">0/7</strong>
             </div>
             <div id="achievement-list" class="achievement-list"><p>Your badges will appear here.</p></div>
@@ -264,29 +266,29 @@
           <article class="academy-card certificate-card">
             <span class="certificate-watermark" aria-hidden="true">+</span>
             <div class="academy-card-heading">
-              <div><span class="feature-icon green"><i data-lucide="badge-check"></i></span><h2>Certificate</h2></div>
+              <div><span class="feature-icon green"><i data-lucide="badge-check"></i></span><h2 data-i18n="certificate">Certificate</h2></div>
             </div>
-            <p>Complete 10 lessons and score at least 80% to earn your First Aid Foundations certificate.</p>
+            <p data-i18n="certificateDescription">Complete 10 lessons and score at least 80% to earn your First Aid Foundations certificate.</p>
             <div id="certificate-status" class="certificate-status">Keep training to unlock your certificate.</div>
-            <button class="primary-button" id="issue-certificate" type="button"><i data-lucide="award"></i><span>Check eligibility</span></button>
+            <button class="primary-button" id="issue-certificate" type="button"><i data-lucide="award"></i><span data-i18n="checkEligibility">Check eligibility</span></button>
           </article>
 
           <article class="academy-card live-room-card">
             <div class="academy-card-heading">
-              <div><span class="feature-icon blue"><i data-lucide="radio-tower"></i></span><h2>Live Training Room</h2></div>
+              <div><span class="feature-icon blue"><i data-lucide="radio-tower"></i></span><h2 data-i18n="liveRoom">Live Training Room</h2></div>
               <span id="room-status" class="room-status">Offline</span>
             </div>
-            <p>Join an instructor-led scenario and see updates in real time.</p>
+            <p data-i18n="liveRoomDescription">Join an instructor-led scenario and see updates in real time.</p>
             <div class="inline-form">
               <input id="room-code" type="text" maxlength="8" placeholder="Room code" aria-label="Room code">
-              <button class="primary-button" id="join-room" type="button"><i data-lucide="log-in"></i><span>Join</span></button>
+              <button class="primary-button" id="join-room" type="button"><i data-lucide="log-in"></i><span data-i18n="join">Join</span></button>
             </div>
             <div id="active-room" class="active-room hidden"></div>
           </article>
 
           <article class="academy-card resources-card">
             <div class="academy-card-heading">
-              <div><span class="feature-icon blue"><i data-lucide="library"></i></span><h2>Resource Library</h2></div>
+              <div><span class="feature-icon blue"><i data-lucide="library"></i></span><h2 data-i18n="resourceLibrary">Resource Library</h2></div>
               <span id="resource-count">0 files</span>
             </div>
             <div id="resource-list" class="resource-list"><p>No resources uploaded yet.</p></div>
@@ -294,20 +296,20 @@
 
           <article class="academy-card search-card">
             <div class="academy-card-heading">
-              <div><span class="feature-icon green"><i data-lucide="sparkles"></i></span><h2>Smart Coach Search</h2></div>
-              <span class="free-ai-label">Smart search</span>
+              <div><span class="feature-icon green"><i data-lucide="sparkles"></i></span><h2 data-i18n="smartCoach">Smart Coach Search</h2></div>
+              <span class="free-ai-label" data-i18n="smartSearch">Smart search</span>
             </div>
-            <p>Search lessons and academy content by topic, symptom, or action.</p>
+            <p data-i18n="smartCoachDescription">Search lessons and academy content by topic, symptom, or action.</p>
             <div class="inline-form">
               <input id="coach-search" type="search" placeholder="e.g. severe bleeding" aria-label="Search training content">
-              <button class="primary-button" id="run-coach-search" type="button"><i data-lucide="search"></i><span>Search</span></button>
+              <button class="primary-button" id="run-coach-search" type="button"><i data-lucide="search"></i><span data-i18n="search">Search</span></button>
             </div>
             <div id="coach-results" class="coach-results"></div>
           </article>
 
           <article class="academy-card academy-feed-card">
             <div class="academy-card-heading">
-              <div><span class="feature-icon red"><i data-lucide="megaphone"></i></span><h2>Academy Feed</h2></div>
+              <div><span class="feature-icon red"><i data-lucide="megaphone"></i></span><h2 data-i18n="academyFeed">Academy Feed</h2></div>
             </div>
             <div id="academy-feed" class="academy-feed"><p>No announcements yet.</p></div>
           </article>
@@ -317,43 +319,43 @@
       <section id="studio" class="view">
         <div class="section-heading academy-heading">
           <div>
-            <p class="eyebrow">Instructor tools</p>
-            <h2>Academy Studio</h2>
-            <p>Create learning content, upload resources, and start live practice rooms.</p>
+            <p class="eyebrow" data-i18n="instructorTools">Instructor tools</p>
+            <h2 data-i18n="academyStudio">Academy Studio</h2>
+            <p data-i18n="studioDescription">Create learning content, upload resources, and start live practice rooms.</p>
           </div>
-          <span class="academy-role staff">Staff access</span>
+          <span class="academy-role staff" data-i18n="staffAccess">Staff access</span>
         </div>
 
         <div class="studio-grid">
           <form class="studio-card" id="content-form">
-            <div class="academy-card-heading"><div><span class="feature-icon red"><i data-lucide="file-plus-2"></i></span><h2>Publish Content</h2></div></div>
-            <label><span>Type</span><select id="content-type"><option value="announcement">Announcement</option><option value="lesson">Supplemental lesson</option><option value="scenario">Practice scenario</option></select></label>
-            <label><span>Title</span><input id="content-title" type="text" maxlength="100" required></label>
-            <label><span>Summary</span><textarea id="content-summary" rows="4" maxlength="600" required></textarea></label>
-            <button class="primary-button" type="submit"><i data-lucide="send"></i><span>Publish</span></button>
+            <div class="academy-card-heading"><div><span class="feature-icon red"><i data-lucide="file-plus-2"></i></span><h2 data-i18n="publishContent">Publish Content</h2></div></div>
+            <label><span data-i18n="type">Type</span><select id="content-type"><option value="announcement">Announcement</option><option value="lesson">Supplemental lesson</option><option value="scenario">Practice scenario</option></select></label>
+            <label><span data-i18n="title">Title</span><input id="content-title" type="text" maxlength="100" required></label>
+            <label><span data-i18n="summary">Summary</span><textarea id="content-summary" rows="4" maxlength="600" required></textarea></label>
+            <button class="primary-button" type="submit"><i data-lucide="send"></i><span data-i18n="publish">Publish</span></button>
           </form>
 
           <form class="studio-card" id="resource-form">
-            <div class="academy-card-heading"><div><span class="feature-icon blue"><i data-lucide="upload-cloud"></i></span><h2>Upload Resource</h2></div></div>
-            <label><span>Title</span><input id="resource-title" type="text" maxlength="100" required></label>
-            <label><span>Category</span><select id="resource-category"><option>Guide</option><option>Video</option><option>Poster</option><option>Checklist</option></select></label>
-            <label class="file-drop"><i data-lucide="paperclip"></i><span>Select PDF, image, or MP4 (max 50 MB)</span><input id="resource-file" type="file" accept="application/pdf,image/jpeg,image/png,image/webp,video/mp4" required></label>
-            <button class="primary-button" type="submit"><i data-lucide="cloud-upload"></i><span>Upload securely</span></button>
+            <div class="academy-card-heading"><div><span class="feature-icon blue"><i data-lucide="upload-cloud"></i></span><h2 data-i18n="uploadResource">Upload Resource</h2></div></div>
+            <label><span data-i18n="title">Title</span><input id="resource-title" type="text" maxlength="100" required></label>
+            <label><span data-i18n="category">Category</span><select id="resource-category"><option>Guide</option><option>Video</option><option>Poster</option><option>Checklist</option></select></label>
+            <label class="file-drop"><i data-lucide="paperclip"></i><span data-i18n="selectFile">Select PDF, image, or MP4 (max 50 MB)</span><input id="resource-file" type="file" accept="application/pdf,image/jpeg,image/png,image/webp,video/mp4" required></label>
+            <button class="primary-button" type="submit"><i data-lucide="cloud-upload"></i><span data-i18n="uploadSecurely">Upload securely</span></button>
           </form>
 
           <form class="studio-card" id="room-form">
-            <div class="academy-card-heading"><div><span class="feature-icon green"><i data-lucide="radio"></i></span><h2>Start Live Room</h2></div></div>
-            <label><span>Room title</span><input id="room-title" type="text" maxlength="100" placeholder="Saturday scenario practice" required></label>
-            <label><span>Opening prompt</span><textarea id="room-prompt" rows="4" maxlength="800" placeholder="Describe the opening situation..."></textarea></label>
-            <button class="primary-button" type="submit"><i data-lucide="radio-tower"></i><span>Create live room</span></button>
+            <div class="academy-card-heading"><div><span class="feature-icon green"><i data-lucide="radio"></i></span><h2 data-i18n="startLiveRoom">Start Live Room</h2></div></div>
+            <label><span data-i18n="roomTitle">Room title</span><input id="room-title" type="text" maxlength="100" placeholder="Saturday scenario practice" required></label>
+            <label><span data-i18n="openingPrompt">Opening prompt</span><textarea id="room-prompt" rows="4" maxlength="800" placeholder="Describe the opening situation..."></textarea></label>
+            <button class="primary-button" type="submit"><i data-lucide="radio-tower"></i><span data-i18n="createLiveRoom">Create live room</span></button>
             <div id="studio-room-result" class="studio-room-result"></div>
           </form>
 
           <article class="studio-card notifications-panel">
-            <div class="academy-card-heading"><div><span class="feature-icon amber"><i data-lucide="bell-ring"></i></span><h2>Automations</h2></div></div>
-            <p>Daily in-app streak reminders are generated automatically at 18:00 UTC with Supabase Cron.</p>
+            <div class="academy-card-heading"><div><span class="feature-icon amber"><i data-lucide="bell-ring"></i></span><h2 data-i18n="automations">Automations</h2></div></div>
+            <p data-i18n="automationDescription">Daily in-app streak reminders are generated automatically at 18:00 UTC with Supabase Cron.</p>
             <div class="automation-status"><span class="live-pulse"></span><strong>Reminder schedule prepared</strong></div>
-            <button class="secondary-button" id="reindex-search" type="button"><i data-lucide="scan-search"></i><span>Refresh smart-search index</span></button>
+            <button class="secondary-button" id="reindex-search" type="button"><i data-lucide="scan-search"></i><span data-i18n="refreshSearch">Refresh smart-search index</span></button>
           </article>
         </div>
       </section>
@@ -363,7 +365,8 @@
   <div class="account-modal hidden" id="account-modal" role="dialog" aria-modal="true" aria-labelledby="account-title">
     <form class="account-card" id="account-form">
       <div class="scenario-meta">
-        <span id="account-title">Secure Account</span>
+        <span id="account-title" data-i18n="secureAccount">Secure Account</span>
+        <button class="icon-button language-toggle modal-language-toggle" type="button" aria-label="Switch language"><i data-lucide="languages"></i><span class="language-toggle-label">BG</span></button>
         <button class="icon-button auth-close-button" id="close-account" type="button" aria-label="Close account"><i data-lucide="x"></i></button>
       </div>
       <div class="auth-gate-intro">
@@ -374,53 +377,56 @@
         </div>
       </div>
       <div class="auth-tabs" id="auth-tabs" role="tablist" aria-label="Account mode">
-        <button class="auth-tab active" type="button" data-auth-mode="login">Login</button>
-        <button class="auth-tab" type="button" data-auth-mode="register">Register</button>
+        <button class="auth-tab active" type="button" data-auth-mode="login" data-i18n="login">Login</button>
+        <button class="auth-tab" type="button" data-auth-mode="register" data-i18n="register">Register</button>
       </div>
       <div class="social-auth-options standard-auth-only" aria-label="Social sign in options">
         <button class="social-auth-button google-auth-button" id="google-auth-button" type="button">
           <span class="google-mark" aria-hidden="true">G</span>
-          <span>Continue with Google</span>
+          <span data-i18n="continueGoogle">Continue with Google</span>
         </button>
         <button class="social-auth-button github-auth-button" id="github-auth-button" type="button">
           <i data-lucide="github" aria-hidden="true"></i>
-          <span>Continue with GitHub</span>
+          <span data-i18n="continueGitHub">Continue with GitHub</span>
         </button>
-        <div class="auth-divider" aria-hidden="true"><span>or continue with email</span></div>
+        <div class="auth-divider" aria-hidden="true"><span data-i18n="continueEmail">or continue with email</span></div>
       </div>
       <div class="email-confirmation-notice register-only hidden" role="note">
         <span aria-hidden="true"><i data-lucide="mail-warning"></i></span>
         <div>
-          <strong>Email confirmation is required for email registration</strong>
-          <p>If you register with email and password, open the confirmation email and click its link before logging in. Google and GitHub sign-in do not need this step.</p>
+          <strong data-i18n="confirmationRequired">Email confirmation is required for email registration</strong>
+          <p data-i18n="confirmationExplanation">If you register with email and password, open the confirmation email and click its link before logging in. Google and GitHub sign-in do not need this step.</p>
         </div>
       </div>
       <div class="password-recovery-notice recovery-only hidden" role="note">
         <span aria-hidden="true"><i data-lucide="key-round"></i></span>
         <div>
-          <strong>Create a new password</strong>
-          <p>Use at least 8 characters. After saving it, you will stay signed in.</p>
+          <strong data-i18n="createNewPassword">Create a new password</strong>
+          <p data-i18n="newPasswordExplanation">Use at least 8 characters. After saving it, you will stay signed in.</p>
         </div>
       </div>
       <p class="auth-status" id="auth-status">Connect Supabase to enable secure accounts.</p>
       <label id="auth-email-field">
-        <span>Email</span>
-        <input id="account-email" type="email" autocomplete="email" placeholder="you@example.com">
+        <span data-i18n="email">Email</span>
+        <input id="account-email" type="email" autocomplete="email" placeholder="you@example.com" data-i18n-placeholder="emailPlaceholder">
       </label>
       <label>
-        <span>Password</span>
+        <span data-i18n="password">Password</span>
         <span class="password-field">
-          <input id="account-password" type="password" autocomplete="current-password" minlength="8" placeholder="Minimum 8 characters">
+          <input id="account-password" type="password" autocomplete="current-password" minlength="8" placeholder="Minimum 8 characters" data-i18n-placeholder="passwordPlaceholder">
           <button class="password-visibility-button" id="password-visibility-button" type="button" aria-label="Show password" aria-pressed="false"><i data-lucide="eye"></i></button>
         </span>
       </label>
-      <button class="auth-text-button login-only" id="forgot-password-button" type="button">Forgot your password?</button>
+      <div class="auth-help-actions standard-auth-only">
+        <button class="auth-text-button login-only" id="forgot-password-button" type="button" data-i18n="forgotPassword">Forgot your password?</button>
+        <button class="auth-text-button" id="resend-confirmation-button" type="button" data-i18n="resendConfirmation">Resend confirmation email</button>
+      </div>
       <label class="register-only">
-        <span>Name</span>
-        <input id="account-name" type="text" maxlength="32" placeholder="Your name">
+        <span data-i18n="name">Name</span>
+        <input id="account-name" type="text" maxlength="32" placeholder="Your name" data-i18n-placeholder="namePlaceholder">
       </label>
       <label class="register-only">
-        <span>Role</span>
+        <span data-i18n="role">Role</span>
         <select id="account-role">
           <option value="Competitor">Competitor</option>
           <option value="Paramedic">Paramedic</option>
@@ -431,7 +437,7 @@
         </select>
       </label>
       <label class="register-only">
-        <span>Where did you hear about us?</span>
+        <span data-i18n="heardAboutUs">Where did you hear about us?</span>
         <select id="account-source">
           <option value="Friend">Friend</option>
           <option value="School">School</option>
@@ -442,12 +448,74 @@
         </select>
       </label>
       <label class="register-only">
-        <span>Avatar initials</span>
+        <span data-i18n="avatarInitials">Avatar initials</span>
         <input id="account-initials" type="text" maxlength="3" placeholder="FA">
       </label>
-      <button class="primary-button" type="submit"><i data-lucide="log-in"></i><span id="account-submit-text">Login</span></button>
-      <button class="secondary-button hidden" id="logout-button" type="button"><i data-lucide="log-out"></i><span>Logout</span></button>
+      <button class="primary-button" id="account-submit-button" type="submit"><i data-lucide="log-in"></i><span id="account-submit-text">Login</span></button>
+      <button class="secondary-button hidden" id="logout-button" type="button"><i data-lucide="log-out"></i><span data-i18n="logout">Logout</span></button>
+      <button class="danger-outline-button hidden" id="delete-account-button" type="button"><i data-lucide="user-round-x"></i><span data-i18n="deleteAccount">Delete my account</span></button>
+      <div class="auth-legal-links">
+        <button class="auth-text-button" data-open-privacy type="button" data-i18n="privacyPolicy">Privacy Policy</button>
+        <span aria-hidden="true">•</span>
+        <span data-i18n="dataProtected">Your account data is protected by Supabase.</span>
+      </div>
     </form>
+  </div>
+
+  <div class="policy-modal hidden" id="privacy-modal" role="dialog" aria-modal="true" aria-labelledby="privacy-title">
+    <article class="policy-card">
+      <header class="policy-header">
+        <div><p class="eyebrow" data-i18n="privacyEyebrow">Your data</p><h2 id="privacy-title" data-i18n="privacyTitle">Privacy Policy</h2></div>
+        <button class="icon-button" id="close-privacy" type="button" aria-label="Close privacy policy"><i data-lucide="x"></i></button>
+      </header>
+      <div class="policy-content policy-language" data-policy-language="en">
+        <p><strong>Last updated:</strong> 21 July 2026</p>
+        <h3>What we store</h3><p>Your email address, display name, selected role, avatar initials, lesson progress, quiz results, scenarios, streak, XP, achievements, and certificates.</p>
+        <h3>Why we use it</h3><p>We use this information only to provide secure accounts, save training progress, personalize the learning experience, and operate academy features.</p>
+        <h3>Services</h3><p>Supabase provides authentication and database storage. Google and GitHub are optional sign-in providers. Brevo sends confirmation and password-recovery emails.</p>
+        <h3>Your choices</h3><p>You can review your profile, sign out, or permanently delete your account and associated personal progress from the Profile window.</p>
+        <h3>Safety</h3><p>First Aid Trainer is an educational product. It does not replace certified instruction, professional medical advice, or emergency services.</p>
+        <h3>Contact</h3><p>Questions about your data can be sent to <a href="mailto:evgenigoshev57@gmail.com">evgenigoshev57@gmail.com</a>.</p>
+      </div>
+      <div class="policy-content policy-language hidden" data-policy-language="bg">
+        <p><strong>Последна промяна:</strong> 21 юли 2026 г.</p>
+        <h3>Какво съхраняваме</h3><p>Имейл адрес, име, избрана роля, инициали, напредък по уроците, резултати от тестове и сценарии, серия, XP, постижения и сертификати.</p>
+        <h3>Защо го използваме</h3><p>Използваме информацията само за защитени профили, запазване на напредъка, персонализиране на обучението и функциите на академията.</p>
+        <h3>Използвани услуги</h3><p>Supabase осигурява входа и базата данни. Google и GitHub са допълнителни начини за вход. Brevo изпраща писмата за потвърждение и възстановяване на парола.</p>
+        <h3>Твоят избор</h3><p>Можеш да прегледаш профила си, да излезеш или окончателно да изтриеш профила и свързания личен напредък от прозореца „Профил“.</p>
+        <h3>Безопасност</h3><p>First Aid Trainer е образователен продукт. Той не заменя сертифицирано обучение, медицински съвет или спешна помощ.</p>
+        <h3>Контакт</h3><p>Въпроси за личните данни могат да бъдат изпращани на <a href="mailto:evgenigoshev57@gmail.com">evgenigoshev57@gmail.com</a>.</p>
+      </div>
+    </article>
+  </div>
+
+  <div class="confirm-modal hidden" id="delete-account-modal" role="dialog" aria-modal="true" aria-labelledby="delete-account-title">
+    <section class="confirm-card danger-confirm-card">
+      <span class="confirm-icon"><i data-lucide="triangle-alert"></i></span>
+      <p class="eyebrow" data-i18n="permanentAction">Permanent action</p>
+      <h2 id="delete-account-title" data-i18n="deleteAccountTitle">Delete your account?</h2>
+      <p data-i18n="deleteAccountExplanation">Your profile, training progress, achievements, room participation, and authentication account will be permanently removed.</p>
+      <label><span data-i18n="typeDelete">Type DELETE to confirm</span><input id="delete-account-confirmation" type="text" autocomplete="off" placeholder="DELETE"></label>
+      <div class="confirm-actions">
+        <button class="secondary-button" id="cancel-delete-account" type="button" data-i18n="cancel">Cancel</button>
+        <button class="danger-button" id="confirm-delete-account" type="button" disabled><i data-lucide="trash-2"></i><span data-i18n="deletePermanently">Delete permanently</span></button>
+      </div>
+    </section>
+  </div>
+
+  <div class="welcome-modal hidden" id="social-welcome-modal" role="dialog" aria-modal="true" aria-labelledby="social-welcome-title">
+    <section class="welcome-card">
+      <div class="welcome-pulse"><i data-lucide="heart-pulse"></i></div>
+      <p class="eyebrow" data-i18n="accountReady">Account ready</p>
+      <h2 id="social-welcome-title" data-i18n="welcomeTitle">Welcome to First Aid Trainer!</h2>
+      <p id="social-welcome-message" data-i18n="welcomeMessage">Your secure profile was created successfully. Your training progress will now follow you across devices.</p>
+      <div class="welcome-benefits">
+        <span><i data-lucide="cloud-check"></i><span data-i18n="benefitProgress">Progress saved securely</span></span>
+        <span><i data-lucide="trophy"></i><span data-i18n="benefitAchievements">Achievements and certificates</span></span>
+        <span><i data-lucide="users-round"></i><span data-i18n="benefitAcademy">Academy and live practice</span></span>
+      </div>
+      <button class="primary-button" id="close-social-welcome" type="button"><i data-lucide="play"></i><span data-i18n="startTraining">Start training</span></button>
+    </section>
   </div>
 
   <div class="certificate-modal hidden" id="certificate-modal" role="dialog" aria-modal="true" aria-labelledby="certificate-title">
@@ -455,13 +523,13 @@
       <button class="icon-button certificate-close" id="close-certificate" type="button" aria-label="Close certificate"><i data-lucide="x"></i></button>
       <div class="certificate-emblem"><i data-lucide="shield-plus"></i></div>
       <p class="eyebrow">First Aid Trainer Academy</p>
-      <h2 id="certificate-title">Certificate of Achievement</h2>
-      <p>This certifies that</p>
+      <h2 id="certificate-title" data-i18n="certificateTitle">Certificate of Achievement</h2>
+      <p data-i18n="certifiesThat">This certifies that</p>
       <strong id="certificate-name">First Aid Learner</strong>
-      <p>has successfully completed the requirements for</p>
+      <p data-i18n="completedRequirements">has successfully completed the requirements for</p>
       <h3>First Aid Foundations</h3>
       <div class="certificate-meta"><span id="certificate-date"></span><span id="certificate-code"></span></div>
-      <button class="primary-button certificate-print" id="print-certificate" type="button"><i data-lucide="printer"></i><span>Print / Save as PDF</span></button>
+      <button class="primary-button certificate-print" id="print-certificate" type="button"><i data-lucide="printer"></i><span data-i18n="printCertificate">Print / Save as PDF</span></button>
     </div>
   </div>
 
