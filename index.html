@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>First Aid Trainer</title>
-  <link rel="stylesheet" href="styles.css?v=20260721-3">
+  <link rel="stylesheet" href="styles.css?v=20260721-5">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js" defer></script>
-  <script src="app.js?v=20260721-3" defer></script>
+  <script src="app.js?v=20260721-5" defer></script>
 </head>
 <body class="auth-pending auth-locked">
   <div class="ambient-shape ambient-shape-one" aria-hidden="true"></div>
@@ -34,6 +34,7 @@
         <button class="nav-tab active" data-view="dashboard"><i data-lucide="layout-dashboard"></i><span data-i18n="navDashboard">Dashboard</span></button>
         <button class="nav-tab" data-view="lessons"><i data-lucide="book-open-check"></i><span data-i18n="navLessons">Lessons</span></button>
         <button class="nav-tab" data-view="scenario"><i data-lucide="route"></i><span data-i18n="navScenario">Scenario</span></button>
+        <button class="nav-tab" data-view="emergency-call"><i data-lucide="phone-call"></i><span data-i18n="navEmergencyCall">Call 112</span></button>
         <button class="nav-tab" data-view="quiz"><i data-lucide="list-checks"></i><span data-i18n="navQuiz">Quiz</span></button>
         <button class="nav-tab" data-view="progress"><i data-lucide="chart-no-axes-column-increasing"></i><span data-i18n="navProgress">Progress</span></button>
         <button class="nav-tab" data-view="community"><i data-lucide="users-round"></i><span data-i18n="navAcademy">Academy</span></button>
@@ -101,7 +102,7 @@
             <span class="quest-icon" aria-hidden="true"><i data-lucide="heart-pulse"></i></span>
             <div>
             <h2 data-i18n="dailyStreakGoal">Daily Streak Goal</h2>
-            <p id="daily-goal-text">Complete one quiz or scenario today to earn +1 streak.</p>
+            <p id="daily-goal-text">Complete a quiz, scenario, or 112 call case today to earn +1 streak.</p>
             </div>
           </div>
           <button class="primary-button" data-goto="scenario" type="button"><i data-lucide="flame"></i><span data-i18n="trainToday">Train Today</span></button>
@@ -163,8 +164,8 @@
 
       <section id="scenario" class="view">
         <div class="section-heading">
-          <h2 data-i18n="scenarioBuilder">Competition Scenario Builder</h2>
-          <p data-i18n="scenarioBuilderDescription">Pick a category, then generate a different practice case for a student first aid team.</p>
+          <h2 data-i18n="scenarioBuilder">Scenario Practice Lab</h2>
+          <p data-i18n="scenarioBuilderDescription">Work through realistic first aid cases with decisions, multiple-answer checks, and action ordering.</p>
         </div>
         <div class="scenario-builder">
           <label>
@@ -172,10 +173,17 @@
             <select id="scenario-category"></select>
           </label>
           <label>
+            <span data-i18n="practiceFormat">Practice format</span>
+            <select id="scenario-practice-mode">
+              <option value="individual" data-i18n="individualPractice">Individual responder</option>
+              <option value="team" data-i18n="teamPractice">Team exercise</option>
+            </select>
+          </label>
+          <label>
             <span data-i18n="difficulty">Difficulty</span>
             <select id="scenario-difficulty">
               <option value="basic" data-i18n="basic">Basic</option>
-              <option value="competition" data-i18n="competition">Competition</option>
+              <option value="challenge" data-i18n="challenge">Realistic</option>
               <option value="advanced" data-i18n="advanced">Advanced</option>
             </select>
           </label>
@@ -188,15 +196,82 @@
               <span id="scenario-result">In progress</span>
             </div>
             <h2 id="scenario-title">Collapsed Adult</h2>
-            <p id="scenario-brief"></p>
-            <p id="scenario-text"></p>
+            <div class="scenario-prompt-card">
+              <div class="scenario-task-heading">
+                <span id="scenario-task-type">Choose one answer</span>
+                <span id="scenario-mode-badge">Individual responder</span>
+              </div>
+              <p id="scenario-text"></p>
+            </div>
             <div id="scenario-options" class="option-list"></div>
+            <div id="scenario-action" class="scenario-action"></div>
           </div>
           <aside class="feedback-panel">
             <h2 data-i18n="coachNotes">Coach Notes</h2>
             <p id="scenario-feedback">Choose the safest first action.</p>
             <div id="scenario-focus" class="focus-list"></div>
             <button class="secondary-button" id="restart-scenario" type="button"><i data-lucide="refresh-cw"></i><span data-i18n="restart">Restart</span></button>
+          </aside>
+        </div>
+      </section>
+
+      <section id="emergency-call" class="view" aria-labelledby="page-title">
+        <div class="section-heading call-section-heading">
+          <div>
+            <p class="eyebrow" data-i18n="callPracticeEyebrow">Emergency communication</p>
+            <h2 data-i18n="callPracticeTitle">112 Call Practice</h2>
+            <p data-i18n="callPracticeDescription">Read the case and write the opening report you would give to the 112 operator.</p>
+          </div>
+          <div class="simulation-badge"><i data-lucide="shield-alert"></i><span data-i18n="simulationOnly">Simulation only — never call 112 for practice</span></div>
+        </div>
+
+        <div class="call-practice-shell">
+          <article class="call-simulator-card">
+            <div class="scenario-meta">
+              <span id="call-case-count">Case 1 of 5</span>
+              <span id="call-case-status">Not assessed</span>
+            </div>
+
+            <div class="call-case-card">
+              <div class="call-case-icon" aria-hidden="true"><i data-lucide="phone-incoming"></i><span>112</span></div>
+              <div>
+                <p class="eyebrow" data-i18n="yourCase">Your case</p>
+                <h2 id="call-case-title"></h2>
+                <p id="call-case-text"></p>
+              </div>
+            </div>
+
+            <div class="call-guidance-strip">
+              <span><strong>1</strong><span data-i18n="callStepWhere">Exact location</span></span>
+              <span><strong>2</strong><span data-i18n="callStepWhat">What happened</span></span>
+              <span><strong>3</strong><span data-i18n="callStepWho">Who needs help</span></span>
+              <span><strong>4</strong><span data-i18n="callStepDanger">Condition and danger</span></span>
+            </div>
+
+            <label class="call-report-label" for="call-report-input">
+              <span data-i18n="yourReport">Your opening report</span>
+              <small data-i18n="reportPrivacy">Use only the fictional information from the case. Do not enter real personal data.</small>
+            </label>
+            <textarea id="call-report-input" rows="8" data-i18n-placeholder="callReportPlaceholder" placeholder="Example: My name is Alex. I am at..."></textarea>
+
+            <div class="call-practice-actions">
+              <button class="primary-button" id="check-call-report" type="button"><i data-lucide="clipboard-check"></i><span data-i18n="checkReport">Check my report</span></button>
+              <button class="secondary-button" id="new-call-case" type="button"><i data-lucide="shuffle"></i><span data-i18n="newCallCase">New case</span></button>
+            </div>
+          </article>
+
+          <aside class="call-coach-card">
+            <div class="call-coach-header">
+              <span class="call-operator-icon"><i data-lucide="headset"></i></span>
+              <div><p class="eyebrow">112</p><h2 data-i18n="operatorChecklist">Operator checklist</h2></div>
+            </div>
+            <p id="call-feedback" data-i18n="callFeedbackStart">Write a calm, factual report. The operator will guide the real call with questions.</p>
+            <div id="call-checklist" class="call-checklist"></div>
+            <div id="call-model-answer" class="call-model-answer hidden">
+              <span data-i18n="modelOpeningReport">Example opening report</span>
+              <p id="call-model-answer-text"></p>
+            </div>
+            <div class="call-real-emergency-note"><i data-lucide="phone-off"></i><p data-i18n="realEmergencyNote">In a real emergency: call 112, answer the operator's questions, follow instructions, and do not hang up until told.</p></div>
           </aside>
         </div>
       </section>
@@ -208,8 +283,16 @@
               <span id="quiz-count">Question 1 of 5</span>
               <span id="quiz-live-score">0 correct</span>
             </div>
-            <h2 id="quiz-question"></h2>
+            <div class="scenario-prompt-card quiz-prompt-card">
+              <div class="scenario-task-heading">
+                <span id="quiz-topic">Applied first aid</span>
+                <span id="quiz-difficulty">Decision challenge</span>
+              </div>
+              <h2 id="quiz-question"></h2>
+              <p class="quiz-instruction">Choose the safest and best-prioritised response. Several answers may sound partly correct.</p>
+            </div>
             <div id="quiz-options" class="option-list"></div>
+            <div id="quiz-action" class="scenario-action"></div>
           </div>
           <aside class="feedback-panel">
             <h2 data-i18n="answerReview">Answer Review</h2>
@@ -268,7 +351,8 @@
             <div class="academy-card-heading">
               <div><span class="feature-icon green"><i data-lucide="badge-check"></i></span><h2 data-i18n="certificate">Certificate</h2></div>
             </div>
-            <p data-i18n="certificateDescription">Complete 10 lessons and score at least 80% to earn your First Aid Foundations certificate.</p>
+            <p data-i18n="certificateDescription">Complete 10 lessons and score at least 80% to earn an in-platform First Aid Foundations training certificate.</p>
+            <p class="certificate-disclaimer" data-i18n="certificateDisclaimer">Training recognition only — it is not an accredited medical qualification and does not replace a certified first-aid course.</p>
             <div id="certificate-status" class="certificate-status">Keep training to unlock your certificate.</div>
             <button class="primary-button" id="issue-certificate" type="button"><i data-lucide="award"></i><span data-i18n="checkEligibility">Check eligibility</span></button>
           </article>
@@ -523,11 +607,12 @@
       <button class="icon-button certificate-close" id="close-certificate" type="button" aria-label="Close certificate"><i data-lucide="x"></i></button>
       <div class="certificate-emblem"><i data-lucide="shield-plus"></i></div>
       <p class="eyebrow">First Aid Trainer Academy</p>
-      <h2 id="certificate-title" data-i18n="certificateTitle">Certificate of Achievement</h2>
+      <h2 id="certificate-title" data-i18n="certificateTitle">Training Certificate of Achievement</h2>
       <p data-i18n="certifiesThat">This certifies that</p>
       <strong id="certificate-name">First Aid Learner</strong>
       <p data-i18n="completedRequirements">has successfully completed the requirements for</p>
       <h3>First Aid Foundations</h3>
+      <p class="certificate-disclaimer certificate-sheet-disclaimer" data-i18n="certificateDisclaimer">Training recognition only — it is not an accredited medical qualification and does not replace a certified first-aid course.</p>
       <div class="certificate-meta"><span id="certificate-date"></span><span id="certificate-code"></span></div>
       <button class="primary-button certificate-print" id="print-certificate" type="button"><i data-lucide="printer"></i><span data-i18n="printCertificate">Print / Save as PDF</span></button>
     </div>
