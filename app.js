@@ -324,13 +324,13 @@ const lessons = lessonCategories.flatMap((category) =>
 const competitionCategories = [
   {
     id: "student-team",
-    name: "Student First Aid Team",
-    description: "A school-age team works together under time pressure with a clear team leader.",
+    name: "School and Campus",
+    description: "Everyday emergencies in classrooms, corridors, sports areas, and shared school spaces.",
     places: ["school corridor", "science classroom", "sports hall", "school yard", "cafeteria", "stairwell", "library", "bus stop outside school"],
     patients: ["15-year-old student", "teacher", "visitor", "younger student", "sports coach", "parent volunteer"],
     problems: ["fainting with a minor head injury", "asthma attack after exercise", "severe bleeding from broken glass", "suspected fracture after a fall", "seizure in a classroom", "panic attack after witnessing an injury", "burn from hot water", "possible diabetic emergency"],
     hazards: ["crowd noise", "wet floor", "broken glass nearby", "poor communication from bystanders", "blocked exit", "teacher asking too many questions", "limited first aid kit", "noisy bell and moving students"],
-    focus: ["team leader gives clear tasks", "scene safety", "calling emergency help", "reassurance and dignity"]
+    focus: ["scene safety", "early recognition", "calling emergency help", "reassurance and dignity"]
   },
   {
     id: "public-event",
@@ -345,7 +345,7 @@ const competitionCategories = [
   {
     id: "trauma",
     name: "Trauma and Bleeding",
-    description: "The team must control bleeding, protect from shock, and watch for hidden injuries.",
+    description: "Control bleeding, protect from shock, and watch for hidden injuries.",
     places: ["workshop", "kitchen", "bike path", "parking area", "school lab", "staircase", "football pitch", "warehouse aisle"],
     patients: ["adult worker", "cyclist", "cook", "delivery driver", "student", "maintenance worker"],
     problems: ["severe arm bleeding", "possible spinal injury", "burn and shock", "deep cut with dizziness", "head injury after a fall", "open fracture concern", "sprained ankle with severe pain", "eye splash from chemical"],
@@ -355,7 +355,7 @@ const competitionCategories = [
   {
     id: "medical",
     name: "Medical Emergency",
-    description: "The team recognizes warning signs, calls help, and supports the casualty while waiting.",
+    description: "Recognize warning signs, call help, and support the casualty while waiting.",
     places: ["library", "office reception", "cafeteria", "bus stop", "school gym", "exam hall", "staff room", "outdoor event tent"],
     patients: ["adult with diabetes", "person with chest pain", "person having a seizure", "person with severe allergy", "student with asthma", "visitor showing stroke signs"],
     problems: ["diabetic emergency", "heart attack symptoms", "epileptic seizure", "anaphylaxis", "asthma attack", "stroke signs", "poisoning concern", "heat illness"],
@@ -365,12 +365,252 @@ const competitionCategories = [
   {
     id: "mass-casualty",
     name: "Multi-casualty Drill",
-    description: "A competition-style scene with more than one casualty and the need to prioritize.",
+    description: "A changing scene with more than one casualty and the need to prioritize life threats.",
     places: ["school bus stop", "sports field", "stairwell", "community centre", "science corridor", "canteen", "parking area", "festival first aid tent"],
     patients: ["two students", "three bystanders", "a child and an adult", "several team members from another group", "one quiet casualty and one loud casualty", "two athletes and a coach"],
     problems: ["one severe bleed and one minor injury", "one unconscious casualty and one panicking friend", "two falls with different severity", "burns plus smoke irritation", "asthma attack plus ankle injury", "suspected stroke plus distressed relative", "head injury plus nosebleed", "chemical splash plus fainting"],
     hazards: ["confusing witness reports", "limited supplies", "unsafe area nearby", "time pressure from judges", "blocked access for ambulance", "bystanders filming", "one teammate distracted", "weather getting worse"],
     focus: ["triage thinking", "delegation", "calling extra help", "clear final handover"]
+  }
+];
+
+const scenarioCaseLibrary = [
+  {
+    id: "school-asthma",
+    categoryId: "student-team",
+    title: "Breathing Trouble After Sport",
+    scene: "At the edge of a school sports hall, a 15-year-old has stopped after a short race. They are sitting forward, wheezing, and can speak only a few words at a time. Their own blue reliever inhaler is in an open sports bag. Other students are crowding around and the hall is hot and noisy.",
+    development: "After help with the casualty's own reliever inhaler, the wheeze is still loud and they look exhausted. Their answers are becoming shorter rather than clearer.",
+    focus: ["breathing assessment", "upright position", "reliever inhaler", "early escalation"],
+    opening: [
+      ["Reduce the crowd, help them stay sitting upright, assess how severe the breathing problem is, and help with their own reliever inhaler if trained while arranging urgent help for severe symptoms.", true, "This protects breathing, uses the casualty's prescribed reliever appropriately, and treats short speech and exhaustion as warning signs."],
+      ["Ask them to lie flat and wait quietly for ten minutes before looking for an inhaler.", false, "Lying flat can make breathing harder, and severe or worsening breathing difficulty should not be observed without active help."],
+      ["Tell them to walk slowly around the hall so their breathing returns to a normal rhythm.", false, "Exertion can worsen an asthma attack. Keep the casualty at rest in a comfortable upright position."],
+      ["Give them another person's inhaler because all reliever inhalers work in exactly the same way.", false, "Do not substitute someone else's medicine. Help with the casualty's own prescribed medication and follow your training or dispatcher guidance."]
+    ],
+    cluesPrompt: "Select every sign that should make you seek emergency help immediately.",
+    clues: [
+      ["They cannot complete a sentence because of breathlessness.", true],
+      ["Their lips or skin are becoming blue or grey.", true],
+      ["They are becoming exhausted, confused, or less responsive.", true],
+      ["Their breathing is not improving or is getting worse after their reliever.", true],
+      ["They say they missed lunch.", false],
+      ["Their trainers are wet from the changing room floor.", false]
+    ],
+    cluesFeedback: "Severe speech difficulty, colour change, exhaustion, confusion, reduced responsiveness, or failure to improve are emergency warning signs.",
+    sequencePrompt: "Arrange the response from first priority to ongoing care.",
+    sequence: ["Make the space safe and help the casualty sit upright.", "Assess breathing severity and ask about their own reliever inhaler.", "Help them use their own inhaler if trained and allowed.", "Call 112 early if symptoms are severe, worsening, or not improving.", "Keep monitoring breathing and responsiveness until help takes over."],
+    sequenceFeedback: "The safe order is positioning and assessment, appropriate help with the casualty's own medication, early escalation, and continuous monitoring.",
+    changePrompt: "What is the safest response to this deterioration?",
+    changeOptions: [
+      ["Call 112 now, keep them upright, continue support within training, and be ready to act if they become unresponsive.", true, "Correct. Exhaustion and shorter answers show deterioration and need an emergency response."],
+      ["Wait for the wheeze to become quieter because quiet breathing always means improvement.", false, "A suddenly quieter chest with exhaustion can mean very poor air movement, not recovery."],
+      ["Offer food and a large drink to restore their energy.", false, "Do not delay emergency care or give food and drink during severe breathing difficulty."],
+      ["Move them into a crowded changing room so the sports session can continue.", false, "Keep the area calm, accessible, and easy for emergency responders to reach."]
+    ],
+    handoverFact: "inhaler use, the time it was used, and whether breathing improved"
+  },
+  {
+    id: "school-seizure",
+    categoryId: "student-team",
+    title: "Seizure Between Library Tables",
+    scene: "In a school library, a student has fallen between two tables and is having a convulsive seizure. A metal chair and a heavy backpack are close to their head. A friend says the student may have epilepsy, but nobody can find a care plan. The movements began about two minutes ago.",
+    development: "The movements stop, but the student is not yet responding. They are breathing and there is no obvious major injury.",
+    focus: ["remove nearby hazards", "protect the head", "time the seizure", "recovery and breathing"],
+    opening: [
+      ["Move nearby objects away, cushion the head, start timing, and let the seizure run without restraining the student.", true, "This reduces injury while preserving breathing and gives an accurate seizure duration."],
+      ["Hold the arms and legs firmly so the movements stop sooner.", false, "Restraint can cause injury and does not stop the seizure."],
+      ["Put a folded cloth between the teeth to protect the tongue.", false, "Never put anything in the mouth during a seizure."],
+      ["Lift the student into a chair before continuing the assessment.", false, "Do not move the casualty unless the current position is dangerous."],
+      ["Give water immediately because seizures are often caused by dehydration.", false, "Nothing should be given by mouth until the person has fully recovered."]
+    ],
+    cluesPrompt: "Select every reason to call 112 for this seizure.",
+    clues: [
+      ["It lasts more than five minutes or longer than usual for the person.", true],
+      ["It is their first known seizure.", true],
+      ["Another seizure starts before full recovery.", true],
+      ["They are seriously injured or have difficulty breathing afterwards.", true],
+      ["Their friend is upset and speaking loudly.", false],
+      ["A book fell from the table without hitting anyone.", false]
+    ],
+    cluesFeedback: "Duration, first seizure, repeated seizures without recovery, injury, and breathing problems are the important escalation clues.",
+    sequencePrompt: "Put the seizure response in the safest order.",
+    sequence: ["Check the surrounding area and remove objects that could injure the casualty.", "Cushion the head, loosen tight neck clothing, and time the seizure.", "Do not restrain the casualty and do not put anything in the mouth.", "When movements stop, check breathing and place them on their side if appropriate.", "Stay, monitor recovery, and call 112 when an emergency criterion is present."],
+    sequenceFeedback: "Protect during the seizure, then check breathing and recovery. Timing determines whether prolonged activity needs emergency escalation.",
+    changePrompt: "What should happen now that the movements have stopped?",
+    changeOptions: [
+      ["Check breathing, place them on their side if appropriate, keep monitoring, and stay until recovery or emergency help arrives.", true, "Correct. The airway and breathing become the immediate priorities after the convulsions stop."],
+      ["Sit them upright at once and ask detailed questions before checking breathing.", false, "Check breathing first and allow recovery without forcing them upright."],
+      ["Give food and drink before they become fully alert.", false, "There is a choking risk until the person has fully recovered."],
+      ["Leave to find their friend because normal breathing means no further observation is needed.", false, "Stay with the casualty and continue checking breathing and responsiveness." ]
+    ],
+    handoverFact: "the exact start and finish time of the seizure and recovery afterwards"
+  },
+  {
+    id: "event-choking",
+    categoryId: "public-event",
+    title: "Severe Choking at a Food Queue",
+    scene: "At a community fair food queue, an adult suddenly grips their throat. They cannot speak, cough effectively, or draw in air. Their face is becoming dusky. A small crowd is forming, but there is clear space behind the casualty and a phone is available.",
+    development: "The obstruction has not cleared after the first attempts and the casualty is becoming weaker.",
+    focus: ["recognise severe choking", "back blows", "abdominal thrusts", "prepare for collapse"],
+    opening: [
+      ["Confirm severe choking, call for emergency help, and begin the trained choking sequence immediately.", true, "The casualty cannot speak, cough, or breathe, so this is severe choking and requires immediate action."],
+      ["Offer water to wash the object down.", false, "A person who cannot breathe cannot safely drink."],
+      ["Put fingers into the mouth even though the object cannot be seen.", false, "A blind finger sweep can push the object deeper."],
+      ["Wait for a strong cough to develop before touching the casualty.", false, "They do not have an effective cough; severe choking needs immediate treatment." ]
+    ],
+    cluesPrompt: "Select all observations that identify severe rather than mild choking.",
+    clues: [
+      ["Unable to speak or make an effective cough.", true],
+      ["Unable to breathe normally.", true],
+      ["Blue or grey colour and increasing weakness.", true],
+      ["Silent distress while gripping the throat.", true],
+      ["A strong cough with full sentences between coughs.", false],
+      ["Mild throat discomfort while breathing normally.", false]
+    ],
+    cluesFeedback: "Severe choking is marked by an ineffective or absent cough, inability to speak or breathe, colour change, and deterioration.",
+    sequencePrompt: "Arrange the trained adult choking response. Follow local training and dispatcher instructions.",
+    sequence: ["Recognise severe choking and call for immediate help.", "Give up to five back blows, checking after each attempt.", "If still blocked and appropriate, give up to five abdominal thrusts.", "Continue alternating trained actions while emergency help is coming.", "If the casualty becomes unresponsive, lower them safely and begin CPR as directed or trained."],
+    sequenceFeedback: "Severe choking care progresses from recognition and help to repeated trained obstruction-removal attempts, then CPR if the casualty becomes unresponsive.",
+    changePrompt: "The casualty now becomes unresponsive. What is the priority?",
+    changeOptions: [
+      ["Lower them safely, ensure 112 has been called, and begin CPR according to training and dispatcher instructions.", true, "Correct. Unresponsiveness changes the priority to cardiac arrest recognition and resuscitation."],
+      ["Keep them standing and continue abdominal thrusts indefinitely.", false, "An unresponsive casualty should be lowered safely and managed using the unresponsive/CPR pathway."],
+      ["Search the mouth repeatedly with your fingers.", false, "Remove only a clearly visible obstruction; do not perform blind finger sweeps."],
+      ["Leave them alone to look for food packaging.", false, "Immediate resuscitation and emergency help take priority." ]
+    ],
+    handoverFact: "the number of back blows and thrusts, whether an object was seen, and when responsiveness changed"
+  },
+  {
+    id: "event-heat",
+    categoryId: "public-event",
+    title: "Confused Runner in Extreme Heat",
+    scene: "Near the finish of a charity run on a very hot afternoon, an adult runner has collapsed. Their skin is hot, they are confused, and they keep trying to stand. They cannot answer simple questions reliably. A shaded first aid area and cold-water supplies are nearby.",
+    development: "Despite moving into shade, the casualty becomes drowsier and stops following instructions.",
+    focus: ["heatstroke warning signs", "rapid cooling", "emergency call", "airway monitoring"],
+    opening: [
+      ["Treat this as suspected heatstroke: call 112, move them to a cooler place, begin active cooling, and monitor responsiveness and breathing.", true, "Confusion and collapse in heat are emergency signs. Rapid cooling and emergency help are priorities."],
+      ["Encourage them to finish walking so their muscles do not stiffen.", false, "Exertion adds heat and fall risk. Keep the casualty at rest."],
+      ["Wrap them in blankets because collapse usually means shock from cold.", false, "The scene and hot skin point to dangerous overheating, so cooling is needed."],
+      ["Give a large drink immediately even though they are confused.", false, "A confused casualty may not swallow safely. Do not give oral fluids when alertness is impaired." ]
+    ],
+    cluesPrompt: "Select every feature that makes this an emergency heat illness rather than simple heat discomfort.",
+    clues: [["Confusion or unusual behaviour.", true], ["Collapse or inability to stand safely.", true], ["Hot conditions with very hot skin.", true], ["Reduced responsiveness.", true], ["Sweaty running clothes by themselves.", false], ["Wanting to sit in the shade while speaking normally.", false]],
+    cluesFeedback: "Altered mental state, collapse, and worsening responsiveness in heat are emergency features and require rapid cooling plus emergency help.",
+    sequencePrompt: "Arrange the first priorities for suspected heatstroke.",
+    sequence: ["Call 112 and move the casualty away from the heat.", "Remove unnecessary outer clothing while protecting dignity.", "Begin rapid active cooling with available safe methods.", "Continuously check responsiveness and breathing.", "Be ready to use the unresponsive or CPR pathway if their condition worsens."],
+    sequenceFeedback: "Call and cool early. Do not delay cooling while collecting a detailed history.",
+    changePrompt: "What should you do as the casualty becomes drowsier?",
+    changeOptions: [["Continue cooling, check airway and breathing repeatedly, and prepare for unresponsive care while 112 is responding.", true, "Correct. Drowsiness is deterioration, so airway and breathing monitoring are essential."], ["Stop cooling because drowsiness means the body temperature has returned to normal.", false, "Drowsiness can indicate worsening heatstroke."], ["Give a sports drink even if swallowing is uncertain.", false, "Do not give oral fluids when the casualty may not swallow safely."], ["Let them sleep without observation.", false, "Reduced responsiveness requires continuous monitoring." ]],
+    handoverFact: "the heat exposure, mental-state changes, cooling method, and cooling start time"
+  },
+  {
+    id: "trauma-bleeding",
+    categoryId: "trauma",
+    title: "Severe Bleeding Beside a Cycle Path",
+    scene: "A cyclist has fallen beside a roadworks barrier. A deep lower-leg wound is bleeding heavily through torn clothing, and blood is pooling on the ground. The cyclist is pale and dizzy. Passing bicycles still come close to the scene, and a clean first aid kit is available.",
+    development: "The first dressing becomes soaked while firm pressure is being maintained. The casualty is colder, quieter, and increasingly confused.",
+    focus: ["scene safety", "firm direct pressure", "shock recognition", "continuous monitoring"],
+    opening: [["Make the approach safe, use a barrier or gloves if available, apply firm direct pressure, and call 112 for the severe bleeding.", true, "This controls the immediate life threat without ignoring traffic or infection risk."], ["Wash the wound thoroughly before applying pressure.", false, "Do not delay pressure for cleaning when bleeding is severe."], ["Remove every dressing whenever blood comes through so the wound can be inspected.", false, "Keep pressure and add material on top rather than repeatedly removing the original dressing."], ["Ask the cyclist to stand so you can see whether the leg supports weight.", false, "Standing can worsen collapse and injury. Keep the casualty still."], ["Concentrate on the damaged bicycle before touching the casualty.", false, "Once the scene is safe, the casualty's life-threatening bleeding is the priority."]],
+    cluesPrompt: "Select all signs that suggest significant blood loss and developing shock.",
+    clues: [["Pale, cold, or clammy skin.", true], ["Dizziness, weakness, or confusion.", true], ["Heavy bleeding soaking clothing or dressings.", true], ["Fast breathing or increasing quietness.", true], ["A scratched bicycle frame.", false], ["A bystander asking whether the road is open.", false]],
+    cluesFeedback: "Heavy ongoing bleeding plus pallor, cold skin, dizziness, fast breathing, or confusion indicate a serious threat to circulation.",
+    sequencePrompt: "Arrange the priorities for severe external bleeding.",
+    sequence: ["Control scene danger and protect yourself from blood where possible.", "Expose enough of the injury to find the bleeding source.", "Apply firm, continuous direct pressure.", "Call 112 and maintain pressure; add dressings on top if needed.", "Keep the casualty warm, still, reassured, and monitored for deterioration."],
+    sequenceFeedback: "Safety and immediate pressure come before cleaning or detailed examination. Emergency help and shock care continue alongside bleeding control.",
+    changePrompt: "The dressing is soaked and the casualty is deteriorating. What should you do?",
+    changeOptions: [["Keep firm pressure, add more dressing material on top, update 112, keep the casualty warm, and monitor breathing and responsiveness.", true, "Correct. Do not release effective pressure just to replace a soaked dressing."], ["Remove all dressings and leave the wound uncovered while looking for a cleaner pad.", false, "Removing dressings can disrupt clotting and increase blood loss."], ["Give food and drink because the casualty looks weak.", false, "Do not give food or drink to a seriously injured casualty."], ["Ask them to walk to the ambulance access point.", false, "Keep a shocked casualty still and bring emergency responders to them." ]],
+    handoverFact: "where the bleeding was, how it was controlled, dressing changes, and signs of shock"
+  },
+  {
+    id: "trauma-chemical-burn",
+    categoryId: "trauma",
+    title: "Chemical Splash in a School Laboratory",
+    scene: "A laboratory cleaner has splashed onto a student's forearm and sleeve. The student reports burning pain and the skin is becoming red. The labelled container is on the floor nearby, the sink is working, and no chemical has entered the eyes. Other students are moving closer to look.",
+    development: "While the arm is being rinsed, the student reports increasing pain and the affected area appears larger than first seen.",
+    focus: ["avoid contamination", "remove contaminated clothing", "prolonged rinsing", "medical assessment"],
+    opening: [["Keep others away, protect yourself, call for urgent medical guidance, remove contaminated clothing if safe, and rinse with plenty of cool or lukewarm running water.", true, "Chemical burns need immediate decontamination and medical help while preventing a second exposure."], ["Rub neutralising cream into the skin before using water.", false, "Do not add creams or other chemicals; they can react or trap the substance."], ["Cover the sleeve tightly so the chemical cannot spread into the air.", false, "Contaminated clothing should be removed carefully when safe, not sealed against the skin."], ["Wait until the exact chemical formula is known before starting first aid.", false, "Begin safe decontamination immediately while keeping the label for professionals." ]],
+    cluesPrompt: "Select every action that helps prevent further chemical injury.",
+    clues: [["Use gloves or another suitable barrier if available.", true], ["Keep the product label or container information for emergency responders.", true], ["Remove contaminated clothing carefully if it is safe to do so.", true], ["Use lots of running water and continue for the advised duration.", true], ["Apply another household chemical to neutralise it.", false], ["Let bystanders touch the wet clothing to identify the smell.", false]],
+    cluesFeedback: "Protect the responder, remove the source, rinse generously, and preserve accurate product information. Do not improvise chemical neutralisers.",
+    sequencePrompt: "Put the chemical-burn response in order.",
+    sequence: ["Stop others approaching and protect yourself from contamination.", "Call 112 or urgent poison/medical guidance and identify the product if possible.", "Remove contaminated clothing carefully and brush off dry material when appropriate.", "Rinse with plenty of cool or lukewarm running water for the recommended time.", "Continue monitoring and hand the product information to professionals."],
+    sequenceFeedback: "Prevent a second casualty, get specialist guidance, remove the chemical source, and irrigate promptly and thoroughly.",
+    changePrompt: "Pain and the affected area are increasing during rinsing. What is the safest response?",
+    changeOptions: [["Continue copious rinsing, update emergency services, protect unaffected skin, and monitor the casualty.", true, "Correct. Worsening chemical burns need continued decontamination and urgent professional care."], ["Stop the water and apply a thick cream.", false, "Creams can trap contamination and are not appropriate first aid for a chemical burn."], ["Scrub the painful skin with a brush.", false, "Scrubbing can worsen tissue damage."], ["Send the student back to class once the sleeve is removed.", false, "Chemical burns require medical assessment." ]],
+    handoverFact: "the product name, exposure time, affected area, and how long rinsing continued"
+  },
+  {
+    id: "medical-stroke",
+    categoryId: "medical",
+    title: "Sudden Speech and Arm Weakness",
+    scene: "In an office reception, an adult suddenly drops a pen from one hand. One side of their face appears lower and their speech is slurred. They are awake but confused. A colleague says they were speaking normally about ten minutes ago and wants to drive them home.",
+    development: "While waiting for help, the casualty becomes more drowsy and can no longer lift the affected arm.",
+    focus: ["FAST recognition", "time last known well", "immediate emergency call", "airway monitoring"],
+    opening: [["Use FAST, call 112 immediately for suspected stroke, note when they were last known well, and keep monitoring them.", true, "Stroke is time-critical. FAST signs and onset information should trigger an immediate emergency call."], ["Let the colleague drive them home to rest before deciding whether help is needed.", false, "Do not delay emergency assessment for suspected stroke."], ["Give food and water to test whether swallowing is normal.", false, "Swallowing may be unsafe after a stroke."], ["Wait an hour to see whether the weakness passes.", false, "Even temporary stroke-like symptoms need urgent medical assessment." ]],
+    cluesPrompt: "Select all information that is important to recognise and report now.",
+    clues: [["Face droop.", true], ["Arm weakness.", true], ["Speech difficulty.", true], ["The exact time symptoms began or they were last known well.", true], ["The brand of pen they dropped.", false], ["Whether the colleague can finish work today.", false]],
+    cluesFeedback: "FAST findings and symptom timing are the key immediate facts. Do not let non-medical details delay the emergency call.",
+    sequencePrompt: "Arrange the response to suspected stroke.",
+    sequence: ["Recognise the sudden FAST signs.", "Call 112 immediately and say that stroke is suspected.", "Note the symptom start time or last-known-well time.", "Keep the casualty safe and comfortable; do not give food, drink, or tablets.", "Monitor breathing and responsiveness and update responders about changes."],
+    sequenceFeedback: "Recognition and the emergency call come first because stroke treatment is time-sensitive.",
+    changePrompt: "How should you respond to the increasing drowsiness?",
+    changeOptions: [["Update 112, check airway and breathing repeatedly, and be ready to use unresponsive care if needed.", true, "Correct. Reduced responsiveness increases airway risk and must be reported."], ["Give a sugary drink to wake them up.", false, "Do not give anything by mouth when stroke and unsafe swallowing are possible."], ["Ask them to walk around so you can compare both sides.", false, "Walking creates a fall risk and does not replace emergency assessment."], ["Leave them alone in a quiet room until the ambulance arrives.", false, "They need continuous observation." ]],
+    handoverFact: "FAST findings, last-known-well time, and changes in responsiveness"
+  },
+  {
+    id: "medical-anaphylaxis",
+    categoryId: "medical",
+    title: "Severe Allergic Reaction After a Sting",
+    scene: "At an outdoor event, an adult develops widespread hives, swelling around the lips, a hoarse voice, and noisy breathing minutes after a bee sting. They carry a prescribed adrenaline auto-injector and say they have used one before. They are frightened and try to stand.",
+    development: "Several minutes after the first auto-injector, breathing remains difficult and the casualty is becoming faint while emergency help is on the way.",
+    focus: ["recognise anaphylaxis", "adrenaline auto-injector", "emergency call", "safe positioning"],
+    opening: [["Call 112 for suspected anaphylaxis, help them use their prescribed auto-injector if trained, keep them in a safe position, and monitor breathing.", true, "Airway and breathing symptoms after a sting make this a life-threatening allergic reaction."], ["Wait for the rash to spread further before calling for help.", false, "Breathing and airway symptoms already make this an emergency."], ["Ask them to walk to the first aid post to improve circulation.", false, "Standing or walking can worsen collapse. Keep them still in the safest comfortable position."], ["Offer an antihistamine and observe for half an hour before using adrenaline.", false, "Antihistamines do not replace adrenaline for life-threatening airway or breathing symptoms." ]],
+    cluesPrompt: "Select all findings that support suspected anaphylaxis.",
+    clues: [["Hoarse voice or throat tightness.", true], ["Noisy or difficult breathing.", true], ["Lip, tongue, or facial swelling.", true], ["Faintness, collapse, or confusion after an allergen exposure.", true], ["A small painless bruise from yesterday.", false], ["Normal speech and breathing with only a local sting mark.", false]],
+    cluesFeedback: "Airway swelling, breathing difficulty, and circulation problems after allergen exposure are the critical features.",
+    sequencePrompt: "Arrange the immediate anaphylaxis response.",
+    sequence: ["Recognise airway, breathing, or circulation danger after allergen exposure.", "Call 112 and state suspected anaphylaxis.", "Help with the casualty's prescribed adrenaline auto-injector if trained and allowed.", "Keep the casualty still in a safe position suited to breathing and consciousness.", "Monitor continuously and follow the care plan or dispatcher guidance if symptoms persist."],
+    sequenceFeedback: "Emergency help and prescribed adrenaline should not be delayed in suspected anaphylaxis.",
+    changePrompt: "Symptoms remain severe after the first auto-injector. What should happen next?",
+    changeOptions: [["Update 112, continue monitoring, and follow the casualty's care plan or dispatcher guidance about further adrenaline while preparing for CPR if needed.", true, "Correct. Persistent symptoms require continued emergency management within training and the person's prescribed plan."], ["Make them stand and walk to spread the medicine faster.", false, "Standing can cause sudden collapse."], ["Assume the first device cannot work and throw it away without noting the time.", false, "Keep it for handover and record the time it was used."], ["Give food to test whether the throat swelling has improved.", false, "Food is unsafe when airway swelling is present." ]],
+    handoverFact: "the suspected trigger, airway and breathing signs, and the exact auto-injector time"
+  },
+  {
+    id: "multi-road",
+    categoryId: "mass-casualty",
+    title: "Two Casualties Near Moving Traffic",
+    scene: "At a bus stop beside a busy road, two people have fallen after avoiding a bicycle. One person is sitting up, crying loudly, and holding a painful ankle. The other is quiet on the pavement and does not respond when spoken to. Traffic is still passing close to the curb and several bystanders are available.",
+    development: "The quiet casualty is breathing abnormally. The person with the ankle injury keeps calling for attention but remains awake and able to speak.",
+    focus: ["scene control", "life-threat priority", "use bystanders safely", "request enough help"],
+    opening: [["Keep everyone away from traffic, call 112 for multiple casualties, check the quiet unresponsive person first, and give clear simple tasks to willing bystanders.", true, "The quiet casualty may have the greatest life threat. Scene safety and extra help are immediate priorities."], ["Treat the loud ankle injury first because that casualty is asking for help.", false, "The loudest casualty is not always the most seriously ill."], ["Move both casualties into the road so there is more space to examine them.", false, "Do not move into danger. Control the scene and move a casualty only when remaining creates immediate danger."], ["Ask every bystander to assess a different body part at the same time.", false, "Uncoordinated help creates confusion. Give simple, safe, specific tasks." ]],
+    cluesPrompt: "Select all priorities that matter in the first minute.",
+    clues: [["Prevent another collision and keep responders out of traffic.", true], ["Tell 112 there is more than one casualty.", true], ["Check responsiveness and breathing of the quiet casualty.", true], ["Use a bystander to guide emergency services or control the crowd.", true], ["Decide who caused the bicycle incident.", false], ["Photograph every injury before giving aid.", false]],
+    cluesFeedback: "Control continuing danger, request enough resources, and find life threats before minor injuries or incident details take attention.",
+    sequencePrompt: "Arrange the opening priorities when you have more than one casualty.",
+    sequence: ["Control immediate danger without entering moving traffic.", "Call 112, state the exact location, and report multiple casualties.", "Rapidly identify who has an airway, breathing, or severe-bleeding threat.", "Begin life-saving care for the highest-priority casualty.", "Keep reassessing both casualties and give safe tasks to available bystanders."],
+    sequenceFeedback: "Triage is a rapid priority process: safety, help, life threats, immediate care, then repeated reassessment.",
+    changePrompt: "Who remains the first clinical priority after this update?",
+    changeOptions: [["The unresponsive person with abnormal breathing; start the emergency response and CPR pathway as directed or trained.", true, "Correct. Abnormal breathing in an unresponsive casualty is immediately life-threatening."], ["The person with ankle pain because they are speaking the loudest.", false, "Pain matters, but an airway or breathing threat takes priority."], ["The bystanders because they want an explanation before helping.", false, "Give brief directions, but do not delay life-saving care."], ["The bicycle because it may be damaged.", false, "Property is not the clinical priority." ]],
+    handoverFact: "the number of casualties, initial priority decision, breathing findings, and care given to each person"
+  },
+  {
+    id: "multi-smoke",
+    categoryId: "mass-casualty",
+    title: "Smoke and Burns Outside a Canteen",
+    scene: "Smoke is coming from a canteen doorway. Outside, one casualty has a painful burn on the forearm and another is coughing, confused, and struggling to breathe. A third person says somebody may still be inside. The fire alarm is sounding and people are gathering near the entrance.",
+    development: "The breathing casualty becomes less responsive while smoke continues to drift across the gathering area.",
+    focus: ["do not enter smoke", "move to clean air", "breathing priority", "fire and ambulance response"],
+    opening: [["Keep everyone out of the smoke, move casualties to clean air only if safe, call 112 for fire and medical help, and prioritise the confused breathing casualty.", true, "Do not create more casualties by entering smoke. Breathing difficulty and confusion are the immediate clinical threat."], ["Enter the canteen alone to search because first aiders should always reach every casualty.", false, "An unprotected first aider must not enter a smoke-filled area."], ["Treat the visible arm burn first because it is easier to see.", false, "The breathing casualty has the greater immediate life threat."], ["Open every door and window without knowing the fire conditions.", false, "Do not improvise fire control. Withdraw, call the fire service, and follow safety instructions." ]],
+    cluesPrompt: "Select all actions that keep this changing scene safer.",
+    clues: [["Move the gathering point away from drifting smoke.", true], ["Tell 112 there may be a person inside.", true], ["Prevent unprotected people from re-entering.", true], ["Monitor the casualty with breathing difficulty continuously.", true], ["Send a bystander inside with a wet cloth over their face.", false], ["Ignore the wind direction once casualties are outside.", false]],
+    cluesFeedback: "Scene safety continues throughout care. Smoke movement, re-entry risk, and access for fire and ambulance crews all matter.",
+    sequencePrompt: "Arrange the safest opening response.",
+    sequence: ["Stay out of smoke and move everyone away from continuing exposure if safe.", "Call 112 for fire and medical help and report a possible person inside.", "Prioritise airway and breathing assessment of the confused casualty.", "Cool the visible burn with running water when this can be done without delaying breathing care.", "Reassess both casualties and prepare a clear handover."],
+    sequenceFeedback: "Do not enter danger. Remove exposure, request the right resources, prioritise breathing, then manage the burn and continue reassessment.",
+    changePrompt: "What is the immediate priority as responsiveness decreases?",
+    changeOptions: [["Move to clean air if not already there, update 112, check airway and breathing, and prepare for unresponsive care or CPR.", true, "Correct. Reduced responsiveness after smoke exposure can rapidly threaten the airway and breathing."], ["Return to the burn casualty because visible injuries must always be treated first.", false, "Breathing and reduced responsiveness take priority over a stable visible burn."], ["Give water to clear smoke from the lungs.", false, "Do not give oral fluids to a less responsive casualty."], ["Carry the casualty back toward the doorway so firefighters can see them.", false, "Do not move anyone closer to smoke or fire." ]],
+    handoverFact: "smoke exposure, time removed to fresh air, breathing and consciousness changes, and burn cooling"
   }
 ];
 
@@ -456,6 +696,10 @@ let progress = loadProgress();
 let scenarioIndex = 0;
 let selectedCategoryId = "student-team";
 let selectedDifficulty = "basic";
+let selectedPracticeMode = "individual";
+let scenarioStepComplete = false;
+let scenarioRunComplete = false;
+let scenarioRewardAwarded = false;
 let selectedLessonCategoryId = "assessment";
 let expandedLessonId = "";
 let quizIndex = 0;
@@ -484,7 +728,7 @@ const translations = {
     trainingMode: "Training mode", emergencyNotice: "In a real emergency, call your local emergency number immediately.", emergencyNumber: "Emergency: 112", privacyPolicy: "Privacy Policy", responderPractice: "Responder practice", readyToRespond: "Ready to respond",
     welcomeBack: "Welcome back", dayStreak: "Day streak", trainingXp: "Training XP", dailyStreakGoal: "Daily Streak Goal", trainToday: "Train Today", medicalDisclaimer: "This app supports training and revision. It does not replace certified instruction, medical advice, or emergency services.",
     lessonsCompleted: "Lessons completed", quizScore: "Quiz score", scenariosPassed: "Scenarios passed", continueTraining: "Continue Training", fastScenarioDrill: "Fast Scenario Drill", fastScenarioDescription: "Practice decisions in order: safety, responsiveness, call for help, then care.", startDrill: "Start Drill",
-    lessonLibrary: "Lesson Library", lessonLibraryDescription: "Choose a category, then open a lesson for signs, actions, common mistakes, team roles, and practice ideas.", scenarioBuilder: "Competition Scenario Builder", scenarioBuilderDescription: "Pick a category, then generate a different practice case for a student first aid team.", generateScenario: "Generate scenario", coachNotes: "Coach Notes", restart: "Restart", answerReview: "Answer Review", restartQuiz: "Restart Quiz", yourProgress: "Your Progress", progressSaved: "Progress is saved securely to your account.",
+    lessonLibrary: "Lesson Library", lessonLibraryDescription: "Choose a category, then open a lesson for signs, actions, common mistakes, team roles, and practice ideas.", scenarioBuilder: "Scenario Practice Lab", scenarioBuilderDescription: "Work through realistic first aid cases with decisions, multiple-answer checks, and action ordering.", generateScenario: "Generate scenario", coachNotes: "Learning Notes", restart: "Restart", answerReview: "Answer Review", restartQuiz: "Restart Quiz", yourProgress: "Your Progress", progressSaved: "Progress is saved securely to your account.",
     secureAccount: "Secure Account", login: "Login", register: "Register", continueGoogle: "Continue with Google", continueGitHub: "Continue with GitHub", continueEmail: "or continue with email", confirmationRequired: "Email confirmation is required for email registration", confirmationExplanation: "If you register with email and password, open the confirmation email and click its link before logging in. Google and GitHub sign-in do not need this step.", createNewPassword: "Create a new password", newPasswordExplanation: "Use at least 8 characters. After saving it, you will stay signed in.",
     email: "Email", password: "Password", forgotPassword: "Forgot your password?", resendConfirmation: "Resend confirmation email", name: "Name", role: "Role", heardAboutUs: "Where did you hear about us?", avatarInitials: "Avatar initials", logout: "Logout", deleteAccount: "Delete my account", dataProtected: "Your account data is protected by Supabase.",
     privacyEyebrow: "Your data", privacyTitle: "Privacy Policy", permanentAction: "Permanent action", deleteAccountTitle: "Delete your account?", deleteAccountExplanation: "Your profile, training progress, achievements, room participation, and authentication account will be permanently removed.", typeDelete: "Type DELETE to confirm", cancel: "Cancel", deletePermanently: "Delete permanently",
@@ -498,7 +742,7 @@ const translations = {
     invalidCredentials: "The email or password is incorrect. If you just registered, confirm your email before logging in.", emailNotConfirmed: "Your email is not confirmed yet. Open the confirmation email and click its link before logging in.", alreadyRegistered: "An account with this email already exists. Log in or use ‘Forgot your password?’.", providerDisabled: "This social sign-in option is not enabled in Supabase yet.", rateLimited: "Too many email requests. Wait a few minutes, then try again.",
     enterEmailFirst: "Enter your email address first.", resetSent: "Password reset email sent. Open it and click the recovery link to choose a new password. Check your Spam folder too.", confirmationSent: "A new confirmation email was sent. Open it and click the confirmation link. Check your Spam folder too.", resendIn: "Resend in {seconds}s", registrationSent: "Registration successful — we sent a confirmation email. Open it, click the confirmation link, then return here and log in. Check your Spam folder if you cannot see it.",
     passwordUpdated: "Password updated successfully. You are now signed in.", loggedIn: "Logged in securely.", loggedOut: "You have been logged out. Sign in to continue training.", accountDeleted: "Your account and saved training data were deleted.", socialOpening: "Opening {provider} secure sign-in...",
-    category: "Category", difficulty: "Difficulty", basic: "Basic", competition: "Competition", advanced: "Advanced", inProgress: "In progress", collapsedAdult: "Collapsed Adult",
+    category: "Category", practiceFormat: "Practice format", individualPractice: "Individual responder", teamPractice: "Team exercise", difficulty: "Difficulty", basic: "Basic", challenge: "Realistic", competition: "Competition", advanced: "Advanced", inProgress: "In progress", collapsedAdult: "Collapsed Adult",
     academyEyebrow: "First aid community", academyTitle: "Responder Academy", academyDescription: "Compete, collect achievements, join live practice, and use trusted learning resources.", learner: "Learner", leaderboard: "Leaderboard", achievements: "Achievements", certificate: "Certificate", certificateDescription: "Complete 10 lessons and score at least 80% to earn your First Aid Foundations certificate.", checkEligibility: "Check eligibility", liveRoom: "Live Training Room", offline: "Offline", liveRoomDescription: "Join an instructor-led scenario and see updates in real time.", join: "Join", resourceLibrary: "Resource Library", smartCoach: "Smart Coach Search", smartSearch: "Smart search", smartCoachDescription: "Search lessons and academy content by topic, symptom, or action.", search: "Search", academyFeed: "Academy Feed",
     instructorTools: "Instructor tools", academyStudio: "Academy Studio", studioDescription: "Create learning content, upload resources, and start live practice rooms.", staffAccess: "Staff access", publishContent: "Publish Content", type: "Type", title: "Title", summary: "Summary", publish: "Publish", uploadResource: "Upload Resource", selectFile: "Select PDF, image, or MP4 (max 50 MB)", uploadSecurely: "Upload securely", startLiveRoom: "Start Live Room", roomTitle: "Room title", openingPrompt: "Opening prompt", createLiveRoom: "Create live room", automations: "Automations", automationDescription: "Daily in-app streak reminders are generated automatically at 18:00 UTC with Supabase Cron.", refreshSearch: "Refresh smart-search index",
     certificateTitle: "Certificate of Achievement", certifiesThat: "This certifies that", completedRequirements: "has successfully completed the requirements for", printCertificate: "Print / Save as PDF", emailPlaceholder: "you@example.com", passwordPlaceholder: "Minimum 8 characters", namePlaceholder: "Your name"
@@ -508,7 +752,7 @@ const translations = {
     trainingMode: "Режим обучение", emergencyNotice: "При реална спешна ситуация веднага се обади на местния спешен номер.", emergencyNumber: "Спешен номер: 112", privacyPolicy: "Политика за поверителност", responderPractice: "Практика за спасители", readyToRespond: "Готов за действие",
     welcomeBack: "Добре дошъл отново", dayStreak: "Дневна серия", trainingXp: "Тренировъчен XP", dailyStreakGoal: "Дневна цел", trainToday: "Тренирай днес", medicalDisclaimer: "Приложението подпомага обучението и преговора. То не заменя сертифицирано обучение, медицински съвет или спешна помощ.",
     lessonsCompleted: "Завършени уроци", quizScore: "Резултат от теста", scenariosPassed: "Успешни сценарии", continueTraining: "Продължи обучението", fastScenarioDrill: "Бърза сценарийна тренировка", fastScenarioDescription: "Упражнявай решенията подред: безопасност, реакция, повикване на помощ и грижа.", startDrill: "Започни тренировка",
-    lessonLibrary: "Библиотека с уроци", lessonLibraryDescription: "Избери категория и отвори урок със симптоми, действия, чести грешки, екипни роли и идеи за практика.", scenarioBuilder: "Създател на състезателни сценарии", scenarioBuilderDescription: "Избери категория и генерирай различен тренировъчен случай за ученически отбор по първа помощ.", generateScenario: "Генерирай сценарий", coachNotes: "Бележки на треньора", restart: "Рестартирай", answerReview: "Преглед на отговора", restartQuiz: "Рестартирай теста", yourProgress: "Твоят напредък", progressSaved: "Напредъкът се пази сигурно в профила ти.",
+    lessonLibrary: "Библиотека с уроци", lessonLibraryDescription: "Избери категория и отвори урок със симптоми, действия, чести грешки, екипни роли и идеи за практика.", scenarioBuilder: "Лаборатория за сценарийна практика", scenarioBuilderDescription: "Решавай реалистични случаи с избор на действие, няколко верни отговора и подреждане на стъпки.", generateScenario: "Генерирай сценарий", coachNotes: "Учебни бележки", restart: "Рестартирай", answerReview: "Преглед на отговора", restartQuiz: "Рестартирай теста", yourProgress: "Твоят напредък", progressSaved: "Напредъкът се пази сигурно в профила ти.",
     secureAccount: "Защитен профил", login: "Вход", register: "Регистрация", continueGoogle: "Продължи с Google", continueGitHub: "Продължи с GitHub", continueEmail: "или продължи с имейл", confirmationRequired: "Регистрацията с имейл изисква потвърждение", confirmationExplanation: "След регистрацията отвори получения имейл и натисни връзката за потвърждение. При вход с Google или GitHub тази стъпка не е нужна.", createNewPassword: "Създай нова парола", newPasswordExplanation: "Използвай поне 8 символа. След записването ще останеш влязъл.",
     email: "Имейл", password: "Парола", forgotPassword: "Забравена парола?", resendConfirmation: "Изпрати отново потвърждението", name: "Име", role: "Роля", heardAboutUs: "Откъде научи за нас?", avatarInitials: "Инициали за аватар", logout: "Изход", deleteAccount: "Изтрий профила ми", dataProtected: "Данните на профила са защитени от Supabase.",
     privacyEyebrow: "Твоите данни", privacyTitle: "Политика за поверителност", permanentAction: "Необратимо действие", deleteAccountTitle: "Да изтрием ли профила?", deleteAccountExplanation: "Профилът, учебният напредък, постиженията, участието в стаи и акаунтът за вход ще бъдат окончателно премахнати.", typeDelete: "Напиши DELETE за потвърждение", cancel: "Отказ", deletePermanently: "Изтрий окончателно",
@@ -522,7 +766,7 @@ const translations = {
     invalidCredentials: "Имейлът или паролата са грешни. Ако току-що си се регистрирал, първо потвърди имейла си.", emailNotConfirmed: "Имейлът още не е потвърден. Отвори полученото писмо и натисни връзката за потвърждение.", alreadyRegistered: "Вече има профил с този имейл. Влез или използвай „Забравена парола?“.", providerDisabled: "Този начин за социален вход още не е включен в Supabase.", rateLimited: "Изпратени са прекалено много заявки. Изчакай няколко минути и опитай пак.",
     enterEmailFirst: "Първо въведи своя имейл адрес.", resetSent: "Изпратен е имейл за възстановяване на паролата. Отвори връзката в него. Провери и папка Спам.", confirmationSent: "Изпратен е нов имейл за потвърждение. Отвори го и натисни връзката. Провери и папка Спам.", resendIn: "Повторно след {seconds} сек.", registrationSent: "Регистрацията е успешна — изпратихме имейл за потвърждение. Отвори го, натисни връзката и после се върни тук, за да влезеш. Провери и папка Спам.",
     passwordUpdated: "Паролата е обновена успешно и вече си влязъл.", loggedIn: "Влезе успешно и защитено.", loggedOut: "Излезе от профила си. Влез отново, за да продължиш.", accountDeleted: "Профилът и запазеният учебен напредък бяха изтрити.", socialOpening: "Отваряне на защитен вход с {provider}...",
-    category: "Категория", difficulty: "Трудност", basic: "Основна", competition: "Състезателна", advanced: "Напреднала", inProgress: "В процес", collapsedAdult: "Припаднал възрастен",
+    category: "Категория", practiceFormat: "Формат на практиката", individualPractice: "Индивидуален спасител", teamPractice: "Отборно упражнение", difficulty: "Трудност", basic: "Основна", challenge: "Реалистична", competition: "Състезателна", advanced: "Напреднала", inProgress: "В процес", collapsedAdult: "Припаднал възрастен",
     academyEyebrow: "Общност по първа помощ", academyTitle: "Академия за спасители", academyDescription: "Състезавай се, събирай постижения, участвай в тренировки на живо и използвай доверени учебни материали.", learner: "Обучаващ се", leaderboard: "Класация", achievements: "Постижения", certificate: "Сертификат", certificateDescription: "Завърши 10 урока и постигни поне 80% на теста, за да получиш сертификата First Aid Foundations.", checkEligibility: "Провери условията", liveRoom: "Тренировъчна стая на живо", offline: "Извън линия", liveRoomDescription: "Включи се в сценарий с инструктор и получавай промени в реално време.", join: "Включи се", resourceLibrary: "Библиотека с ресурси", smartCoach: "Умно търсене с треньора", smartSearch: "Умно търсене", smartCoachDescription: "Търси в уроците и съдържанието на академията по тема, симптом или действие.", search: "Търси", academyFeed: "Новини от академията",
     instructorTools: "Инструменти за инструктори", academyStudio: "Студио на академията", studioDescription: "Създавай учебно съдържание, качвай ресурси и започвай тренировки на живо.", staffAccess: "Достъп за екипа", publishContent: "Публикувай съдържание", type: "Тип", title: "Заглавие", summary: "Обобщение", publish: "Публикувай", uploadResource: "Качи ресурс", selectFile: "Избери PDF, изображение или MP4 (до 50 MB)", uploadSecurely: "Качи защитено", startLiveRoom: "Започни стая на живо", roomTitle: "Заглавие на стаята", openingPrompt: "Начална ситуация", createLiveRoom: "Създай стая на живо", automations: "Автоматизации", automationDescription: "Ежедневните напомняния за серия се генерират автоматично в 18:00 UTC чрез Supabase Cron.", refreshSearch: "Обнови индекса за умно търсене",
     certificateTitle: "Сертификат за постижение", certifiesThat: "С настоящото се удостоверява, че", completedRequirements: "успешно изпълни изискванията за", printCertificate: "Печат / Запази като PDF", emailPlaceholder: "твоят@имейл.bg", passwordPlaceholder: "Минимум 8 символа", namePlaceholder: "Твоето име"
@@ -713,136 +957,150 @@ function choose(items) {
   return items[Math.floor(Math.random() * items.length)];
 }
 
-function currentCategory() {
-  return competitionCategories.find((category) => category.id === selectedCategoryId) || competitionCategories[0];
+function shuffleScenarioItems(items) {
+  const shuffled = [...items];
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+  }
+  return shuffled;
+}
+
+function scenarioOptionObjects(options) {
+  return shuffleScenarioItems(options.map(([label, correct, feedback = ""]) => ({ label, correct, feedback })));
+}
+
+function teamOpeningOptions(caseData) {
+  return scenarioOptionObjects(caseData.opening).map((option) => ({
+    ...option,
+    label: option.correct
+      ? `The leader states the priorities, gives named tasks, and directs the primary responder to act as follows: ${option.label}`
+      : `The team chooses this plan: ${option.label}`
+  }));
+}
+
+function shuffledOrderItems(labels, teamMode) {
+  const correctItems = labels.map((label, index) => ({
+    id: `order-${index}`,
+    label: teamMode && index === 0 ? `Team leader confirms: ${label}` : label,
+    correctIndex: index
+  }));
+  let order = shuffleScenarioItems(correctItems);
+  if (order.every((item, index) => item.correctIndex === index) && order.length > 1) {
+    order = [...order.slice(1), order[0]];
+  }
+  return order;
 }
 
 function buildScenario() {
-  const category = currentCategory();
-  const place = choose(category.places);
-  const patient = choose(category.patients);
-  const problem = choose(category.problems);
-  const hazard = choose(category.hazards);
-  const secondPatient = choose(["a panicking friend", "a quiet bystander with pale skin", "a younger student with a minor injury", "a teammate who becomes distracted", "a relative giving conflicting information"]);
-  const complication = choose(["the casualty's breathing becomes noisier", "the crowd blocks the access route", "the first aid kit is missing one expected item", "a bystander says the casualty may have hit their head", "the casualty becomes more confused", "someone reports a second casualty nearby"]);
-  const misleadingClue = choose(["a witness insists it is probably nothing", "one bystander wants to move the casualty immediately", "a friend offers medication without knowing what it is", "the casualty says they feel fine but looks pale and sweaty", "two witnesses give different stories about what happened"]);
-  const isMultiCasualty = category.id === "mass-casualty";
-  const extraPressure = isMultiCasualty ? {
-    basic: "Several people need checking, but one life threat should be found first.",
-    competition: "A judge is watching triage, delegation, and final handover.",
-    advanced: "The scene changes during care and the team must reassess priorities."
-  }[selectedDifficulty] : {
-    basic: "One casualty is present and bystanders are willing to help.",
-    competition: "A judge is watching how the team leader delegates tasks.",
-    advanced: "There is more than one demand at the scene and the team must prioritize."
-  }[selectedDifficulty];
+  const cases = scenarioCaseLibrary.filter((item) => item.categoryId === selectedCategoryId);
+  const differentCases = cases.filter((item) => item.id !== activeScenario.caseId);
+  const caseData = choose(differentCases.length ? differentCases : cases);
+  const isTeam = selectedPracticeMode === "team";
+  const modeLabel = isTeam ? "Team exercise" : "Individual responder";
 
   activeScenario = {
-    title: category.name,
-    brief: selectedDifficulty === "advanced"
-      ? `${patient} at the ${place}: ${problem}. Challenge: ${hazard}. Added complication: ${complication}. Confusing information: ${misleadingClue}. Secondary issue: ${secondPatient}. ${extraPressure}`
-      : `${patient} at the ${place}: ${problem}. Challenge: ${hazard}. ${extraPressure}`,
-    focus: selectedDifficulty === "advanced"
-      ? [...category.focus, "dynamic reassessment", "prioritising under uncertainty", "closed-loop communication"]
-      : category.focus
+    caseId: caseData.id,
+    title: caseData.title,
+    mode: selectedPracticeMode,
+    modeLabel,
+    focus: isTeam
+      ? [...caseData.focus, "named responsibilities", "closed-loop updates"]
+      : [...caseData.focus, "personal safety", "clear emergency call"]
   };
 
-  if (selectedDifficulty === "advanced") {
-    scenarioSteps = [
-      {
-        text: `Your team arrives at the ${place}. You can see ${hazard}, the main casualty is a ${patient} with ${problem}, and ${secondPatient} is pulling attention away. ${misleadingClue}. What is the strongest opening plan for the team leader?`,
-        options: [
-          ["Pause the team at the edge of the scene, state the visible hazards out loud, assign one named person to control access and call for help, assign another to begin a primary survey of the main casualty, and tell a third person to quickly check whether the secondary issue is safe and serious.", true, "Correct. Advanced scenarios test leadership under uncertainty. The best answer protects the team, starts life-threat assessment, uses named roles, and prevents a second problem from being ignored."],
-          ["Send the most confident teammate straight to the main casualty while the leader follows the loudest bystander to collect a full story before anyone calls for help.", false, "Not enough control. This delays the primary survey and lets bystanders set the agenda. In advanced competition scenes, the leader should gather information while still assigning immediate safety, help, and assessment tasks."],
-          ["Tell everyone to focus only on the visible injury because competition judges usually reward fast treatment more than scene management or communication.", false, "Too narrow. Fast treatment matters, but judges also look for safety, role clarity, reassessment, bystander control, and early escalation. Visible injuries can distract from breathing, shock, or a second casualty."]
-        ]
-      },
-      {
-        text: `During the first minute, the main casualty's story is unclear. The condition appears to involve ${problem}, but ${complication}. The casualty is anxious, a bystander interrupts repeatedly, and the team has limited equipment. What assessment sequence is best?`,
-        options: [
-          ["Use a structured primary survey first: responsiveness, airway, breathing quality, catastrophic bleeding, skin signs, position of comfort, and immediate red flags. At the same time, delegate one teammate to get SAMPLE-style history only after life threats are checked, while another teammate records times and changes.", true, "Correct. This is the advanced balance: primary survey first, history second, documentation throughout. The answer is longer because the decision is not just what to treat, but how to run the team without missing deterioration."],
-          ["Ask detailed questions about allergies, medication, past illnesses, last meal, and events before checking breathing or severe bleeding, because a complete history gives the most accurate diagnosis.", false, "History is useful, but this order is risky. A first aid team must identify life threats before detailed questioning. Advanced cases often include tempting history clues that should not delay airway, breathing, bleeding, and shock checks."],
-          ["Skip the assessment and begin the treatment most commonly linked to the first visible symptom, then adjust later if the judge gives more information.", false, "This is too reactive. Competition cases often include misleading symptoms. Treat obvious life threats, but do not skip the assessment structure that tells you whether the casualty is getting worse."]
-        ]
-      },
-      {
-        text: `Halfway through the scenario, the team finds a conflict: the main casualty needs continuing care, ${secondPatient} may also need assessment, and ${hazard} is making bystanders crowd closer. What delegation shows the strongest advanced teamwork?`,
-        options: [
-          ["Leader keeps overall command and reassesses priorities; Aider 1 stays with the main casualty and reports breathing/response changes; Aider 2 performs a quick safety-and-life-threat check on the secondary issue; Caller updates emergency services with the new complication; Recorder notes times, care, and changes for handover.", true, "Correct. This answer shows command structure, closed-loop communication, parallel tasking, and reassessment. Advanced scenarios are won by managing the whole scene, not by doing one skill beautifully while the rest of the scene drifts."],
-          ["Everyone moves to the second problem together so the team can decide as a group whether it is more interesting or more serious than the original casualty.", false, "This abandons the main casualty and creates confusion. A team can investigate a second problem, but not by leaving the first casualty unmonitored."],
-          ["The leader continues treating alone while the rest of the team waits silently, because too many people talking can look disorganized to judges.", false, "Quiet is not the same as organized. Strong teams use concise communication, named tasks, and clear reports. A leader who treats alone loses the advantage of the team."]
-        ]
-      },
-      {
-        text: `The casualty's presentation still fits ${problem}, but the complication changes the risk level: ${complication}. The judge asks what care you are giving and why. Which answer is most defensible?`,
-        options: [
-          ["Explain the working priority, not a final diagnosis: care is aimed at immediate threats, comfort, monitoring, and preventing deterioration. State the specific first aid being given within training, what signs are being watched, what would trigger escalation, and what information must be handed to professionals.", true, "Correct. Advanced first aid reasoning avoids pretending to diagnose. It explains priorities, treatment limits, monitoring, escalation points, and handover facts. This is exactly the kind of longer answer a competition judge may reward."],
-          ["Give a confident diagnosis and say the team will continue only that pathway unless the casualty becomes unconscious, because changing plans might look uncertain.", false, "Overconfidence is dangerous. A first aider should use a working impression and reassess. Changing a plan because the casualty changes is a strength, not a weakness."],
-          ["Focus on the neatest visible treatment and avoid explaining uncertainty, because judges mainly score whether the bandage, sling, or position looks correct.", false, "Presentation helps, but advanced scoring should value reasoning, safety, monitoring, communication, and whether treatment matches the casualty's changing condition."]
-        ]
-      },
-      {
-        text: `The scenario ends with professional help arriving. The scene involved ${problem}, ${hazard}, ${complication}, and ${secondPatient}. What handover would be strongest?`,
-        options: [
-          ["Give a structured handover: exact location and hazards, number of casualties, main casualty details, initial condition, primary survey findings, changes over time, care given and when, response to care, unresolved concerns, secondary casualty check, and any witness information that may be unreliable.", true, "Correct. Advanced handover should make the next responder safer and faster. It includes what you know, what changed, what you did, what remains uncertain, and why the scene still needs attention."],
-          ["Say only the casualty's main complaint and the treatment given, because professional responders can repeat the assessment themselves when they arrive.", false, "Too little. Professionals will assess again, but they still need your timeline, changes, hazards, care already given, and concerns. Good handover prevents repeated mistakes and lost information."],
-          ["Let every team member give their own version of events so no detail is missed, even if the information is repeated or contradictory.", false, "That can become chaotic. One clear speaker should hand over using team notes, with teammates available for specific details if asked."]
-        ]
-      },
-      {
-        text: "After the judge calls time, what should the student team review first to improve for the next advanced scenario?",
-        options: [
-          ["Review whether the team found life threats early, used named roles, communicated with closed-loop replies, reassessed after the complication, documented changes, and gave a clear handover. Then review technical treatment details.", true, "Correct. Advanced improvement starts with decision-making and team process, then technical skill. A perfect bandage cannot compensate for missed deterioration, weak leadership, or poor handover."],
-          ["Review only the final score and decide who made the most visible mistake, because individual blame helps people remember not to repeat errors.", false, "Blame weakens team learning. A useful review is specific, calm, and focused on decisions, communication, safety, and next actions."],
-          ["Review only equipment placement and speed, because advanced scenarios are mostly about moving faster than other teams.", false, "Speed helps only when priorities are right. Advanced cases reward controlled pace, accurate reassessment, and clear reasoning under pressure."]
-        ]
-      }
-    ];
-    return;
-  }
+  const openingOptions = isTeam ? teamOpeningOptions(caseData) : scenarioOptionObjects(caseData.opening);
+  const clueOptions = scenarioOptionObjects(caseData.clues);
+  const changeOptions = scenarioOptionObjects(caseData.changeOptions);
+  const orderItems = shuffledOrderItems(caseData.sequence, isTeam);
 
   scenarioSteps = [
     {
-      text: `Your team arrives at the ${place}. The main challenge is ${hazard}. What should the team leader do first?`,
-      options: [
-        ["Stop the team, check for danger, and assign safe roles.", true, "Correct. Judges usually expect safety and leadership before treatment."],
-        ["Send everyone straight to the casualty.", false, "Slow down. A team can lose control of the scene if safety and roles are skipped."],
-        ["Ask the casualty to walk to your team.", false, "Do not move a casualty unless there is immediate danger."]
-      ]
+      type: "single",
+      typeLabel: "Choose one answer",
+      situation: caseData.scene,
+      prompt: isTeam
+        ? "Your responder team is first at the scene. Which opening plan should the team leader use?"
+        : "You are the first trained responder at the scene. What should you do first?",
+      options: openingOptions
     },
     {
-      text: `The casualty is a ${patient} with ${problem}. What is the best first assessment?`,
-      options: [
-        ["Check responsiveness, breathing, severe bleeding, and ask what happened.", true, "Correct. A structured primary check helps the team find life threats quickly."],
-        ["Start with a detailed medical history.", false, "History matters, but immediate life threats come first."],
-        ["Look for the neatest bandage to use.", false, "Equipment comes after assessment and priorities."]
-      ]
+      type: "multiple",
+      typeLabel: "Select all that apply",
+      situation: "Before continuing, separate the important clinical warning signs from details that should not distract you.",
+      prompt: isTeam
+        ? `Select every finding the team must recognise. ${caseData.cluesPrompt}`
+        : caseData.cluesPrompt,
+      options: clueOptions,
+      feedback: caseData.cluesFeedback
     },
     {
-      text: "A teammate asks what they should do next. What instruction is strongest?",
-      options: [
-        ["Call emergency help or send a named person, bring the first aid kit/AED if needed, and report back.", true, "Correct. Clear named tasks reduce confusion in team competitions."],
-        ["Tell everyone to do something useful.", false, "That is too vague. Good team leadership gives specific tasks."],
-        ["Tell bystanders to leave without explanation.", false, "Bystanders may help. Control them calmly and use them when appropriate."]
-      ]
-    },
-    {
-      text: `The casualty's condition fits ${problem}. What care should the team prioritize?`,
-      options: [
-        ["Give appropriate first aid within training, monitor breathing, reassure, and protect privacy.", true, "Correct. Care should match the condition and stay within training limits."],
-        ["Give food, drink, or medication without checking training rules.", false, "Avoid giving anything unless the protocol and training clearly allow it."],
-        ["Focus only on making the bandage look tidy.", false, "Presentation matters less than safe, effective care and monitoring."]
-      ]
-    },
-    {
-      text: "Professional help arrives or the scenario judge calls time. What should the team finish with?",
-      options: [
-        ["Give a clear handover: scene, casualty, findings, care given, changes, and remaining concerns.", true, "Correct. A good handover shows control and clinical thinking."],
-        ["Pack up immediately without speaking.", false, "The next responder needs a clear handover."],
-        ["Argue about who did best.", false, "Team reflection comes later. Finish the casualty handover first."]
-      ]
+      type: "order",
+      typeLabel: "Put the actions in order",
+      situation: "The immediate danger is being controlled. Build a complete response from the first priority through ongoing monitoring.",
+      prompt: isTeam
+        ? "Arrange the team's actions from first priority to last. Use the arrow buttons to move each action."
+        : `${caseData.sequencePrompt} Use the arrow buttons to move each action.`,
+      order: orderItems,
+      feedback: caseData.sequenceFeedback
     }
   ];
+
+  if (selectedDifficulty !== "basic") {
+    scenarioSteps.push({
+      type: "single",
+      typeLabel: "Respond to a change",
+      situation: caseData.development,
+      prompt: isTeam
+        ? `The situation has changed. What should the team do now? ${caseData.changePrompt}`
+        : caseData.changePrompt,
+      options: isTeam
+        ? changeOptions.map((option) => ({ ...option, label: `Team response: ${option.label}` }))
+        : changeOptions
+    });
+  }
+
+  if (selectedDifficulty === "advanced") {
+    scenarioSteps.push({
+      type: "multiple",
+      typeLabel: "Select all that apply",
+      situation: "A bystander wants a definite diagnosis and suggests treatment outside your training. The casualty's condition may still change.",
+      prompt: isTeam
+        ? "Select every rule the team should follow while managing uncertainty."
+        : "Select every rule you should follow while managing uncertainty.",
+      options: scenarioOptionObjects([
+        ["Describe what you observe without pretending to make a final diagnosis.", true],
+        ["Give first aid only within your training and follow dispatcher guidance.", true],
+        ["Reassess after every important change and report deterioration.", true],
+        ["Say clearly what is unknown or based only on a witness report.", true],
+        ["Use an unprescribed medicine if a confident bystander recommends it.", false],
+        ["Keep the original plan even when the casualty becomes worse.", false]
+      ]),
+      feedback: "Safe advanced practice distinguishes observations from guesses, stays within training, follows professional guidance, and changes the plan when reassessment shows deterioration."
+    });
+  }
+
+  scenarioSteps.push({
+    type: "multiple",
+    typeLabel: "Build the handover",
+    situation: "Emergency professionals have arrived and need a short, accurate picture before taking over care.",
+    prompt: isTeam
+      ? "Select everything the team's handover should include."
+      : "Select everything your handover should include.",
+    options: scenarioOptionObjects([
+      ["Exact location, continuing hazards, and number of casualties.", true],
+      ["Initial responsiveness, breathing, severe bleeding, and other key findings.", true],
+      ["Care given, important times, changes, and the response to care.", true],
+      [`Case-specific detail: ${caseData.handoverFact}.`, true],
+      ["A confident diagnosis even when it has not been confirmed.", false],
+      ["Personal criticism of the casualty or people at the scene.", false]
+    ]),
+    feedback: `A useful handover is factual and time-based. For this case, do not omit ${caseData.handoverFact}.`
+  });
+
+  scenarioIndex = 0;
+  scenarioStepComplete = false;
+  scenarioRunComplete = false;
 }
 
 function loadProgress() {
@@ -1195,50 +1453,165 @@ function renderCategorySelect() {
   select.innerHTML = competitionCategories.map((category) => `
     <option value="${category.id}" ${category.id === selectedCategoryId ? "selected" : ""}>${category.name}</option>
   `).join("");
+  document.getElementById("scenario-practice-mode").value = selectedPracticeMode;
   document.getElementById("scenario-difficulty").value = selectedDifficulty;
+}
+
+function renderScenarioOptions(step) {
+  const options = document.getElementById("scenario-options");
+  const action = document.getElementById("scenario-action");
+
+  if (step.type === "single") {
+    options.innerHTML = step.options.map((option, index) => `
+      <button class="option-button scenario-choice" type="button" data-scenario-single="${index}">
+        <span class="option-letter">${String.fromCharCode(65 + index)}</span>
+        <span>${escapeHtml(option.label)}</span>
+      </button>
+    `).join("");
+    action.innerHTML = "";
+    return;
+  }
+
+  if (step.type === "multiple") {
+    options.innerHTML = step.options.map((option, index) => `
+      <label class="option-button checkbox-option" data-scenario-multiple-row="${index}">
+        <input type="checkbox" data-scenario-multiple="${index}">
+        <span class="custom-check" aria-hidden="true"></span>
+        <span>${escapeHtml(option.label)}</span>
+      </label>
+    `).join("");
+    action.innerHTML = `<button class="primary-button scenario-check-button" type="button" data-scenario-check>Check selected answers</button>`;
+    return;
+  }
+
+  options.innerHTML = step.order.map((item, index) => `
+    <div class="order-option" data-order-row="${index}">
+      <span class="order-number">${index + 1}</span>
+      <span class="order-label">${escapeHtml(item.label)}</span>
+      <span class="order-controls">
+        <button class="order-move" type="button" data-order-move="up" data-order-index="${index}" aria-label="Move action up" ${index === 0 ? "disabled" : ""}>↑</button>
+        <button class="order-move" type="button" data-order-move="down" data-order-index="${index}" aria-label="Move action down" ${index === step.order.length - 1 ? "disabled" : ""}>↓</button>
+      </span>
+    </div>
+  `).join("");
+  action.innerHTML = `<button class="primary-button scenario-check-button" type="button" data-scenario-check>Check this order</button>`;
 }
 
 function renderScenario() {
   const step = scenarioSteps[scenarioIndex];
   if (!step) return;
   document.getElementById("scenario-step").textContent = `Step ${scenarioIndex + 1} of ${scenarioSteps.length}`;
-  document.getElementById("scenario-result").textContent = "In progress";
+  document.getElementById("scenario-result").textContent = scenarioRunComplete ? "Completed" : "In progress";
   document.getElementById("scenario-title").textContent = activeScenario.title;
-  document.getElementById("scenario-brief").textContent = activeScenario.brief;
-  document.getElementById("scenario-text").textContent = step.text;
-  document.getElementById("scenario-options").innerHTML = step.options.map(([label], index) => `
-    <button class="option-button" type="button" data-scenario-option="${index}">${label}</button>
-  `).join("");
+  document.getElementById("scenario-task-type").textContent = step.typeLabel;
+  document.getElementById("scenario-mode-badge").textContent = activeScenario.modeLabel;
+  document.getElementById("scenario-text").textContent = `${step.situation}\n\n${step.prompt}`;
+  scenarioStepComplete = false;
+  renderScenarioOptions(step);
   document.getElementById("scenario-focus").innerHTML = activeScenario.focus.map((item) => `
-    <span>${item}</span>
+    <span>${escapeHtml(item)}</span>
   `).join("");
+  hydrateIcons();
 }
 
-function answerScenario(optionIndex) {
-  const step = scenarioSteps[scenarioIndex];
-  const [label, correct, feedback] = step.options[optionIndex];
-  document.querySelectorAll("[data-scenario-option]").forEach((button, index) => {
-    const isCorrect = step.options[index][1];
-    button.disabled = true;
-    if (isCorrect) button.classList.add("correct");
-    if (index === optionIndex && !correct) button.classList.add("wrong");
-  });
+function showScenarioNext(feedback) {
+  scenarioStepComplete = true;
   document.getElementById("scenario-feedback").textContent = feedback;
+  document.querySelectorAll("#scenario-options button, #scenario-options input").forEach((control) => {
+    control.disabled = true;
+  });
 
-  if (!correct) return;
-
-  if (scenarioIndex === scenarioSteps.length - 1) {
-    document.getElementById("scenario-result").textContent = "Passed";
-    progress.scenariosPassed += 1;
-    awardTrainingReward("scenario", selectedDifficulty === "advanced" ? 35 : 25);
+  const finalStep = scenarioIndex === scenarioSteps.length - 1;
+  if (finalStep) {
+    scenarioRunComplete = true;
+    document.getElementById("scenario-result").textContent = "Completed";
+    document.getElementById("scenario-action").innerHTML = `<button class="primary-button" type="button" data-scenario-new>Practice another case</button>`;
+    if (!scenarioRewardAwarded) {
+      scenarioRewardAwarded = true;
+      progress.scenariosPassed += 1;
+      const reward = selectedDifficulty === "advanced" ? 35 : selectedDifficulty === "challenge" ? 30 : 25;
+      awardTrainingReward("scenario", reward);
+    }
     return;
   }
 
-  window.setTimeout(() => {
-    scenarioIndex += 1;
-    renderScenario();
-    document.getElementById("scenario-feedback").textContent = "Good. Keep the order clear and calm.";
-  }, 900);
+  document.getElementById("scenario-action").innerHTML = `<button class="primary-button" type="button" data-scenario-next>Continue to next step</button>`;
+}
+
+function answerScenarioSingle(optionIndex) {
+  if (scenarioStepComplete) return;
+  const step = scenarioSteps[scenarioIndex];
+  const option = step.options[optionIndex];
+  const button = document.querySelector(`[data-scenario-single="${optionIndex}"]`);
+  if (!option.correct) {
+    button.classList.add("wrong");
+    button.disabled = true;
+    document.getElementById("scenario-feedback").textContent = `Not quite. ${option.feedback} Try another answer.`;
+    return;
+  }
+
+  button.classList.add("correct");
+  showScenarioNext(`Correct. ${option.feedback}`);
+}
+
+function checkMultipleScenario() {
+  if (scenarioStepComplete) return;
+  const step = scenarioSteps[scenarioIndex];
+  const selected = new Set([...document.querySelectorAll("[data-scenario-multiple]:checked")].map((input) => Number(input.dataset.scenarioMultiple)));
+  if (!selected.size) {
+    document.getElementById("scenario-feedback").textContent = "Select at least one answer before checking.";
+    return;
+  }
+
+  let correct = true;
+  step.options.forEach((option, index) => {
+    const row = document.querySelector(`[data-scenario-multiple-row="${index}"]`);
+    row.classList.remove("correct", "wrong", "missed");
+    if (option.correct !== selected.has(index)) correct = false;
+    if (selected.has(index)) row.classList.add(option.correct ? "correct" : "wrong");
+    if (option.correct && !selected.has(index)) row.classList.add("missed");
+  });
+
+  if (!correct) {
+    document.getElementById("scenario-feedback").textContent = `Some choices need another look. Green choices are right; outlined choices were missed. ${step.feedback}`;
+    return;
+  }
+
+  showScenarioNext(`Correct. ${step.feedback}`);
+}
+
+function moveScenarioOrder(index, direction) {
+  if (scenarioStepComplete) return;
+  const step = scenarioSteps[scenarioIndex];
+  const nextIndex = direction === "up" ? index - 1 : index + 1;
+  if (nextIndex < 0 || nextIndex >= step.order.length) return;
+  [step.order[index], step.order[nextIndex]] = [step.order[nextIndex], step.order[index]];
+  renderScenarioOptions(step);
+  document.getElementById("scenario-feedback").textContent = "Order updated. Check it when the full sequence looks right.";
+}
+
+function checkScenarioOrder() {
+  if (scenarioStepComplete) return;
+  const step = scenarioSteps[scenarioIndex];
+  const correct = step.order.every((item, index) => item.correctIndex === index);
+  document.querySelectorAll("[data-order-row]").forEach((row, index) => {
+    row.classList.toggle("correct", step.order[index].correctIndex === index);
+    row.classList.toggle("wrong", step.order[index].correctIndex !== index);
+  });
+
+  if (!correct) {
+    document.getElementById("scenario-feedback").textContent = `Not yet. Green actions are already in the correct position. Reorder the others and check again. ${step.feedback}`;
+    return;
+  }
+
+  showScenarioNext(`Correct order. ${step.feedback}`);
+}
+
+function advanceScenario() {
+  if (!scenarioStepComplete || scenarioIndex >= scenarioSteps.length - 1) return;
+  scenarioIndex += 1;
+  renderScenario();
+  document.getElementById("scenario-feedback").textContent = "Read the full update before choosing your next action.";
 }
 
 function renderQuiz() {
@@ -1285,14 +1658,17 @@ function answerQuiz(optionIndex) {
 
 function restartScenario() {
   scenarioIndex = 0;
-  document.getElementById("scenario-feedback").textContent = "Choose the safest first action.";
+  scenarioRunComplete = false;
+  document.getElementById("scenario-feedback").textContent = "Scenario restarted. Read the full situation before acting.";
   renderScenario();
 }
 
 function generateScenario() {
-  scenarioIndex = 0;
   buildScenario();
-  document.getElementById("scenario-feedback").textContent = "New scenario generated. Start with safety, leadership, and a primary check.";
+  scenarioRewardAwarded = false;
+  document.getElementById("scenario-feedback").textContent = selectedPracticeMode === "team"
+    ? "New team exercise generated. Agree on priorities and use clear named roles."
+    : "New individual case generated. Decide what you would do and why.";
   renderScenario();
 }
 
@@ -1639,8 +2015,20 @@ document.addEventListener("click", (event) => {
     renderLessons();
   }
 
-  const scenarioOption = event.target.closest("[data-scenario-option]");
-  if (scenarioOption) answerScenario(Number(scenarioOption.dataset.scenarioOption));
+  const scenarioSingle = event.target.closest("[data-scenario-single]");
+  if (scenarioSingle) answerScenarioSingle(Number(scenarioSingle.dataset.scenarioSingle));
+
+  const scenarioMove = event.target.closest("[data-order-move]");
+  if (scenarioMove) moveScenarioOrder(Number(scenarioMove.dataset.orderIndex), scenarioMove.dataset.orderMove);
+
+  if (event.target.closest("[data-scenario-check]")) {
+    const step = scenarioSteps[scenarioIndex];
+    if (step?.type === "multiple") checkMultipleScenario();
+    if (step?.type === "order") checkScenarioOrder();
+  }
+
+  if (event.target.closest("[data-scenario-next]")) advanceScenario();
+  if (event.target.closest("[data-scenario-new]")) generateScenario();
 
   const quizOption = event.target.closest("[data-quiz-option]");
   if (quizOption) answerQuiz(Number(quizOption.dataset.quizOption));
@@ -1658,6 +2046,11 @@ document.addEventListener("change", (event) => {
 
   if (event.target.id === "scenario-category") {
     selectedCategoryId = event.target.value;
+    generateScenario();
+  }
+
+  if (event.target.id === "scenario-practice-mode") {
+    selectedPracticeMode = event.target.value;
     generateScenario();
   }
 

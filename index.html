@@ -163,8 +163,8 @@
 
       <section id="scenario" class="view">
         <div class="section-heading">
-          <h2 data-i18n="scenarioBuilder">Competition Scenario Builder</h2>
-          <p data-i18n="scenarioBuilderDescription">Pick a category, then generate a different practice case for a student first aid team.</p>
+          <h2 data-i18n="scenarioBuilder">Scenario Practice Lab</h2>
+          <p data-i18n="scenarioBuilderDescription">Work through realistic first aid cases with decisions, multiple-answer checks, and action ordering.</p>
         </div>
         <div class="scenario-builder">
           <label>
@@ -172,10 +172,17 @@
             <select id="scenario-category"></select>
           </label>
           <label>
+            <span data-i18n="practiceFormat">Practice format</span>
+            <select id="scenario-practice-mode">
+              <option value="individual" data-i18n="individualPractice">Individual responder</option>
+              <option value="team" data-i18n="teamPractice">Team exercise</option>
+            </select>
+          </label>
+          <label>
             <span data-i18n="difficulty">Difficulty</span>
             <select id="scenario-difficulty">
               <option value="basic" data-i18n="basic">Basic</option>
-              <option value="competition" data-i18n="competition">Competition</option>
+              <option value="challenge" data-i18n="challenge">Realistic</option>
               <option value="advanced" data-i18n="advanced">Advanced</option>
             </select>
           </label>
@@ -188,9 +195,15 @@
               <span id="scenario-result">In progress</span>
             </div>
             <h2 id="scenario-title">Collapsed Adult</h2>
-            <p id="scenario-brief"></p>
-            <p id="scenario-text"></p>
+            <div class="scenario-prompt-card">
+              <div class="scenario-task-heading">
+                <span id="scenario-task-type">Choose one answer</span>
+                <span id="scenario-mode-badge">Individual responder</span>
+              </div>
+              <p id="scenario-text"></p>
+            </div>
             <div id="scenario-options" class="option-list"></div>
+            <div id="scenario-action" class="scenario-action"></div>
           </div>
           <aside class="feedback-panel">
             <h2 data-i18n="coachNotes">Coach Notes</h2>
