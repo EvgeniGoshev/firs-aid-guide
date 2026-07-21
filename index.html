@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>First Aid Trainer</title>
-  <link rel="stylesheet" href="styles.css?v=20260721-3">
+  <link rel="stylesheet" href="styles.css?v=20260721-4">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js" defer></script>
-  <script src="app.js?v=20260721-3" defer></script>
+  <script src="app.js?v=20260721-4" defer></script>
 </head>
 <body class="auth-pending auth-locked">
   <div class="ambient-shape ambient-shape-one" aria-hidden="true"></div>
@@ -34,6 +34,7 @@
         <button class="nav-tab active" data-view="dashboard"><i data-lucide="layout-dashboard"></i><span data-i18n="navDashboard">Dashboard</span></button>
         <button class="nav-tab" data-view="lessons"><i data-lucide="book-open-check"></i><span data-i18n="navLessons">Lessons</span></button>
         <button class="nav-tab" data-view="scenario"><i data-lucide="route"></i><span data-i18n="navScenario">Scenario</span></button>
+        <button class="nav-tab" data-view="emergency-call"><i data-lucide="phone-call"></i><span data-i18n="navEmergencyCall">Call 112</span></button>
         <button class="nav-tab" data-view="quiz"><i data-lucide="list-checks"></i><span data-i18n="navQuiz">Quiz</span></button>
         <button class="nav-tab" data-view="progress"><i data-lucide="chart-no-axes-column-increasing"></i><span data-i18n="navProgress">Progress</span></button>
         <button class="nav-tab" data-view="community"><i data-lucide="users-round"></i><span data-i18n="navAcademy">Academy</span></button>
@@ -101,7 +102,7 @@
             <span class="quest-icon" aria-hidden="true"><i data-lucide="heart-pulse"></i></span>
             <div>
             <h2 data-i18n="dailyStreakGoal">Daily Streak Goal</h2>
-            <p id="daily-goal-text">Complete one quiz or scenario today to earn +1 streak.</p>
+            <p id="daily-goal-text">Complete a quiz, scenario, or 112 call case today to earn +1 streak.</p>
             </div>
           </div>
           <button class="primary-button" data-goto="scenario" type="button"><i data-lucide="flame"></i><span data-i18n="trainToday">Train Today</span></button>
@@ -210,6 +211,67 @@
             <p id="scenario-feedback">Choose the safest first action.</p>
             <div id="scenario-focus" class="focus-list"></div>
             <button class="secondary-button" id="restart-scenario" type="button"><i data-lucide="refresh-cw"></i><span data-i18n="restart">Restart</span></button>
+          </aside>
+        </div>
+      </section>
+
+      <section id="emergency-call" class="view" aria-labelledby="page-title">
+        <div class="section-heading call-section-heading">
+          <div>
+            <p class="eyebrow" data-i18n="callPracticeEyebrow">Emergency communication</p>
+            <h2 data-i18n="callPracticeTitle">112 Call Practice</h2>
+            <p data-i18n="callPracticeDescription">Read the case and write the opening report you would give to the 112 operator.</p>
+          </div>
+          <div class="simulation-badge"><i data-lucide="shield-alert"></i><span data-i18n="simulationOnly">Simulation only — never call 112 for practice</span></div>
+        </div>
+
+        <div class="call-practice-shell">
+          <article class="call-simulator-card">
+            <div class="scenario-meta">
+              <span id="call-case-count">Case 1 of 5</span>
+              <span id="call-case-status">Not assessed</span>
+            </div>
+
+            <div class="call-case-card">
+              <div class="call-case-icon" aria-hidden="true"><i data-lucide="phone-incoming"></i><span>112</span></div>
+              <div>
+                <p class="eyebrow" data-i18n="yourCase">Your case</p>
+                <h2 id="call-case-title"></h2>
+                <p id="call-case-text"></p>
+              </div>
+            </div>
+
+            <div class="call-guidance-strip">
+              <span><strong>1</strong><span data-i18n="callStepWhere">Exact location</span></span>
+              <span><strong>2</strong><span data-i18n="callStepWhat">What happened</span></span>
+              <span><strong>3</strong><span data-i18n="callStepWho">Who needs help</span></span>
+              <span><strong>4</strong><span data-i18n="callStepDanger">Condition and danger</span></span>
+            </div>
+
+            <label class="call-report-label" for="call-report-input">
+              <span data-i18n="yourReport">Your opening report</span>
+              <small data-i18n="reportPrivacy">Use only the fictional information from the case. Do not enter real personal data.</small>
+            </label>
+            <textarea id="call-report-input" rows="8" data-i18n-placeholder="callReportPlaceholder" placeholder="Example: My name is Alex. I am at..."></textarea>
+
+            <div class="call-practice-actions">
+              <button class="primary-button" id="check-call-report" type="button"><i data-lucide="clipboard-check"></i><span data-i18n="checkReport">Check my report</span></button>
+              <button class="secondary-button" id="new-call-case" type="button"><i data-lucide="shuffle"></i><span data-i18n="newCallCase">New case</span></button>
+            </div>
+          </article>
+
+          <aside class="call-coach-card">
+            <div class="call-coach-header">
+              <span class="call-operator-icon"><i data-lucide="headset"></i></span>
+              <div><p class="eyebrow">112</p><h2 data-i18n="operatorChecklist">Operator checklist</h2></div>
+            </div>
+            <p id="call-feedback" data-i18n="callFeedbackStart">Write a calm, factual report. The operator will guide the real call with questions.</p>
+            <div id="call-checklist" class="call-checklist"></div>
+            <div id="call-model-answer" class="call-model-answer hidden">
+              <span data-i18n="modelOpeningReport">Example opening report</span>
+              <p id="call-model-answer-text"></p>
+            </div>
+            <div class="call-real-emergency-note"><i data-lucide="phone-off"></i><p data-i18n="realEmergencyNote">In a real emergency: call 112, answer the operator's questions, follow instructions, and do not hang up until told.</p></div>
           </aside>
         </div>
       </section>

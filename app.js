@@ -880,6 +880,109 @@ const quizQuestionBank = [
   }
 ];
 
+const emergencyCallCases = [
+  {
+    id: "road-collision",
+    title: { en: "Road collision with an unresponsive cyclist", bg: "Пътен инцидент с велосипедист в безсъзнание" },
+    scene: {
+      en: "You are Alex at 88 Bulgaria Boulevard, Sofia, outside the supermarket entrance. A car has hit one cyclist. The cyclist is unresponsive and breathing in irregular gasps. One traffic lane remains open and vehicles are passing close to the scene.",
+      bg: "Ти си Алекс и се намираш на бул. „България“ 88 в София, пред входа на супермаркет. Автомобил е ударил един велосипедист. Пострадалият не реагира и диша на пресекулки. Едната лента е отворена и автомобили минават близо до мястото."
+    },
+    model: {
+      en: "My name is Alex. I am outside the supermarket at 88 Bulgaria Boulevard, Sofia. A car has hit one cyclist. The casualty is unresponsive and breathing in irregular gasps. Traffic is still passing in one lane, so the approach is dangerous. I will stay on the line and follow your instructions.",
+      bg: "Казвам се Алекс. Намирам се пред супермаркета на бул. „България“ 88 в София. Автомобил е ударил един велосипедист. Пострадалият не реагира и диша на пресекулки. Движението продължава в едната лента и достъпът е опасен. Ще остана на линията и ще изпълнявам указанията ви."
+    },
+    facts: [
+      { label: { en: "Exact location", bg: "Точно местоположение" }, terms: [/българия|bulgaria/i, /\b88\b/, /софия|sofia/i, /супермаркет|supermarket/i], minimum: 2 },
+      { label: { en: "What happened", bg: "Какво се е случило" }, terms: [/автомобил|кола|car/i, /удар|блъс|hit|collision/i, /велосипед|cyclist|bike/i], minimum: 2 },
+      { label: { en: "Number of casualties", bg: "Брой пострадали" }, terms: [/един|едно|1|one/i, /пострадал|велосипедист|casualt|cyclist/i], minimum: 2 },
+      { label: { en: "Responsiveness and breathing", bg: "Съзнание и дишане" }, terms: [/не реаг|безсъзн|unresponsive|unconscious/i, /диша|дишане|breath|gasp/i], minimum: 2 },
+      { label: { en: "Ongoing traffic danger", bg: "Продължаваща опасност от движението" }, terms: [/движение|трафик|traffic|vehicle|автомобил/i, /лента|близо|опас|lane|close|danger/i], minimum: 2 },
+      { label: { en: "Caller and staying on the line", bg: "Кой се обажда и оставане на линията" }, terms: [/алекс|alex/i, /линия|не затвар|указан|line|hang up|instruction/i], minimum: 2 }
+    ]
+  },
+  {
+    id: "apartment-fire",
+    title: { en: "Apartment fire with a missing resident", bg: "Пожар в жилище с липсващ човек" },
+    scene: {
+      en: "You are Mira at 14 Rose Street, Varna, entrance B. Smoke and flames are visible from a third-floor apartment. Two residents are outside coughing, but a neighbour says one older person may still be inside. Thick smoke fills the stairwell.",
+      bg: "Ти си Мира и се намираш на ул. „Роза“ 14 във Варна, вход Б. От апартамент на третия етаж излизат дим и пламъци. Двама живущи са навън и кашлят, но съсед казва, че един възрастен човек може да е останал вътре. Стълбището е изпълнено с гъст дим."
+    },
+    model: {
+      en: "My name is Mira. I am at 14 Rose Street, entrance B, Varna. There is an active fire in a third-floor apartment. Two people are outside coughing and one older resident may still be inside. The stairwell is full of thick smoke and nobody should enter. I will stay on the line and follow your instructions.",
+      bg: "Казвам се Мира. Намирам се на ул. „Роза“ 14, вход Б, във Варна. Има активен пожар в апартамент на третия етаж. Двама души са навън и кашлят, а един възрастен човек може да е вътре. Стълбището е пълно с гъст дим и не трябва да се влиза. Ще остана на линията и ще следвам указанията ви."
+    },
+    facts: [
+      { label: { en: "Exact location", bg: "Точно местоположение" }, terms: [/роза|rose/i, /\b14\b/, /варна|varna/i, /вход\s*б|entrance\s*b/i], minimum: 2 },
+      { label: { en: "Active apartment fire", bg: "Активен пожар в жилище" }, terms: [/пожар|огън|пламък|fire|flame/i, /апартамент|жилище|трет|apartment|third/i], minimum: 2 },
+      { label: { en: "People involved", bg: "Засегнати хора" }, terms: [/двама|две|2|two/i, /един|1|one|възраст|older/i, /вътре|inside|missing/i], minimum: 2 },
+      { label: { en: "Current condition", bg: "Текущо състояние" }, terms: [/кашл|cough/i, /дим|smoke/i], minimum: 2 },
+      { label: { en: "Smoke and unsafe access", bg: "Дим и опасен достъп" }, terms: [/стълби|stair/i, /гъст|опас|не.*влиз|thick|danger|do not enter/i], minimum: 2 },
+      { label: { en: "Caller and staying on the line", bg: "Кой се обажда и оставане на линията" }, terms: [/мира|mira/i, /линия|не затвар|указан|line|hang up|instruction/i], minimum: 2 }
+    ]
+  },
+  {
+    id: "anaphylaxis",
+    title: { en: "Severe allergic reaction in a restaurant", bg: "Тежка алергична реакция в ресторант" },
+    scene: {
+      en: "You are Daniel in the Sea Garden restaurant at 5 Coast Road, Burgas. One 35-year-old customer became wheezy and faint after eating a dessert containing nuts. Their lips are swelling and they have their own adrenaline auto-injector. The main entrance is clear.",
+      bg: "Ти си Даниел и си в ресторант „Морска градина“ на ул. „Крайбрежна“ 5 в Бургас. Един 35-годишен клиент получава хрипове и му прилошава след десерт с ядки. Устните му се подуват и има собствена адреналинова писалка. Главният вход е свободен."
+    },
+    model: {
+      en: "My name is Daniel. I am at the Sea Garden restaurant, 5 Coast Road, Burgas. One 35-year-old customer is having a severe allergic reaction after eating nuts. They are wheezing, faint, and their lips are swelling. They have an adrenaline auto-injector and the main entrance is clear. I will stay on the line and follow instructions.",
+      bg: "Казвам се Даниел. Намирам се в ресторант „Морска градина“ на ул. „Крайбрежна“ 5 в Бургас. Един 35-годишен клиент има тежка алергична реакция след ядки. Има хрипове, прилошава му и устните му се подуват. Разполага с адреналинова писалка, а главният вход е свободен. Ще остана на линията и ще следвам указанията."
+    },
+    facts: [
+      { label: { en: "Exact location", bg: "Точно местоположение" }, terms: [/морска градина|sea garden/i, /крайбрежна|coast road/i, /\b5\b/, /бургас|burgas/i], minimum: 2 },
+      { label: { en: "Suspected severe allergy", bg: "Предполагаема тежка алергия" }, terms: [/алерг|анафилак|allerg|anaphyl/i, /ядки|nuts/i], minimum: 2 },
+      { label: { en: "Person and age", bg: "Човек и възраст" }, terms: [/един|1|one/i, /35|клиент|customer/i], minimum: 2 },
+      { label: { en: "Breathing and swelling", bg: "Дишане и подуване" }, terms: [/хрип|диша|wheez|breath/i, /устн|поду|lip|swell|faint|прилош/i], minimum: 2 },
+      { label: { en: "Injector and access", bg: "Писалка и достъп" }, terms: [/адреналин|писалка|инжектор|adrenaline|injector/i, /вход|свобод|entrance|clear/i], minimum: 2 },
+      { label: { en: "Caller and staying on the line", bg: "Кой се обажда и оставане на линията" }, terms: [/даниел|daniel/i, /линия|не затвар|указан|line|hang up|instruction/i], minimum: 2 }
+    ]
+  },
+  {
+    id: "chemical-spill",
+    title: { en: "Chemical fumes in a warehouse", bg: "Химически изпарения в склад" },
+    scene: {
+      en: "You are Elena at 7 Industrial Street, Plovdiv, warehouse gate B. A cleaning chemical container has split and strong fumes are spreading. Two workers are affected; one is unconscious but breathing and the other has burning eyes. Everyone else is outside, upwind from the open gate.",
+      bg: "Ти си Елена и си на ул. „Индустриална“ 7 в Пловдив, складова врата Б. Съд с почистващ химикал се е спукал и се разпространяват силни изпарения. Засегнати са двама работници; единият е в безсъзнание, но диша, а другият има парене в очите. Всички останали са навън, срещу вятъра от отворената врата."
+    },
+    model: {
+      en: "My name is Elena. I am at warehouse gate B, 7 Industrial Street, Plovdiv. A cleaning chemical container has split and strong fumes are spreading. Two workers are affected: one is unconscious but breathing and the other has burning eyes. We are outside and upwind; the gate remains open and the contaminated area is unsafe. I will stay on the line.",
+      bg: "Казвам се Елена. Намирам се при складова врата Б на ул. „Индустриална“ 7 в Пловдив. Съд с почистващ химикал се е спукал и има силни изпарения. Засегнати са двама работници: единият е в безсъзнание, но диша, а другият има парене в очите. Ние сме навън срещу вятъра, а замърсената зона е опасна. Ще остана на линията."
+    },
+    facts: [
+      { label: { en: "Exact location", bg: "Точно местоположение" }, terms: [/индустриална|industrial/i, /\b7\b/, /пловдив|plovdiv/i, /врата\s*б|gate\s*b/i], minimum: 2 },
+      { label: { en: "Chemical incident", bg: "Химически инцидент" }, terms: [/химикал|chemical/i, /спук|разлив|container|split|spill/i, /изпар|fume/i], minimum: 2 },
+      { label: { en: "Two affected workers", bg: "Двама засегнати работници" }, terms: [/двама|2|two/i, /работни|worker/i], minimum: 2 },
+      { label: { en: "Both casualty conditions", bg: "Състояние на двамата пострадали" }, terms: [/безсъзн|unconscious/i, /диша|breath/i, /очи|парене|eye|burning/i], minimum: 2 },
+      { label: { en: "Fume danger and safe position", bg: "Опасност от изпарения и безопасна позиция" }, terms: [/изпар|замърс|fume|contamin/i, /навън|вятър|опас|outside|upwind|unsafe/i], minimum: 2 },
+      { label: { en: "Caller and staying on the line", bg: "Кой се обажда и оставане на линията" }, terms: [/елена|elena/i, /линия|не затвар|указан|line|hang up|instruction/i], minimum: 2 }
+    ]
+  },
+  {
+    id: "mountain-fall",
+    title: { en: "Injured hiker on a mountain trail", bg: "Пострадал турист на планинска пътека" },
+    scene: {
+      en: "You are Nikolay on Vitosha, on the yellow trail about 600 metres south of Aleko Hut. One hiker has fallen on wet rocks. They are conscious but have severe bleeding from the lower leg and cannot walk. The trail is steep and slippery; your phone shows GPS location.",
+      bg: "Ти си Николай и си на Витоша, на жълтата пътека около 600 метра южно от хижа „Алеко“. Един турист е паднал върху мокри скали. В съзнание е, но има силно кървене от подбедрицата и не може да ходи. Пътеката е стръмна и хлъзгава, а телефонът ти показва GPS местоположение."
+    },
+    model: {
+      en: "My name is Nikolay. I am on Vitosha, on the yellow trail about 600 metres south of Aleko Hut, and I can share GPS location. One hiker fell on wet rocks. They are conscious, have severe lower-leg bleeding, and cannot walk. The trail is steep and slippery, so rescue access is difficult. I will stay on the line and follow instructions.",
+      bg: "Казвам се Николай. Намирам се на Витоша, на жълтата пътека около 600 метра южно от хижа „Алеко“, и мога да дам GPS местоположение. Един турист е паднал върху мокри скали. В съзнание е, има силно кървене от подбедрицата и не може да ходи. Пътеката е стръмна и хлъзгава, затова достъпът е труден. Ще остана на линията и ще следвам указанията."
+    },
+    facts: [
+      { label: { en: "Precise trail location", bg: "Точно местоположение на пътеката" }, terms: [/витоша|vitosha/i, /жълт|yellow/i, /600/, /алеко|aleko/i, /gps/i], minimum: 2 },
+      { label: { en: "Fall on wet rocks", bg: "Падане върху мокри скали" }, terms: [/пад|fall|fell/i, /скал|rock/i, /мокр|wet/i], minimum: 2 },
+      { label: { en: "One injured hiker", bg: "Един пострадал турист" }, terms: [/един|1|one/i, /турист|hiker/i], minimum: 2 },
+      { label: { en: "Consciousness, bleeding, mobility", bg: "Съзнание, кървене и подвижност" }, terms: [/съзнание|conscious/i, /кърв|bleed/i, /не може.*ход|cannot walk|unable to walk/i], minimum: 2 },
+      { label: { en: "Difficult rescue access", bg: "Труден достъп за спасителите" }, terms: [/стръм|steep/i, /хлъзг|slipper/i, /труд.*достъп|difficult.*access/i], minimum: 2 },
+      { label: { en: "Caller and staying on the line", bg: "Кой се обажда и оставане на линията" }, terms: [/николай|nikolay/i, /линия|не затвар|указан|line|hang up|instruction/i], minimum: 2 }
+    ]
+  }
+];
+
 let quizQuestions = [];
 let activeQuizSourceQuestions = [];
 let activeQuizRotationGroup = 0;
@@ -907,6 +1010,7 @@ const defaultProgress = {
   quizScore: 0,
   quizTaken: false,
   scenariosPassed: 0,
+  completedEmergencyCalls: [],
   profileName: "",
   email: "",
   initials: "FA",
@@ -935,6 +1039,8 @@ let quizIndex = 0;
 let quizCorrect = 0;
 let quizAnswered = false;
 let quizCorrectPositionState = { deck: [], last: -1, optionCount: 0 };
+let emergencyCallCaseIndex = 0;
+let emergencyCallAssessment = null;
 let currentUser = null;
 let authMode = "login";
 let authMessage = "";
@@ -954,7 +1060,7 @@ let academyData = {
 
 const translations = {
   en: {
-    brandTagline: "Practice for responders", navDashboard: "Dashboard", navLessons: "Lessons", navScenario: "Scenario", navQuiz: "Quiz", navProgress: "Progress", navAcademy: "Academy", navStudio: "Studio",
+    brandTagline: "Practice for responders", navDashboard: "Dashboard", navLessons: "Lessons", navScenario: "Scenario", navEmergencyCall: "Call 112", navQuiz: "Quiz", navProgress: "Progress", navAcademy: "Academy", navStudio: "Studio",
     trainingMode: "Training mode", emergencyNotice: "In a real emergency, call your local emergency number immediately.", emergencyNumber: "Emergency: 112", privacyPolicy: "Privacy Policy", responderPractice: "Responder practice", readyToRespond: "Ready to respond",
     welcomeBack: "Welcome back", dayStreak: "Day streak", trainingXp: "Training XP", dailyStreakGoal: "Daily Streak Goal", trainToday: "Train Today", medicalDisclaimer: "This app supports training and revision. It does not replace certified instruction, medical advice, or emergency services.",
     lessonsCompleted: "Lessons completed", quizScore: "Quiz score", scenariosPassed: "Scenarios passed", continueTraining: "Continue Training", fastScenarioDrill: "Fast Scenario Drill", fastScenarioDescription: "Practice decisions in order: safety, responsiveness, call for help, then care.", startDrill: "Start Drill",
@@ -963,9 +1069,10 @@ const translations = {
     email: "Email", password: "Password", forgotPassword: "Forgot your password?", resendConfirmation: "Resend confirmation email", name: "Name", role: "Role", heardAboutUs: "Where did you hear about us?", avatarInitials: "Avatar initials", logout: "Logout", deleteAccount: "Delete my account", dataProtected: "Your account data is protected by Supabase.",
     privacyEyebrow: "Your data", privacyTitle: "Privacy Policy", permanentAction: "Permanent action", deleteAccountTitle: "Delete your account?", deleteAccountExplanation: "Your profile, training progress, achievements, room participation, and authentication account will be permanently removed.", typeDelete: "Type DELETE to confirm", cancel: "Cancel", deletePermanently: "Delete permanently",
     accountReady: "Account ready", welcomeTitle: "Welcome to First Aid Trainer!", welcomeMessage: "Your secure profile was created successfully. Your training progress will now follow you across devices.", benefitProgress: "Progress saved securely", benefitAchievements: "Achievements and certificates", benefitAcademy: "Academy and live practice", startTraining: "Start training",
-    pageDashboard: "Dashboard", pageLessons: "Lessons", pageScenario: "Scenario Practice", pageQuiz: "Knowledge Quiz", pageProgress: "Progress", pageAcademy: "Responder Academy", pageStudio: "Academy Studio",
+    pageDashboard: "Dashboard", pageLessons: "Lessons", pageScenario: "Scenario Practice", pageEmergencyCall: "112 Call Practice", pageQuiz: "Knowledge Quiz", pageProgress: "Progress", pageAcademy: "Responder Academy", pageStudio: "Academy Studio",
+    callPracticeEyebrow: "Emergency communication", callPracticeTitle: "112 Call Practice", callPracticeDescription: "Read the case and write the opening report you would give to the 112 operator.", simulationOnly: "Simulation only — never call 112 for practice", yourCase: "Your case", callStepWhere: "Exact location", callStepWhat: "What happened", callStepWho: "Who needs help", callStepDanger: "Condition and danger", yourReport: "Your opening report", reportPrivacy: "Use only the fictional information from the case. Do not enter real personal data.", callReportPlaceholder: "Example: My name is Alex. I am at...", checkReport: "Check my report", newCallCase: "New case", operatorChecklist: "Operator checklist", callFeedbackStart: "Write a calm, factual report. The operator will guide the real call with questions.", modelOpeningReport: "Example opening report", realEmergencyNote: "In a real emergency: call 112, answer the operator's questions, follow instructions, and do not hang up until told.",
     createAccount: "Create your account", secureBackend: "Secure backend account", notSignedIn: "Not signed in", authUnavailable: "Authentication unavailable", profile: "Profile",
-    dailyEarned: "Daily streak earned. Come back tomorrow to keep it alive.", dailyGoal: "Complete one quiz or scenario today to earn +1 streak.",
+    dailyEarned: "Daily streak earned. Come back tomorrow to keep it alive.", dailyGoal: "Complete a quiz, scenario, or 112 call case today to earn +1 streak.",
     authHeading: "Sign in to start training", authDescription: "An account is required to access lessons, scenarios, quizzes, and progress.", recoveryHeading: "Reset your password", recoveryDescription: "The recovery link is verified. Choose a new password for your account.",
     submitLogin: "Login", submitRegister: "Create account and send confirmation email", submitRecovery: "Save new password", signingIn: "Signing in...", creatingAccount: "Creating account...", savingPassword: "Saving password...", sendingEmail: "Sending email...", deletingAccount: "Deleting account...",
     authLoginPrompt: "Continue with Google or GitHub, or enter your email and password.", authRegisterPrompt: "Continue with Google or GitHub, or create an email account and confirm it before logging in.", authRecoveryPrompt: "Enter and save your new password.", authLockedPrompt: "Login or create an account to unlock the training platform.", authUnavailablePrompt: "Secure sign-in is unavailable until Supabase is connected.", signedInAs: "Signed in as {email}",
@@ -978,7 +1085,7 @@ const translations = {
     certificateTitle: "Certificate of Achievement", certifiesThat: "This certifies that", completedRequirements: "has successfully completed the requirements for", printCertificate: "Print / Save as PDF", emailPlaceholder: "you@example.com", passwordPlaceholder: "Minimum 8 characters", namePlaceholder: "Your name"
   },
   bg: {
-    brandTagline: "Практика за оказващи първа помощ", navDashboard: "Табло", navLessons: "Уроци", navScenario: "Сценарий", navQuiz: "Тест", navProgress: "Напредък", navAcademy: "Академия", navStudio: "Студио",
+    brandTagline: "Практика за оказващи първа помощ", navDashboard: "Табло", navLessons: "Уроци", navScenario: "Сценарий", navEmergencyCall: "Обаждане 112", navQuiz: "Тест", navProgress: "Напредък", navAcademy: "Академия", navStudio: "Студио",
     trainingMode: "Режим обучение", emergencyNotice: "При реална спешна ситуация веднага се обади на местния спешен номер.", emergencyNumber: "Спешен номер: 112", privacyPolicy: "Политика за поверителност", responderPractice: "Практика за спасители", readyToRespond: "Готов за действие",
     welcomeBack: "Добре дошъл отново", dayStreak: "Дневна серия", trainingXp: "Тренировъчен XP", dailyStreakGoal: "Дневна цел", trainToday: "Тренирай днес", medicalDisclaimer: "Приложението подпомага обучението и преговора. То не заменя сертифицирано обучение, медицински съвет или спешна помощ.",
     lessonsCompleted: "Завършени уроци", quizScore: "Резултат от теста", scenariosPassed: "Успешни сценарии", continueTraining: "Продължи обучението", fastScenarioDrill: "Бърза сценарийна тренировка", fastScenarioDescription: "Упражнявай решенията подред: безопасност, реакция, повикване на помощ и грижа.", startDrill: "Започни тренировка",
@@ -987,9 +1094,10 @@ const translations = {
     email: "Имейл", password: "Парола", forgotPassword: "Забравена парола?", resendConfirmation: "Изпрати отново потвърждението", name: "Име", role: "Роля", heardAboutUs: "Откъде научи за нас?", avatarInitials: "Инициали за аватар", logout: "Изход", deleteAccount: "Изтрий профила ми", dataProtected: "Данните на профила са защитени от Supabase.",
     privacyEyebrow: "Твоите данни", privacyTitle: "Политика за поверителност", permanentAction: "Необратимо действие", deleteAccountTitle: "Да изтрием ли профила?", deleteAccountExplanation: "Профилът, учебният напредък, постиженията, участието в стаи и акаунтът за вход ще бъдат окончателно премахнати.", typeDelete: "Напиши DELETE за потвърждение", cancel: "Отказ", deletePermanently: "Изтрий окончателно",
     accountReady: "Профилът е готов", welcomeTitle: "Добре дошъл във First Aid Trainer!", welcomeMessage: "Защитеният ти профил беше създаден успешно. Учебният напредък вече ще те следва на различните устройства.", benefitProgress: "Сигурно запазен напредък", benefitAchievements: "Постижения и сертификати", benefitAcademy: "Академия и тренировки на живо", startTraining: "Започни обучение",
-    pageDashboard: "Табло", pageLessons: "Уроци", pageScenario: "Сценарийна практика", pageQuiz: "Тест за знания", pageProgress: "Напредък", pageAcademy: "Академия за спасители", pageStudio: "Студио на академията",
+    pageDashboard: "Табло", pageLessons: "Уроци", pageScenario: "Сценарийна практика", pageEmergencyCall: "Упражнение за обаждане на 112", pageQuiz: "Тест за знания", pageProgress: "Напредък", pageAcademy: "Академия за спасители", pageStudio: "Студио на академията",
+    callPracticeEyebrow: "Спешна комуникация", callPracticeTitle: "Упражнение за обаждане на 112", callPracticeDescription: "Прочети случая и напиши началния сигнал, който би подал на оператора на 112.", simulationOnly: "Само симулация — никога не звъни на 112 за тренировка", yourCase: "Твоят случай", callStepWhere: "Точно място", callStepWhat: "Какво е станало", callStepWho: "Кой има нужда от помощ", callStepDanger: "Състояние и опасности", yourReport: "Твоят начален сигнал", reportPrivacy: "Използвай само измислените данни от случая. Не въвеждай истински лични данни.", callReportPlaceholder: "Пример: Казвам се Алекс. Намирам се на...", checkReport: "Провери сигнала ми", newCallCase: "Нов случай", operatorChecklist: "Списък на оператора", callFeedbackStart: "Напиши спокоен и фактически сигнал. При реално обаждане операторът ще те води с въпроси.", modelOpeningReport: "Примерен начален сигнал", realEmergencyNote: "При реална спешност: позвъни на 112, отговаряй на въпросите, следвай указанията и не затваряй, докато операторът не каже.",
     createAccount: "Създай своя профил", secureBackend: "Защитен профил в облака", notSignedIn: "Не си влязъл", authUnavailable: "Входът не е наличен", profile: "Профил",
-    dailyEarned: "Дневната серия е спечелена. Върни се утре, за да я продължиш.", dailyGoal: "Завърши един тест или сценарий днес, за да получиш +1 към серията.",
+    dailyEarned: "Дневната серия е спечелена. Върни се утре, за да я продължиш.", dailyGoal: "Завърши тест, сценарий или случай с обаждане на 112, за да получиш +1 към серията.",
     authHeading: "Влез, за да започнеш обучение", authDescription: "Необходим е профил за достъп до уроците, сценариите, тестовете и напредъка.", recoveryHeading: "Възстанови паролата си", recoveryDescription: "Връзката е потвърдена. Избери нова парола за профила.",
     submitLogin: "Вход", submitRegister: "Създай профил и изпрати потвърждение", submitRecovery: "Запази новата парола", signingIn: "Влизане...", creatingAccount: "Създаване на профил...", savingPassword: "Запазване на паролата...", sendingEmail: "Изпращане...", deletingAccount: "Изтриване на профила...",
     authLoginPrompt: "Продължи с Google или GitHub, или въведи имейл и парола.", authRegisterPrompt: "Продължи с Google или GitHub, или създай профил с имейл и го потвърди.", authRecoveryPrompt: "Въведи и запази новата си парола.", authLockedPrompt: "Влез или създай профил, за да отключиш обучителната платформа.", authUnavailablePrompt: "Защитеният вход не е наличен, докато Supabase не е свързан.", signedInAs: "Влязъл като {email}",
@@ -1031,6 +1139,7 @@ function applyLanguage() {
     section.classList.toggle("hidden", section.dataset.policyLanguage !== currentLanguage);
   });
   renderAccount();
+  renderEmergencyCallPractice();
   const activeView = document.querySelector(".view.active-view")?.id || "dashboard";
   updatePageTitle(activeView);
   updateResendButton();
@@ -1041,6 +1150,7 @@ function updatePageTitle(viewId) {
     dashboard: "pageDashboard",
     lessons: "pageLessons",
     scenario: "pageScenario",
+    "emergency-call": "pageEmergencyCall",
     quiz: "pageQuiz",
     progress: "pageProgress",
     community: "pageAcademy",
@@ -1997,11 +2107,126 @@ function restartQuiz() {
   renderQuiz();
 }
 
+function emergencyCallCase() {
+  return emergencyCallCases[emergencyCallCaseIndex] || emergencyCallCases[0];
+}
+
+function emergencyCallFactMatches(fact, report) {
+  const matches = fact.terms.reduce((total, pattern) => total + (pattern.test(report) ? 1 : 0), 0);
+  return matches >= fact.minimum;
+}
+
+function renderEmergencyCallPractice() {
+  const title = document.getElementById("call-case-title");
+  if (!title) return;
+
+  const activeCase = emergencyCallCase();
+  const language = currentLanguage === "bg" ? "bg" : "en";
+  const assessment = emergencyCallAssessment;
+  const status = document.getElementById("call-case-status");
+
+  document.getElementById("call-case-count").textContent = language === "bg"
+    ? `Случай ${emergencyCallCaseIndex + 1} от ${emergencyCallCases.length}`
+    : `Case ${emergencyCallCaseIndex + 1} of ${emergencyCallCases.length}`;
+  title.textContent = activeCase.title[language];
+  document.getElementById("call-case-text").textContent = activeCase.scene[language];
+
+  if (!assessment) {
+    status.textContent = language === "bg" ? "Не е проверен" : "Not assessed";
+    status.className = "";
+  } else {
+    status.textContent = language === "bg"
+      ? `${assessment.score}/6 важни елемента`
+      : `${assessment.score}/6 key details`;
+    status.className = assessment.passed ? "call-status-passed" : "call-status-review";
+  }
+
+  document.getElementById("call-checklist").innerHTML = activeCase.facts.map((fact, index) => {
+    const matched = assessment?.matched[index];
+    const stateClass = assessment ? (matched ? "matched" : "missing") : "pending";
+    const icon = assessment ? (matched ? "check" : "plus") : "circle";
+    return `<div class="call-check-item ${stateClass}"><span><i data-lucide="${icon}"></i></span><p>${escapeHtml(fact.label[language])}</p></div>`;
+  }).join("");
+
+  const feedback = document.getElementById("call-feedback");
+  const model = document.getElementById("call-model-answer");
+  if (!assessment) {
+    feedback.textContent = t("callFeedbackStart");
+    model.classList.add("hidden");
+  } else {
+    const missingLabels = activeCase.facts
+      .filter((_, index) => !assessment.matched[index])
+      .map((fact) => fact.label[language]);
+
+    if (assessment.score === 6) {
+      feedback.textContent = language === "bg"
+        ? "Отличен начален сигнал. Информацията е кратка, подредена и достатъчна, за да започне изпращане на помощ."
+        : "Excellent opening report. It is concise, ordered, and gives enough information to start dispatching help.";
+    } else if (assessment.passed) {
+      feedback.textContent = language === "bg"
+        ? `Сигналът е добър, но може да стане по-точен. Добави: ${missingLabels.join(", ")}.`
+        : `The report is good but can be more precise. Add: ${missingLabels.join(", ")}.`;
+    } else {
+      feedback.textContent = language === "bg"
+        ? `Операторът още няма достатъчно информация. Добави: ${missingLabels.join(", ")}.`
+        : `The operator still lacks essential information. Add: ${missingLabels.join(", ")}.`;
+    }
+
+    document.getElementById("call-model-answer-text").textContent = activeCase.model[language];
+    model.classList.remove("hidden");
+  }
+}
+
+function evaluateEmergencyCallReport() {
+  const input = document.getElementById("call-report-input");
+  const report = input.value.trim().toLocaleLowerCase();
+  const activeCase = emergencyCallCase();
+
+  if (report.length < 30) {
+    emergencyCallAssessment = {
+      matched: activeCase.facts.map((fact) => emergencyCallFactMatches(fact, report)),
+      score: 0,
+      passed: false
+    };
+    emergencyCallAssessment.score = emergencyCallAssessment.matched.filter(Boolean).length;
+    renderEmergencyCallPractice();
+    hydrateIcons();
+    input.focus();
+    return;
+  }
+
+  const matched = activeCase.facts.map((fact) => emergencyCallFactMatches(fact, report));
+  const score = matched.filter(Boolean).length;
+  const passed = score >= 5;
+  emergencyCallAssessment = { matched, score, passed };
+
+  if (passed && !progress.completedEmergencyCalls.includes(activeCase.id)) {
+    progress.completedEmergencyCalls.push(activeCase.id);
+    awardTrainingReward("112 call practice", 10);
+  } else {
+    renderEmergencyCallPractice();
+  }
+  hydrateIcons();
+}
+
+function generateEmergencyCallCase() {
+  const otherIndexes = emergencyCallCases
+    .map((_, index) => index)
+    .filter((index) => index !== emergencyCallCaseIndex);
+  emergencyCallCaseIndex = choose(otherIndexes);
+  emergencyCallAssessment = null;
+  document.getElementById("call-report-input").value = "";
+  renderEmergencyCallPractice();
+  hydrateIcons();
+  document.getElementById("call-report-input").focus();
+}
+
 function renderProgress() {
   const lessonCompletion = progress.completedLessons.length / lessons.length;
   const quizCompletion = progress.quizTaken ? 1 : 0;
   const scenarioCompletion = progress.scenariosPassed > 0 ? 1 : 0;
-  const overall = Math.round(((lessonCompletion + quizCompletion + scenarioCompletion) / 3) * 100);
+  const callCompletion = Math.min(progress.completedEmergencyCalls.length / emergencyCallCases.length, 1);
+  const overall = Math.round(((lessonCompletion + quizCompletion + scenarioCompletion + callCompletion) / 4) * 100);
   document.getElementById("progress-percent").textContent = `${overall}%`;
   document.getElementById("progress-ring").style.strokeDashoffset = String(352 - (352 * overall) / 100);
   document.getElementById("progress-list").innerHTML = `
@@ -2019,6 +2244,11 @@ function renderProgress() {
       <div class="lesson-icon"><i data-lucide="route"></i></div>
       <div><h3>Scenario practice</h3><p>${progress.scenariosPassed} successful run${progress.scenariosPassed === 1 ? "" : "s"}</p></div>
       <span class="completed">${scenarioCompletion ? "Done" : "Start"}</span>
+    </article>
+    <article class="progress-row">
+      <div class="lesson-icon"><i data-lucide="phone-call"></i></div>
+      <div><h3>112 call practice</h3><p>${progress.completedEmergencyCalls.length} of ${emergencyCallCases.length} cases completed</p></div>
+      <span class="completed">${Math.round(callCompletion * 100)}%</span>
     </article>
   `;
   hydrateIcons();
@@ -2347,6 +2577,9 @@ document.addEventListener("click", (event) => {
 
   if (event.target.closest("[data-scenario-next]")) advanceScenario();
   if (event.target.closest("[data-scenario-new]")) generateScenario();
+
+  if (event.target.closest("#check-call-report")) evaluateEmergencyCallReport();
+  if (event.target.closest("#new-call-case")) generateEmergencyCallCase();
 
   const quizOption = event.target.closest("[data-quiz-option]");
   if (quizOption) answerQuiz(Number(quizOption.dataset.quizOption));
@@ -2873,6 +3106,7 @@ function renderAll() {
   renderRecommendations();
   renderLessons();
   renderScenario();
+  renderEmergencyCallPractice();
   renderQuiz();
   renderProgress();
   renderAcademy();
